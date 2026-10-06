@@ -80,7 +80,7 @@ export const NgoProfile = () => {
                 borderRadius: '50%',
                 background: isStaff
                   ? (isReceiver ? '#dbeafe' : '#ffedd5')
-                  : 'linear-gradient(135deg, #ff6b4a 0%, #f04b28 100%)',
+                  : 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
                 color: isStaff
                   ? (isReceiver ? '#1e40af' : '#9a3412')
                   : '#ffffff',
@@ -318,7 +318,7 @@ export const NgoProfile = () => {
                 <button
                   type="submit"
                   style={{
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '20px',
@@ -326,11 +326,11 @@ export const NgoProfile = () => {
                     fontSize: '14px',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    boxShadow: '0 4px 14px rgba(255, 107, 74, 0.35)',
+                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
                     transition: 'all 0.15s ease'
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.background = '#f04b28')}
-                  onMouseOut={(e) => (e.currentTarget.style.background = '#ff6b4a')}
+                  onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
+                  onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
                 >
                   Save Profile Details
                 </button>
@@ -474,7 +474,7 @@ export const NgoProfile = () => {
                 <button
                   type="submit"
                   style={{
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '20px',
@@ -482,11 +482,11 @@ export const NgoProfile = () => {
                     fontSize: '14px',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    boxShadow: '0 4px 14px rgba(255, 107, 74, 0.35)',
+                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
                     transition: 'all 0.15s ease'
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.background = '#f04b28')}
-                  onMouseOut={(e) => (e.currentTarget.style.background = '#ff6b4a')}
+                  onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
+                  onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
                 >
                   Save Organization Profile
                 </button>

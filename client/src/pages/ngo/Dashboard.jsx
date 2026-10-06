@@ -519,7 +519,7 @@ export const NgoDashboard = () => {
                 {stats.totalCollections}
               </div>
             </div>
-            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: '#ff6b4a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: '#2563eb', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>
               🚚
             </div>
           </div>
@@ -628,7 +628,7 @@ export const NgoDashboard = () => {
                 type="button"
                 onClick={() => setShowAddStaffModal(true)}
                 style={{
-                  background: '#ff6b4a',
+                  background: '#2563eb',
                   color: '#fff',
                   border: 'none',
                   padding: '9px 18px',
@@ -636,7 +636,7 @@ export const NgoDashboard = () => {
                   fontSize: '13px',
                   fontWeight: 700,
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(255, 107, 74, 0.3)'
+                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
                 }}
               >
                 + Add Staff Member
@@ -1294,7 +1294,7 @@ export const NgoDashboard = () => {
                   <button
                     type="submit"
                     disabled={savingEdit}
-                    style={{ padding: '9px 24px', background: '#ff6b4a', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}
+                    style={{ padding: '9px 24px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}
                   >
                     {savingEdit ? 'Saving...' : 'Save Changes'}
                   </button>
@@ -1433,7 +1433,7 @@ export const NgoDashboard = () => {
                   <button
                     type="submit"
                     disabled={addingStaff}
-                    style={{ padding: '9px 24px', background: '#ff6b4a', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}
+                    style={{ padding: '9px 24px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}
                   >
                     {addingStaff ? 'Saving...' : 'Add Staff Member'}
                   </button>

@@ -137,10 +137,10 @@ export const MyRequestsModal = ({ isOpen, onClose, token }) => {
                   </div>
 
                   {/* Pickup Code Display */}
-                  <div style={{ background: '#ffffff', border: '2px dashed #ff6b4a', borderRadius: '14px', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                  <div style={{ background: '#ffffff', border: '2px dashed #2563eb', borderRadius: '14px', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                     <div>
                       <div style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#888', fontWeight: 700 }}>Your Unique Pickup Code</div>
-                      <div style={{ fontSize: '20px', fontWeight: 900, color: '#d9381e', letterSpacing: '1px', fontFamily: 'monospace' }}>
+                      <div style={{ fontSize: '20px', fontWeight: 900, color: '#1e40af', letterSpacing: '1px', fontFamily: 'monospace' }}>
                         {req.pickup_code}
                       </div>
                     </div>
@@ -195,7 +195,7 @@ export const MyRequestsModal = ({ isOpen, onClose, token }) => {
         )}
 
         <div style={{ marginTop: '24px', textAlign: 'right' }}>
-          <button onClick={onClose} style={{ background: '#ff6b4a', color: '#ffffff', border: 0, padding: '10px 20px', borderRadius: '10px', fontWeight: 700, cursor: 'pointer' }}>
+          <button onClick={onClose} style={{ background: '#2563eb', color: '#ffffff', border: 0, padding: '10px 20px', borderRadius: '10px', fontWeight: 700, cursor: 'pointer' }}>
             Close Window
           </button>
         </div>

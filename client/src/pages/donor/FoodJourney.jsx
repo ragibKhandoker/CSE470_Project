@@ -434,7 +434,7 @@ export const FoodJourney = () => {
                               ? '66%'
                               : 'calc(100% - 80px)',
                           height: '2px',
-                          background: '#ff6b4a',
+                          background: '#2563eb',
                           zIndex: 2,
                           transition: 'width 0.3s ease'
                         }}
@@ -461,7 +461,7 @@ export const FoodJourney = () => {
                                 width: '32px',
                                 height: '32px',
                                 borderRadius: '50%',
-                                background: isDone ? '#ff6b4a' : '#f4eee9',
+                                background: isDone ? '#2563eb' : '#f4eee9',
                                 color: isDone ? '#ffffff' : '#8c7e77',
                                 border: isDone ? 'none' : '1.5px solid #d8cfc9',
                                 display: 'flex',
@@ -469,7 +469,7 @@ export const FoodJourney = () => {
                                 justifyContent: 'center',
                                 fontSize: '13px',
                                 fontWeight: 700,
-                                boxShadow: isDone ? '0 4px 12px rgba(255, 107, 74, 0.35)' : 'none',
+                                boxShadow: isDone ? '0 4px 12px rgba(37, 99, 235, 0.35)' : 'none',
                                 marginBottom: '10px'
                               }}
                             >

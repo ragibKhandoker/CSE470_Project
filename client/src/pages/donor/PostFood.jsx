@@ -20,7 +20,7 @@ L.Icon.Default.mergeOptions({
 
 const customPinIcon = new L.DivIcon({
   className: 'custom-pin-icon',
-  html: `<div style="background:#ff6b4a;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(255,107,74,0.5);border:2px solid #ffffff;font-size:16px;">📍</div>`,
+  html: `<div style="background:#2563eb;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(37, 99, 235,0.5);border:2px solid #ffffff;font-size:16px;">📍</div>`,
   iconSize: [32, 32],
   iconAnchor: [16, 32],
 });
@@ -370,7 +370,7 @@ export const PostFood = () => {
                 <button
                   onClick={() => navigate('/donor/profile')}
                   style={{
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '12px',
@@ -378,7 +378,7 @@ export const PostFood = () => {
                     fontWeight: 700,
                     fontSize: '14px',
                     cursor: 'pointer',
-                    boxShadow: '0 4px 14px rgba(255,107,74,0.35)'
+                    boxShadow: '0 4px 14px rgba(37, 99, 235,0.35)'
                   }}
                 >
                   Go to Profile to Upload NID →
@@ -417,14 +417,14 @@ export const PostFood = () => {
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              background: currentStep >= 1 ? '#ff6b4a' : 'rgba(44, 35, 32, 0.08)',
+              background: currentStep >= 1 ? '#2563eb' : 'rgba(44, 35, 32, 0.08)',
               color: currentStep >= 1 ? '#ffffff' : '#6b5d56',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '12px',
               fontWeight: 800,
-              boxShadow: currentStep === 1 ? '0 4px 12px rgba(255, 107, 74, 0.35)' : 'none',
+              boxShadow: currentStep === 1 ? '0 4px 12px rgba(37, 99, 235, 0.35)' : 'none',
               transition: 'all 0.3s ease'
             }}>
               {currentStep > 1 ? '✓' : '1'}
@@ -445,14 +445,14 @@ export const PostFood = () => {
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              background: currentStep >= 2 ? '#ff6b4a' : 'rgba(44, 35, 32, 0.08)',
+              background: currentStep >= 2 ? '#2563eb' : 'rgba(44, 35, 32, 0.08)',
               color: currentStep >= 2 ? '#ffffff' : '#6b5d56',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '12px',
               fontWeight: 800,
-              boxShadow: currentStep === 2 ? '0 4px 12px rgba(255, 107, 74, 0.35)' : 'none',
+              boxShadow: currentStep === 2 ? '0 4px 12px rgba(37, 99, 235, 0.35)' : 'none',
               transition: 'all 0.3s ease'
             }}>
               {currentStep > 2 ? '✓' : '2'}
@@ -473,14 +473,14 @@ export const PostFood = () => {
               width: '28px',
               height: '28px',
               borderRadius: '50%',
-              background: currentStep >= 3 ? '#ff6b4a' : 'rgba(44, 35, 32, 0.08)',
+              background: currentStep >= 3 ? '#2563eb' : 'rgba(44, 35, 32, 0.08)',
               color: currentStep >= 3 ? '#ffffff' : '#6b5d56',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '12px',
               fontWeight: 800,
-              boxShadow: currentStep === 3 ? '0 4px 12px rgba(255, 107, 74, 0.35)' : 'none',
+              boxShadow: currentStep === 3 ? '0 4px 12px rgba(37, 99, 235, 0.35)' : 'none',
               transition: 'all 0.3s ease'
             }}>
               3
@@ -516,7 +516,7 @@ export const PostFood = () => {
               <button
                 type="button"
                 onClick={() => setSubmittedPost(null)}
-                style={{ background: '#ff6b4a', color: '#ffffff', border: 0, padding: '12px 24px', borderRadius: '100px', fontWeight: 700, fontSize: '14px', cursor: 'pointer', boxShadow: '0 4px 14px rgba(255, 107, 74, 0.35)' }}
+                style={{ background: '#2563eb', color: '#ffffff', border: 0, padding: '12px 24px', borderRadius: '100px', fontWeight: 700, fontSize: '14px', cursor: 'pointer', boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)' }}
               >
                 + Post Another Meal
               </button>
@@ -736,7 +736,7 @@ export const PostFood = () => {
                       type="button"
                       onClick={handleProceedToStep2}
                       style={{
-                        background: '#ff6b4a',
+                        background: '#2563eb',
                         color: '#ffffff',
                         border: 0,
                         padding: '12px 32px',
@@ -744,7 +744,7 @@ export const PostFood = () => {
                         fontSize: '15px',
                         fontWeight: 700,
                         cursor: 'pointer',
-                        boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)',
+                        boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '6px'
@@ -799,7 +799,7 @@ export const PostFood = () => {
                       onClick={handleDetectGps}
                       disabled={gpsLoading}
                       style={{
-                        background: form.latitude ? '#059669' : '#ff684e',
+                        background: form.latitude ? '#059669' : '#2563eb',
                         color: '#ffffff',
                         border: 0,
                         borderRadius: '10px',
@@ -947,7 +947,7 @@ export const PostFood = () => {
                       onClick={() => setCurrentStep(1)}
                       style={{
                         background: 'transparent',
-                        color: '#c8391b',
+                        color: '#1e40af',
                         border: '1px solid #ffa286',
                         padding: '10px 24px',
                         borderRadius: '100px',
@@ -962,7 +962,7 @@ export const PostFood = () => {
                       type="button"
                       onClick={handleProceedToStep3}
                       style={{
-                        background: '#ff6b4a',
+                        background: '#2563eb',
                         color: '#ffffff',
                         border: 0,
                         padding: '12px 32px',
@@ -970,7 +970,7 @@ export const PostFood = () => {
                         fontSize: '15px',
                         fontWeight: 700,
                         cursor: 'pointer',
-                        boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)'
+                        boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)'
                       }}
                     >
                       Continue →
@@ -1085,7 +1085,7 @@ export const PostFood = () => {
                       onClick={() => setCurrentStep(2)}
                       style={{
                         background: 'transparent',
-                        color: '#c8391b',
+                        color: '#1e40af',
                         border: '1px solid #ffa286',
                         padding: '10px 24px',
                         borderRadius: '100px',
@@ -1102,7 +1102,7 @@ export const PostFood = () => {
                       disabled={saving || !isVerified}
                       onClick={handleSubmitFoodPost}
                       style={{
-                        background: isVerified ? '#ff6b4a' : '#cbd5e1',
+                        background: isVerified ? '#2563eb' : '#cbd5e1',
                         color: '#ffffff',
                         border: 0,
                         padding: '12px 36px',
@@ -1110,7 +1110,7 @@ export const PostFood = () => {
                         fontSize: '15px',
                         fontWeight: 700,
                         cursor: isVerified ? 'pointer' : 'not-allowed',
-                        boxShadow: isVerified ? '0 8px 20px rgba(255, 107, 74, 0.35)' : 'none',
+                        boxShadow: isVerified ? '0 8px 20px rgba(37, 99, 235, 0.35)' : 'none',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '8px'

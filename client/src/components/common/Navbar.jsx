@@ -15,7 +15,7 @@ export const Navbar = () => {
         
         {/* Brand Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(240, 75, 40, 0.35)' }}>
+          <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(29, 78, 216, 0.35)' }}>
             🍲
           </div>
           <span style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 800, color: '#2c2320', letterSpacing: '-0.5px' }}>
@@ -48,7 +48,7 @@ export const Navbar = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Link
                 to={user.role === 'super_admin' ? '/super-admin/dashboard' : `/${user.role}/dashboard`}
-                style={{ textDecoration: 'none', background: '#ffebe6', color: '#d9381e', padding: '8px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700 }}
+                style={{ textDecoration: 'none', background: '#dbeafe', color: '#1e40af', padding: '8px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700 }}
               >
                 Dashboard ({user.name?.split(' ')[0] || user.role})
               </Link>
@@ -68,13 +68,13 @@ export const Navbar = () => {
                 to="/signup"
                 style={{
                   textDecoration: 'none',
-                  background: '#ff6b4a',
+                  background: '#2563eb',
                   color: '#ffffff',
                   padding: '10px 20px',
                   borderRadius: '100px',
                   fontSize: '13px',
                   fontWeight: 700,
-                  boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)'
+                  boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)'
                 }}
               >
                 Get started →
@@ -110,7 +110,7 @@ export const Navbar = () => {
           className="nav-mobile-drawer"
           style={{
             borderTop: '1px solid rgba(44, 35, 32, 0.08)',
-            background: '#fff9f5',
+            background: '#f8fafc',
             padding: '16px 24px 24px',
             gap: '12px'
           }}
@@ -151,7 +151,7 @@ export const Navbar = () => {
               <Link
                 to={user.role === 'super_admin' ? '/super-admin/dashboard' : `/${user.role}/dashboard`}
                 onClick={() => setMobileMenuOpen(false)}
-                style={{ textDecoration: 'none', background: '#ffebe6', color: '#d9381e', padding: '10px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, textAlign: 'center' }}
+                style={{ textDecoration: 'none', background: '#dbeafe', color: '#1e40af', padding: '10px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, textAlign: 'center' }}
               >
                 Dashboard ({user.name?.split(' ')[0] || user.role})
               </Link>
@@ -174,7 +174,7 @@ export const Navbar = () => {
               <Link
                 to="/signup"
                 onClick={() => setMobileMenuOpen(false)}
-                style={{ textDecoration: 'none', textAlign: 'center', background: '#ff6b4a', color: '#ffffff', borderRadius: '100px', padding: '11px', fontSize: '14px', fontWeight: 700, boxShadow: '0 4px 12px rgba(255, 107, 74, 0.3)' }}
+                style={{ textDecoration: 'none', textAlign: 'center', background: '#2563eb', color: '#ffffff', borderRadius: '100px', padding: '11px', fontSize: '14px', fontWeight: 700, boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)' }}
               >
                 Get started →
               </Link>

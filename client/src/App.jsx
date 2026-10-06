@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { DisplayModeProvider } from './context/DisplayModeContext';
 import Navbar from './components/common/Navbar';
 import ScrollToTop from './components/common/ScrollToTop';
 import AppRoutes from './routes/AppRoutes';
@@ -36,7 +37,9 @@ export const App = () => {
     <Router>
       <ScrollToTop />
       <AuthProvider>
-        <AppLayout />
+        <DisplayModeProvider>
+          <AppLayout />
+        </DisplayModeProvider>
       </AuthProvider>
     </Router>
   );

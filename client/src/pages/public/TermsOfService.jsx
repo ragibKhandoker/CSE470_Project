@@ -8,11 +8,11 @@ export const TermsOfService = () => {
     window.scrollTo(0, 0);
   }, []);
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff9f5', color: '#2c2320' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#f8fafc', color: '#2c2320' }}>
       <Navbar />
 
       {/* Header */}
-      <section style={{ padding: '64px 24px 40px', textAlign: 'center', background: 'linear-gradient(180deg, #fdf7f2 0%, #fff9f5 100%)', borderBottom: '1px solid rgba(44,35,32,0.06)' }}>
+      <section style={{ padding: '64px 24px 40px', textAlign: 'center', background: 'linear-gradient(180deg, #fdf7f2 0%, #f8fafc 100%)', borderBottom: '1px solid rgba(44,35,32,0.06)' }}>
         <div style={{ maxWidth: '820px', margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#fef3c7', color: '#92400e', padding: '6px 14px', borderRadius: '100px', fontSize: '12.5px', fontWeight: 700, marginBottom: '16px' }}>
             <span>⚖️</span> Community Agreement &amp; Terms
@@ -30,8 +30,8 @@ export const TermsOfService = () => {
       <main style={{ maxWidth: '880px', margin: '0 auto', padding: '56px 24px 80px', width: '100%', flex: 1, lineHeight: 1.8, fontSize: '15px', color: '#4a3f3a' }}>
         
         {/* Core Rules Callout */}
-        <div style={{ background: '#ffffff', border: '1.5px solid #ff6b4a', borderRadius: '20px', padding: '28px 32px', marginBottom: '48px', boxShadow: '0 6px 20px rgba(255, 107, 74, 0.06)' }}>
-          <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: '18px', fontWeight: 800, color: '#ff6b4a', margin: '0 0 12px' }}>
+        <div style={{ background: '#ffffff', border: '1.5px solid #2563eb', borderRadius: '20px', padding: '28px 32px', marginBottom: '48px', boxShadow: '0 6px 20px rgba(37, 99, 235, 0.06)' }}>
+          <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: '18px', fontWeight: 800, color: '#2563eb', margin: '0 0 12px' }}>
             Fundamental Principles of Participation
           </h3>
           <ul style={{ margin: 0, paddingLeft: '20px', display: 'grid', gap: '10px', fontSize: '14px', color: '#554944' }}>
@@ -118,7 +118,7 @@ export const TermsOfService = () => {
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
             <a
               href="mailto:legal@sharemeal.org"
-              style={{ color: '#ff6b4a', textDecoration: 'none', fontWeight: 700, fontSize: '14px' }}
+              style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 700, fontSize: '14px' }}
             >
               legal@sharemeal.org ➔
             </a>

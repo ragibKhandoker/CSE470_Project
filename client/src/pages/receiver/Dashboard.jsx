@@ -534,18 +534,18 @@ export const ReceiverDashboard = () => {
                   }}
                 >
                   <div>
-                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#ff6b4a', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#2563eb', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                       Your Pickup Code
                     </span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '2px' }}>
-                      <span style={{ fontSize: '24px', fontWeight: 800, color: '#ff6b4a', fontFamily: 'monospace', letterSpacing: '1px' }}>
+                      <span style={{ fontSize: '24px', fontWeight: 800, color: '#2563eb', fontFamily: 'monospace', letterSpacing: '1px' }}>
                         {activeRequest.pickup_code}
                       </span>
                       <button
                         onClick={() => handleCopyCode(activeRequest.pickup_code)}
                         style={{
-                          background: 'rgba(255, 107, 74, 0.1)',
-                          color: '#ff6b4a',
+                          background: 'rgba(37, 99, 235, 0.1)',
+                          color: '#2563eb',
                           border: 'none',
                           borderRadius: '8px',
                           padding: '4px 10px',
@@ -563,8 +563,8 @@ export const ReceiverDashboard = () => {
                     onClick={() => setDirectionsModalOpen(true)}
                     style={{
                       background: '#ffffff',
-                      color: '#ff6b4a',
-                      border: '1.5px solid #ff6b4a',
+                      color: '#2563eb',
+                      border: '1.5px solid #2563eb',
                       borderRadius: '30px',
                       padding: '10px 22px',
                       fontSize: '13px',
@@ -606,14 +606,14 @@ export const ReceiverDashboard = () => {
                 to="/receiver/find-food"
                 style={{
                   marginTop: '8px',
-                  background: '#ff6b4a',
+                  background: '#2563eb',
                   color: '#ffffff',
                   textDecoration: 'none',
                   padding: '10px 24px',
                   borderRadius: '20px',
                   fontSize: '13px',
                   fontWeight: 700,
-                  boxShadow: '0 4px 12px rgba(255, 107, 74, 0.3)'
+                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
                 }}
               >
                 Find Food
@@ -630,7 +630,7 @@ export const ReceiverDashboard = () => {
             </h3>
             <Link
               to="/receiver/find-food"
-              style={{ fontSize: '13px', fontWeight: 700, color: '#ff6b4a', textDecoration: 'none' }}
+              style={{ fontSize: '13px', fontWeight: 700, color: '#2563eb', textDecoration: 'none' }}
             >
               See all
             </Link>
@@ -741,7 +741,7 @@ export const ReceiverDashboard = () => {
                             ? '#fff7ed'
                             : hasClaimed
                             ? (isFulfilled ? '#ecfdf5' : '#fffbeb')
-                            : '#ff6b4a',
+                            : '#2563eb',
                           color: !isVerified
                             ? '#c2410c'
                             : hasClaimed
@@ -757,14 +757,14 @@ export const ReceiverDashboard = () => {
                           fontSize: '13px',
                           fontWeight: 700,
                           cursor: hasClaimed ? 'not-allowed' : 'pointer',
-                          boxShadow: hasClaimed || !isVerified ? 'none' : '0 4px 12px rgba(255, 107, 74, 0.3)',
+                          boxShadow: hasClaimed || !isVerified ? 'none' : '0 4px 12px rgba(37, 99, 235, 0.3)',
                           transition: 'all 0.15s ease'
                         }}
                         onMouseOver={(e) => {
-                          if (!hasClaimed && isVerified) e.currentTarget.style.background = '#f04b28';
+                          if (!hasClaimed && isVerified) e.currentTarget.style.background = '#1d4ed8';
                         }}
                         onMouseOut={(e) => {
-                          if (!hasClaimed && isVerified) e.currentTarget.style.background = '#ff6b4a';
+                          if (!hasClaimed && isVerified) e.currentTarget.style.background = '#2563eb';
                         }}
                       >
                         {!isVerified
@@ -828,7 +828,7 @@ export const ReceiverDashboard = () => {
               <div style={{ fontSize: '13px', color: '#6b5d56' }}>
                 📍 {activeRequest.thana || 'Dhaka'}, {activeRequest.district || 'Bangladesh'}
               </div>
-              <div style={{ fontSize: '12px', color: '#ff6b4a', fontWeight: 600, marginTop: '8px' }}>
+              <div style={{ fontSize: '12px', color: '#2563eb', fontWeight: 600, marginTop: '8px' }}>
                 Pickup Code: {activeRequest.pickup_code}
               </div>
             </div>
@@ -845,7 +845,7 @@ export const ReceiverDashboard = () => {
                 display: 'block',
                 width: '100%',
                 textAlign: 'center',
-                background: '#ff6b4a',
+                background: '#2563eb',
                 color: '#ffffff',
                 textDecoration: 'none',
                 padding: '12px',
@@ -1005,7 +1005,7 @@ export const ReceiverDashboard = () => {
                   disabled={submitting}
                   style={{
                     width: '100%',
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '12px',

@@ -141,7 +141,7 @@ export const PickupPoints = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              background: '#ff6b4a',
+              background: '#2563eb',
               color: '#ffffff',
               border: 'none',
               borderRadius: '24px',
@@ -149,11 +149,11 @@ export const PickupPoints = () => {
               fontSize: '14px',
               fontWeight: 700,
               cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(255, 107, 74, 0.35)',
+              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
               transition: 'all 0.15s ease'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = '#f04b28')}
-            onMouseOut={(e) => (e.currentTarget.style.background = '#ff6b4a')}
+            onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
+            onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
           >
             <span style={{ fontSize: '16px' }}>+</span>
             <span>Add New Pickup Point</span>
@@ -187,7 +187,7 @@ export const PickupPoints = () => {
             <button
               onClick={handleOpenAddModal}
               style={{
-                background: '#ff6b4a',
+                background: '#2563eb',
                 color: '#ffffff',
                 border: 'none',
                 padding: '10px 24px',
@@ -528,7 +528,7 @@ export const PickupPoints = () => {
                     padding: '11px',
                     borderRadius: '14px',
                     border: 'none',
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     fontSize: '14px',
                     fontWeight: 700,

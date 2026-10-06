@@ -28,7 +28,7 @@
 .category-card:hover {
   transform: translateY(-4px) scale(1.01);
   box-shadow: 0 16px 36px rgba(44, 35, 32, 0.08) !important;
-  border-color: #ff6b4a !important;
+  border-color: #2563eb !important;
 }
 
 .category-card .cat-icon {
@@ -48,7 +48,7 @@
 
 .category-card:hover .cat-arrow {
   transform: translateX(4px);
-  color: #d9381e !important;
+  color: #1e40af !important;
 }
 
 /* Hero Food Image Frame - Luxurious subtle photographic zoom */
@@ -65,7 +65,7 @@
 
 .hero-image-frame:hover {
   transform: translateY(-3px);
-  box-shadow: 0 28px 60px -15px rgba(255, 107, 74, 0.28), 0 44px 90px -30px rgba(44, 35, 32, 0.18) !important;
+  box-shadow: 0 28px 60px -15px rgba(37, 99, 235, 0.28), 0 44px 90px -30px rgba(44, 35, 32, 0.18) !important;
 }
 
 .hero-image-frame:hover img {
@@ -94,8 +94,8 @@
 
 .btn-primary-hover:hover {
   transform: translateY(-2px) scale(1.015);
-  box-shadow: 0 12px 28px rgba(255, 107, 74, 0.4) !important;
-  background: #f04b28 !important;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4) !important;
+  background: #1d4ed8 !important;
 }
 
 .btn-primary-hover:active {
@@ -113,8 +113,8 @@
 .btn-secondary-hover:hover {
   transform: translateY(-2px);
   background: #ffffff !important;
-  border-color: #f04b28 !important;
-  box-shadow: 0 8px 20px rgba(240, 75, 40, 0.12) !important;
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 8px 20px rgba(29, 78, 216, 0.12) !important;
 }
 
 /* Food Post Cards Hover */
@@ -145,7 +145,7 @@
 }
 
 .food-card:hover .card-btn {
-  background: #d9381e !important;
+  background: #1e40af !important;
   box-shadow: 0 6px 18px rgba(217, 56, 30, 0.3) !important;
 }
 
@@ -177,7 +177,7 @@
 }
 
 .step-card:hover .step-number {
-  color: #ff8461 !important;
+  color: #60a5fa !important;
 }
 
 /* Story Cards Hover */
@@ -210,7 +210,7 @@
 
 .story-card:hover .story-link {
   transform: translateX(4px);
-  color: #d9381e !important;
+  color: #1e40af !important;
 }
 
 /* FAQ Item Hover */
@@ -220,7 +220,7 @@
 
 .faq-item:hover {
   border-color: #ffbcab !important;
-  box-shadow: 0 6px 18px rgba(240, 75, 40, 0.05) !important;
+  box-shadow: 0 6px 18px rgba(29, 78, 216, 0.05) !important;
   background: #fffdfb !important;
 }
 
@@ -233,8 +233,8 @@
 
 .faq-item:hover .faq-badge {
   transform: scale(1.06);
-  background: #ffe4db !important;
-  color: #d9381e !important;
+  background: #dbeafe !important;
+  color: #1e40af !important;
 }
 
 /* Dual CTA Split Cards Hover */
@@ -271,13 +271,13 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #f04b28;
+  background: #1d4ed8;
   border-radius: 2px;
   transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .nav-link-item:hover {
-  color: #f04b28 !important;
+  color: #1d4ed8 !important;
 }
 
 .nav-link-item:hover::after {
@@ -297,7 +297,7 @@
   transform: translateY(-2px) scale(1.015);
   background: #fff3ee !important;
   border-color: #ffa286 !important;
-  box-shadow: 0 4px 14px rgba(255, 107, 74, 0.12) !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12) !important;
 }
 
 /* Pulse animation for Live Now dot */
@@ -345,7 +345,7 @@
 }
 
 .footer-link:hover {
-  color: #ff6b4a !important;
+  color: #2563eb !important;
   transform: translateX(3px);
 }
 

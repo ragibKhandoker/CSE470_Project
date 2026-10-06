@@ -247,7 +247,7 @@ export const Settings = () => {
                 type="submit"
                 disabled={savingGeneral}
                 style={{
-                  background: '#ff6b4a',
+                  background: '#2563eb',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '20px',
@@ -255,11 +255,11 @@ export const Settings = () => {
                   fontSize: '13px',
                   fontWeight: 700,
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(255, 107, 74, 0.3)',
+                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
                   transition: 'all 0.15s ease'
                 }}
-                onMouseOver={(e) => (e.currentTarget.style.background = '#f04b28')}
-                onMouseOut={(e) => (e.currentTarget.style.background = '#ff6b4a')}
+                onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
+                onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
               >
                 {savingGeneral ? 'Saving...' : 'Save Changes'}
               </button>
@@ -299,7 +299,7 @@ export const Settings = () => {
                 width: '46px',
                 height: '26px',
                 borderRadius: '13px',
-                background: requireNid ? '#ff6b4a' : '#d1d5db',
+                background: requireNid ? '#2563eb' : '#d1d5db',
                 position: 'relative',
                 border: 'none',
                 cursor: 'pointer',
@@ -369,7 +369,7 @@ export const Settings = () => {
                 type="submit"
                 disabled={savingRate}
                 style={{
-                  background: '#ff6b4a',
+                  background: '#2563eb',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '20px',
@@ -377,11 +377,11 @@ export const Settings = () => {
                   fontSize: '13px',
                   fontWeight: 700,
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(255, 107, 74, 0.3)',
+                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
                   transition: 'all 0.15s ease'
                 }}
-                onMouseOver={(e) => (e.currentTarget.style.background = '#f04b28')}
-                onMouseOut={(e) => (e.currentTarget.style.background = '#ff6b4a')}
+                onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
+                onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
               >
                 {savingRate ? 'Saving...' : 'Save'}
               </button>
@@ -407,7 +407,7 @@ export const Settings = () => {
               type="button"
               onClick={() => setInviteModalOpen(true)}
               style={{
-                background: '#ff6b4a',
+                background: '#2563eb',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '20px',
@@ -418,7 +418,7 @@ export const Settings = () => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                boxShadow: '0 3px 10px rgba(255, 107, 74, 0.35)'
+                boxShadow: '0 3px 10px rgba(37, 99, 235, 0.35)'
               }}
             >
               <span>+</span> Invite Admin
@@ -443,8 +443,8 @@ export const Settings = () => {
                       width: '36px',
                       height: '36px',
                       borderRadius: '50%',
-                      background: '#ffe4db',
-                      color: '#c8391b',
+                      background: '#dbeafe',
+                      color: '#1e40af',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -627,7 +627,7 @@ export const Settings = () => {
                   type="submit"
                   disabled={inviting}
                   style={{
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     border: 'none',
                     borderRadius: '12px',
                     padding: '10px 22px',
@@ -635,7 +635,7 @@ export const Settings = () => {
                     fontWeight: 700,
                     color: '#ffffff',
                     cursor: inviting ? 'not-allowed' : 'pointer',
-                    boxShadow: '0 4px 12px rgba(255, 107, 74, 0.35)'
+                    boxShadow: '0 4px 12px rgba(37, 99, 235, 0.35)'
                   }}
                 >
                   {inviting ? 'Sending...' : 'Send Invitation →'}

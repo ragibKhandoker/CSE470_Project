@@ -107,7 +107,7 @@ export const NgoReports = () => {
             <span style={{ fontSize: '11px', fontWeight: 700, color: '#786d66', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Total Meals Distributed
             </span>
-            <div style={{ fontSize: '32px', fontWeight: 800, color: '#ff6b4a', margin: '8px 0 4px' }}>
+            <div style={{ fontSize: '32px', fontWeight: 800, color: '#2563eb', margin: '8px 0 4px' }}>
               {totalMeals.toLocaleString()}
             </div>
             <span style={{ fontSize: '12px', color: '#059669', fontWeight: 600 }}>
@@ -192,7 +192,7 @@ export const NgoReports = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {[
-              { region: 'Dhanmondi & Lalmatia Hubs', meals: 680, pct: '45%', color: '#ff6b4a' },
+              { region: 'Dhanmondi & Lalmatia Hubs', meals: 680, pct: '45%', color: '#2563eb' },
               { region: 'Banani & Gulshan Community Centers', meals: 490, pct: '32%', color: '#059669' },
               { region: 'Uttara Sectors 4 & 7 Relief Points', meals: 250, pct: '23%', color: '#2563eb' }
             ].map((r) => (

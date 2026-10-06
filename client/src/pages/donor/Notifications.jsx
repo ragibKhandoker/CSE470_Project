@@ -212,7 +212,7 @@ export const DonorNotifications = () => {
               style={{
                 background: 'transparent',
                 border: 0,
-                color: '#ff6b4a',
+                color: '#2563eb',
                 fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -290,7 +290,7 @@ export const DonorNotifications = () => {
                         style={{
                           background: 'transparent',
                           border: 0,
-                          color: '#ff6b4a',
+                          color: '#2563eb',
                           fontSize: '13px',
                           fontWeight: 600,
                           cursor: 'pointer',
@@ -367,7 +367,7 @@ export const DonorNotifications = () => {
                           style={{
                             background: 'transparent',
                             border: 0,
-                            color: '#ff6b4a',
+                            color: '#2563eb',
                             fontSize: '13px',
                             fontWeight: 600,
                             cursor: 'pointer',

@@ -8,14 +8,14 @@ export const HomeStoriesSection = ({ stories = [], loading = false }) => {
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px', flexWrap: 'wrap', gap: '16px' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f04b28', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '8px' }}>
-              <span style={{ width: '24px', height: '2px', background: '#f04b28' }}></span> FROM THE FIELD
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1d4ed8', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '8px' }}>
+              <span style={{ width: '24px', height: '2px', background: '#1d4ed8' }}></span> FROM THE FIELD
             </div>
             <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(30px, 4vw, 40px)', fontWeight: 800, color: '#2c2320', margin: 0 }}>
               Latest stories
             </h2>
           </div>
-          <Link to="/stories" style={{ textDecoration: 'none', color: '#ff6b4a', fontSize: '14px', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+          <Link to="/stories" style={{ textDecoration: 'none', color: '#2563eb', fontSize: '14px', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
             View all stories <span>→</span>
           </Link>
         </div>
@@ -74,7 +74,7 @@ export const HomeStoriesSection = ({ stories = [], loading = false }) => {
                   </div>
                 </div>
                 <div style={{ padding: '0 22px 22px' }}>
-                  <span className="story-link" style={{ color: '#ff6b4a', fontSize: '13px', fontWeight: 700 }}>
+                  <span className="story-link" style={{ color: '#2563eb', fontSize: '13px', fontWeight: 700 }}>
                     Read story →
                   </span>
                 </div>

@@ -171,7 +171,7 @@ export const NGOVerificationQueue = () => {
             borderRadius: '16px',
             border: '1px solid rgba(44, 35, 32, 0.05)',
             overflow: 'hidden',
-            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(255,107,74,0.18)'
+            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(37, 99, 235,0.18)'
           }}
         >
           <div style={{ overflowX: 'auto', width: '100%' }}>
@@ -293,7 +293,7 @@ export const NGOVerificationQueue = () => {
                             style={{
                               background: 'transparent',
                               border: 0,
-                              color: '#f04b28',
+                              color: '#1d4ed8',
                               fontSize: '13px',
                               fontWeight: 600,
                               cursor: 'pointer',
@@ -386,7 +386,7 @@ export const NGOVerificationQueue = () => {
               
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', padding: '8px 12px', borderRadius: '8px', border: '1px solid #f0e8e4' }}>
                 <span style={{ color: '#9a3412', fontWeight: 700 }}>🔑 Account Password:</span>
-                <span style={{ fontFamily: 'monospace', background: '#ffe4db', color: '#c8391b', padding: '3px 10px', borderRadius: '6px', fontWeight: 700, fontSize: '14px' }}>
+                <span style={{ fontFamily: 'monospace', background: '#dbeafe', color: '#1e40af', padding: '3px 10px', borderRadius: '6px', fontWeight: 700, fontSize: '14px' }}>
                   {selectedUser.password || 'Not available'}
                 </span>
               </div>

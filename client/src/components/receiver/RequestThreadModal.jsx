@@ -115,7 +115,7 @@ export const RequestThreadModal = ({ selectedRequest, onClose }) => {
                       <button
                         onClick={handleGoToReview}
                         style={{
-                          background: 'linear-gradient(135deg, #ff6b4a 0%, #ea580c 100%)',
+                          background: 'linear-gradient(135deg, #2563eb 0%, #ea580c 100%)',
                           color: '#ffffff',
                           border: 'none',
                           borderRadius: '10px',
@@ -152,7 +152,7 @@ export const RequestThreadModal = ({ selectedRequest, onClose }) => {
             <button
               onClick={handleGoToReview}
               style={{
-                background: '#ff6b4a',
+                background: '#2563eb',
                 color: '#ffffff',
                 border: 0,
                 borderRadius: '10px',

@@ -101,7 +101,7 @@ export const AdminLogin = () => {
       <div style={{ width: '100%', maxWidth: '440px', background: '#241c19', borderRadius: '24px', padding: '36px', border: '1px solid #3a2e29', boxShadow: '0 20px 50px rgba(0,0,0,0.5)', color: '#fff' }}>
         
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
-          <div style={{ width: 54, height: 54, borderRadius: 16, background: 'linear-gradient(135deg, #ff6b4a 0%, #d9381e 100%)', margin: '0 auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, boxShadow: '0 8px 20px rgba(255,107,74,0.3)' }}>
+          <div style={{ width: 54, height: 54, borderRadius: 16, background: 'linear-gradient(135deg, #2563eb 0%, #1e40af 100%)', margin: '0 auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, boxShadow: '0 8px 20px rgba(37, 99, 235,0.3)' }}>
             👑
           </div>
           <h1 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 6px', color: '#ffffff' }}>Super Admin Portal</h1>
@@ -138,7 +138,7 @@ export const AdminLogin = () => {
               <button
                 type="button"
                 onClick={() => setShowForgotModal(true)}
-                style={{ background: 'transparent', border: 0, color: '#ff6b4a', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                style={{ background: 'transparent', border: 0, color: '#2563eb', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
               >
                 Forgot Password?
               </button>
@@ -166,7 +166,7 @@ export const AdminLogin = () => {
           <button
             type="submit"
             disabled={loading}
-            style={{ width: '100%', background: '#ff6b4a', color: '#fff', border: 0, borderRadius: 12, padding: '14px', fontSize: 14, fontWeight: 700, cursor: 'pointer', marginTop: 8, boxShadow: '0 6px 16px rgba(255,107,74,0.3)' }}
+            style={{ width: '100%', background: '#2563eb', color: '#fff', border: 0, borderRadius: 12, padding: '14px', fontSize: 14, fontWeight: 700, cursor: 'pointer', marginTop: 8, boxShadow: '0 6px 16px rgba(37, 99, 235,0.3)' }}
           >
             {loading ? 'Authenticating...' : 'Access Admin Panel →'}
           </button>
@@ -203,7 +203,7 @@ export const AdminLogin = () => {
                 />
                 <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
                   <button type="button" onClick={() => setShowForgotModal(false)} style={{ flex: 1, background: '#332924', color: '#ccc', border: 0, borderRadius: 10, padding: 10, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
-                  <button type="submit" disabled={otpLoading} style={{ flex: 2, background: '#ff6b4a', color: '#fff', border: 0, borderRadius: 10, padding: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
+                  <button type="submit" disabled={otpLoading} style={{ flex: 2, background: '#2563eb', color: '#fff', border: 0, borderRadius: 10, padding: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
                     {otpLoading ? 'Sending...' : 'Send OTP Code'}
                   </button>
                 </div>

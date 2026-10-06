@@ -74,7 +74,7 @@ export const FoodThreadModal = ({ selectedThread, onClose, allThreads = [], onSe
         )}
 
         {/* Key Stakeholders Strip */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px', marginBottom: '20px', background: '#fff9f5', padding: '12px', borderRadius: '14px', border: '1px solid #f2e7e1' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px', marginBottom: '20px', background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1px solid #f2e7e1' }}>
           <div>
             <div style={{ fontSize: '10px', fontWeight: 700, color: '#8d7870', textTransform: 'uppercase' }}>🍲 Donor</div>
             <div style={{ fontSize: '12px', fontWeight: 700, color: '#2c2320' }}>{selectedThread.donor?.name || 'Donor'}</div>
@@ -217,7 +217,7 @@ export const FoodThreadModal = ({ selectedThread, onClose, allThreads = [], onSe
           <button
             type="button"
             onClick={onClose}
-            style={{ background: '#ff6b4a', color: '#ffffff', border: 0, borderRadius: '10px', padding: '10px 24px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+            style={{ background: '#2563eb', color: '#ffffff', border: 0, borderRadius: '10px', padding: '10px 24px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
           >
             Close Thread
           </button>

@@ -200,7 +200,7 @@ export const ReceiverRequests = () => {
               onClick={() => handleVerifyQuickCode()}
               disabled={verifying}
               style={{
-                background: '#ff6b4a',
+                background: '#2563eb',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '16px',
@@ -208,11 +208,11 @@ export const ReceiverRequests = () => {
                 fontSize: '13px',
                 fontWeight: 700,
                 cursor: verifying ? 'not-allowed' : 'pointer',
-                boxShadow: '0 4px 12px rgba(255, 107, 74, 0.3)',
+                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
                 transition: 'all 0.15s ease'
               }}
-              onMouseOver={(e) => (e.currentTarget.style.background = '#f04b28')}
-              onMouseOut={(e) => (e.currentTarget.style.background = '#ff6b4a')}
+              onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
+              onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
             >
               {verifying ? 'Verifying...' : 'Verify Code'}
             </button>
@@ -269,7 +269,7 @@ export const ReceiverRequests = () => {
                     <strong>Food:</strong> {verificationFeedback.request.food_name || verificationFeedback.request.food_title || 'Food Donation'} · <strong>Portions:</strong> {verificationFeedback.request.requested_quantity || 1}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <strong>Code:</strong> <code style={{ fontFamily: 'monospace', fontWeight: 800, color: '#ff6b4a', background: '#fff6f3', padding: '1px 6px', borderRadius: '6px' }}>{verificationFeedback.request.pickup_code}</code>
+                    <strong>Code:</strong> <code style={{ fontFamily: 'monospace', fontWeight: 800, color: '#2563eb', background: '#fff6f3', padding: '1px 6px', borderRadius: '6px' }}>{verificationFeedback.request.pickup_code}</code>
                     <span>·</span>
                     <strong>Status:</strong> <span style={{ textTransform: 'capitalize', fontWeight: 700, color: verificationFeedback.request.status === 'fulfilled' ? '#059669' : '#d97706' }}>{verificationFeedback.request.status}</span>
                   </div>
@@ -393,15 +393,15 @@ export const ReceiverRequests = () => {
                         padding: '8px 20px',
                         borderRadius: '12px',
                         border: 'none',
-                        background: '#ff6b4a',
+                        background: '#2563eb',
                         color: '#ffffff',
                         fontSize: '13px',
                         fontWeight: 700,
                         cursor: 'pointer',
                         transition: 'all 0.15s ease'
                       }}
-                      onMouseOver={(e) => (e.currentTarget.style.background = '#f04b28')}
-                      onMouseOut={(e) => (e.currentTarget.style.background = '#ff6b4a')}
+                      onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
+                      onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
                     >
                       Accept
                     </button>
@@ -512,7 +512,7 @@ export const ReceiverRequests = () => {
                         borderRadius: '12px',
                         fontSize: '15px',
                         fontWeight: 800,
-                        color: '#ff6b4a',
+                        color: '#2563eb',
                         fontFamily: 'monospace',
                         letterSpacing: '1px'
                       }}

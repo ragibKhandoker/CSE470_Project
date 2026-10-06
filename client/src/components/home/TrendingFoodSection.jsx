@@ -10,14 +10,14 @@ export const TrendingFoodSection = ({ posts = [], loading = false }) => {
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px', flexWrap: 'wrap', gap: '16px' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f04b28', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '8px' }}>
-              <span style={{ width: '24px', height: '2px', background: '#f04b28' }}></span> LIVE NEAR YOU
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1d4ed8', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '8px' }}>
+              <span style={{ width: '24px', height: '2px', background: '#1d4ed8' }}></span> LIVE NEAR YOU
             </div>
             <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(30px, 4vw, 40px)', fontWeight: 800, color: '#2c2320', margin: 0 }}>
               Trending food posts
             </h2>
           </div>
-          <Link to="/find-food" style={{ textDecoration: 'none', color: '#f04b28', fontWeight: 700, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Link to="/find-food" style={{ textDecoration: 'none', color: '#1d4ed8', fontWeight: 700, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             Browse all posts <span>→</span>
           </Link>
         </div>
@@ -68,7 +68,7 @@ export const TrendingFoodSection = ({ posts = [], loading = false }) => {
                   {/* Body Details */}
                   <div style={{ padding: '18px 18px 12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                      <span style={{ background: post.statusBg || '#fff0ec', color: post.statusColor || '#d9381e', padding: '3px 10px', borderRadius: '100px', fontSize: '11px', fontWeight: 800 }}>
+                      <span style={{ background: post.statusBg || '#fff0ec', color: post.statusColor || '#1e40af', padding: '3px 10px', borderRadius: '100px', fontSize: '11px', fontWeight: 800 }}>
                         {post.status}
                       </span>
                       <span style={{ fontSize: '12px', color: '#888', fontWeight: 600 }}>
@@ -91,7 +91,7 @@ export const TrendingFoodSection = ({ posts = [], loading = false }) => {
                     className="card-btn"
                     style={{
                       width: '100%',
-                      background: '#ff6b4a',
+                      background: '#2563eb',
                       color: '#ffffff',
                       border: 0,
                       padding: '10px 16px',
@@ -99,7 +99,7 @@ export const TrendingFoodSection = ({ posts = [], loading = false }) => {
                       fontSize: '13px',
                       fontWeight: 700,
                       cursor: 'pointer',
-                      boxShadow: '0 4px 12px rgba(255, 107, 74, 0.25)'
+                      boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
                     }}
                   >
                     Request food →

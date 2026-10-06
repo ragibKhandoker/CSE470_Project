@@ -39,11 +39,11 @@ export const SafetyProtocols = () => {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#fff9f5', color: '#2c2320' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#f8fafc', color: '#2c2320' }}>
       <Navbar />
 
       {/* Hero Section */}
-      <section style={{ padding: '64px 24px 48px', textAlign: 'center', background: 'linear-gradient(180deg, #fdf7f2 0%, #fff9f5 100%)', borderBottom: '1px solid rgba(44,35,32,0.06)' }}>
+      <section style={{ padding: '64px 24px 48px', textAlign: 'center', background: 'linear-gradient(180deg, #fdf7f2 0%, #f8fafc 100%)', borderBottom: '1px solid rgba(44,35,32,0.06)' }}>
         <div style={{ maxWidth: '820px', margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#e6f7ef', color: '#0d8258', padding: '6px 14px', borderRadius: '100px', fontSize: '12.5px', fontWeight: 700, marginBottom: '16px' }}>
             <span>🛡️</span> Zero-Harm Food Safety Standards
@@ -127,7 +127,7 @@ export const SafetyProtocols = () => {
                 <strong style={{ fontSize: '13px', color: '#155724' }}>Vegetarian vs Non-Vegetarian:</strong>
                 <p style={{ fontSize: '12.5px', color: '#555', margin: '4px 0 0' }}>Clearly demarcated badges allow individuals with dietary restrictions to select appropriate meals.</p>
               </div>
-              <div style={{ padding: '12px 16px', background: '#fdf7f2', borderRadius: '12px', borderLeft: '4px solid #ff6b4a' }}>
+              <div style={{ padding: '12px 16px', background: '#fdf7f2', borderRadius: '12px', borderLeft: '4px solid #2563eb' }}>
                 <strong style={{ fontSize: '13px', color: '#d9381e' }}>Allergen Disclosures:</strong>
                 <p style={{ fontSize: '12.5px', color: '#555', margin: '4px 0 0' }}>Donors are prompted to note common allergens including peanuts, dairy, shellfish, and gluten.</p>
               </div>
@@ -154,7 +154,7 @@ export const SafetyProtocols = () => {
             </Link>
             <Link
               to="/help"
-              style={{ padding: '10px 22px', borderRadius: '100px', background: '#ff6b4a', color: '#ffffff', textDecoration: 'none', fontSize: '13px', fontWeight: 700 }}
+              style={{ padding: '10px 22px', borderRadius: '100px', background: '#2563eb', color: '#ffffff', textDecoration: 'none', fontSize: '13px', fontWeight: 700 }}
             >
               Visit Help Centre
             </Link>

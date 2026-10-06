@@ -28,8 +28,8 @@ export const Stories = () => {
         if (data && data.stories && data.stories.length > 0) {
           const mapped = data.stories.map(s => ({
             ...s,
-            tagBg: s.tag_bg || s.tagBg || '#ffe4db',
-            tagColor: s.tag_color || s.tagColor || '#d9381e',
+            tagBg: s.tag_bg || s.tagBg || '#dbeafe',
+            tagColor: s.tag_color || s.tagColor || '#1e40af',
             tagIcon: s.tag_icon || s.tagIcon || '🤝',
             readTime: s.read_time || s.readTime || '4 min read',
             authorRole: s.author_role || s.authorRole || 'Community Contributor',
@@ -61,7 +61,7 @@ export const Stories = () => {
     : storiesList.slice(0, 2);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fff9f5', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden' }}>
       
       {/* ========================================================
           1. NAVIGATION BAR (Matching Home Pixel-Perfect Navbar)
@@ -71,7 +71,7 @@ export const Stories = () => {
           
           {/* Brand Logo */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(240, 75, 40, 0.35)' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(29, 78, 216, 0.35)' }}>
               🍲
             </div>
             <span style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 800, color: '#2c2320', letterSpacing: '-0.5px' }}>
@@ -94,7 +94,7 @@ export const Stories = () => {
             >
               Donate
             </Link>
-            <Link to="/stories" className="nav-link-item" style={{ textDecoration: 'none', color: '#f04b28', fontSize: '14px', fontWeight: 700 }}>
+            <Link to="/stories" className="nav-link-item" style={{ textDecoration: 'none', color: '#1d4ed8', fontSize: '14px', fontWeight: 700 }}>
               Stories
             </Link>
           </div>
@@ -105,7 +105,7 @@ export const Stories = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <Link
                   to={user.role === 'super_admin' ? '/super-admin/dashboard' : `/${user.role}/dashboard`}
-                  style={{ textDecoration: 'none', background: '#ffebe6', color: '#d9381e', padding: '8px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700 }}
+                  style={{ textDecoration: 'none', background: '#dbeafe', color: '#1e40af', padding: '8px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700 }}
                 >
                   Dashboard ({user.name?.split(' ')[0] || user.role})
                 </Link>
@@ -126,13 +126,13 @@ export const Stories = () => {
                   className="btn-primary-hover"
                   style={{
                     textDecoration: 'none',
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     padding: '10px 20px',
                     borderRadius: '100px',
                     fontSize: '13px',
                     fontWeight: 700,
-                    boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)',
+                    boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px'
@@ -171,7 +171,7 @@ export const Stories = () => {
             className="nav-mobile-drawer"
             style={{
               borderTop: '1px solid rgba(44, 35, 32, 0.08)',
-              background: '#fff9f5',
+              background: '#f8fafc',
               padding: '16px 24px 24px',
               gap: '12px'
             }}
@@ -200,7 +200,7 @@ export const Stories = () => {
             <Link
               to="/stories"
               onClick={() => setMobileMenuOpen(false)}
-              style={{ textDecoration: 'none', color: '#f04b28', fontSize: '15px', fontWeight: 700, padding: '4px 0' }}
+              style={{ textDecoration: 'none', color: '#1d4ed8', fontSize: '15px', fontWeight: 700, padding: '4px 0' }}
             >
               Stories
             </Link>
@@ -210,7 +210,7 @@ export const Stories = () => {
                 <Link
                   to={user.role === 'super_admin' ? '/super-admin/dashboard' : `/${user.role}/dashboard`}
                   onClick={() => setMobileMenuOpen(false)}
-                  style={{ textDecoration: 'none', background: '#ffebe6', color: '#d9381e', padding: '10px 16px', borderRadius: '100px', fontSize: '14px', fontWeight: 700, textAlign: 'center' }}
+                  style={{ textDecoration: 'none', background: '#dbeafe', color: '#1e40af', padding: '10px 16px', borderRadius: '100px', fontSize: '14px', fontWeight: 700, textAlign: 'center' }}
                 >
                   Dashboard ({user.name?.split(' ')[0] || user.role})
                 </Link>
@@ -236,13 +236,13 @@ export const Stories = () => {
                   className="btn-primary-hover"
                   style={{
                     textDecoration: 'none',
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     padding: '12px 20px',
                     borderRadius: '100px',
                     fontSize: '14px',
                     fontWeight: 700,
-                    boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)',
+                    boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -269,9 +269,9 @@ export const Stories = () => {
         <div style={{ maxWidth: '820px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
           
           {/* Stories from the field Pill Chip */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#ffe4db', padding: '6px 16px', borderRadius: '100px', marginBottom: '20px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#dbeafe', padding: '6px 16px', borderRadius: '100px', marginBottom: '20px' }}>
             <span style={{ fontSize: '14px' }}>📖</span>
-            <span style={{ fontSize: '12px', fontWeight: 800, color: '#c8391b', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#1e40af', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
               Stories from the field
             </span>
           </div>
@@ -279,7 +279,7 @@ export const Stories = () => {
           {/* Heading with styled coral accent */}
           <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(36px, 5.5vw, 60px)', fontWeight: 800, color: '#2c2320', lineHeight: 1.15, margin: '0 0 18px', letterSpacing: '-1.5px' }}>
             Meals, moments &amp; <br />
-            <span style={{ color: '#f04b28' }}>the people behind them</span>
+            <span style={{ color: '#1d4ed8' }}>the people behind them</span>
           </h1>
 
           <p style={{ fontSize: 'clamp(16px, 2vw, 18px)', lineHeight: 1.6, color: '#6b5d56', maxWidth: '600px', margin: '0 auto' }}>
@@ -384,10 +384,10 @@ export const Stories = () => {
                       fontSize: '13px',
                       fontWeight: 700,
                       cursor: 'pointer',
-                      border: isActive ? '1px solid #ff6b4a' : '1px solid rgba(44, 35, 32, 0.1)',
-                      background: isActive ? '#ff6b4a' : '#ffffff',
+                      border: isActive ? '1px solid #2563eb' : '1px solid rgba(44, 35, 32, 0.1)',
+                      background: isActive ? '#2563eb' : '#ffffff',
                       color: isActive ? '#ffffff' : '#6b5d56',
-                      boxShadow: isActive ? '0 4px 14px rgba(255, 107, 74, 0.35)' : 'none',
+                      boxShadow: isActive ? '0 4px 14px rgba(37, 99, 235, 0.35)' : 'none',
                       transition: 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)'
                     }}
                   >
@@ -469,10 +469,10 @@ export const Stories = () => {
               border: '1.5px solid #ffffff',
               borderRadius: '32px',
               padding: 'clamp(28px, 4vw, 36px)',
-              boxShadow: '0 12px 32px rgba(255, 107, 74, 0.15)'
+              boxShadow: '0 12px 32px rgba(37, 99, 235, 0.15)'
             }}
           >
-            <div className="cta-icon" style={{ width: '56px', height: '56px', borderRadius: '18px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', marginBottom: '20px', boxShadow: '0 8px 16px rgba(240, 75, 40, 0.35)', color: '#fff' }}>
+            <div className="cta-icon" style={{ width: '56px', height: '56px', borderRadius: '18px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', marginBottom: '20px', boxShadow: '0 8px 16px rgba(29, 78, 216, 0.35)', color: '#fff' }}>
               🎁
             </div>
             <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: '24px', fontWeight: 800, color: '#2c2320', margin: '0 0 10px' }}>
@@ -560,7 +560,7 @@ export const Stories = () => {
               boxShadow: '0 20px 50px rgba(44, 35, 32, 0.06)'
             }}
           >
-            <div style={{ width: '56px', height: '56px', borderRadius: '18px', background: '#ff6b4a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', margin: '0 auto 18px', color: '#fff', boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '18px', background: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', margin: '0 auto 18px', color: '#fff', boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)' }}>
               💌
             </div>
             <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 800, color: '#2c2320', margin: '0 0 10px' }}>
@@ -589,14 +589,14 @@ export const Stories = () => {
                     borderRadius: '100px',
                     border: '1.5px solid #ffc7b6',
                     fontSize: '14px',
-                    outlineColor: '#ff6b4a'
+                    outlineColor: '#2563eb'
                   }}
                 />
                 <button
                   type="submit"
                   className="btn-primary-hover"
                   style={{
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     border: 0,
                     padding: '12px 26px',
@@ -604,7 +604,7 @@ export const Stories = () => {
                     fontSize: '14px',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    boxShadow: '0 4px 14px rgba(255, 107, 74, 0.3)'
+                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)'
                   }}
                 >
                   Subscribe
@@ -620,7 +620,7 @@ export const Stories = () => {
       {/* ========================================================
           7. 4-COLUMN FOOTER (From Figma Node 8:29703)
       ======================================================== */}
-      <footer style={{ background: '#fdf1e9', borderTop: '1px solid #ffe4db', padding: '70px 24px 40px' }}>
+      <footer style={{ background: '#fdf1e9', borderTop: '1px solid #dbeafe', padding: '70px 24px 40px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '48px', marginBottom: '60px' }}>
@@ -628,7 +628,7 @@ export const Stories = () => {
             {/* Col 1: Brand Info */}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-                <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px' }}>
+                <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px' }}>
                   🍲
                 </div>
                 <span style={{ fontFamily: "'Fraunces', serif", fontSize: '20px', fontWeight: 800, color: '#2c2320' }}>

@@ -332,7 +332,7 @@ export const AdminUsers = () => {
             <span>🔑 Password Reset Requests</span>
             {pendingRequestsCount > 0 ? (
               <span style={{
-                background: '#ff6b4a',
+                background: '#2563eb',
                 color: '#ffffff',
                 padding: '2px 8px',
                 borderRadius: '10px',
@@ -417,7 +417,7 @@ export const AdminUsers = () => {
             borderRadius: '16px',
             border: '1px solid rgba(44, 35, 32, 0.05)',
             overflow: 'hidden',
-            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(255,107,74,0.18)'
+            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(37, 99, 235,0.18)'
           }}
         >
           <div style={{ overflowX: 'auto', width: '100%' }}>
@@ -476,7 +476,7 @@ export const AdminUsers = () => {
                         <span
                           style={{
                             background: user.role === 'admin' ? '#ffe9e2' : user.role === 'ngo' ? '#e3f5ea' : user.role === 'donor' ? '#ffe9e2' : '#fff2d6',
-                            color: user.role === 'admin' ? '#c8391b' : user.role === 'ngo' ? '#227a55' : user.role === 'donor' ? '#c8391b' : '#a06c00',
+                            color: user.role === 'admin' ? '#1e40af' : user.role === 'ngo' ? '#227a55' : user.role === 'donor' ? '#1e40af' : '#a06c00',
                             padding: '3px 10px',
                             borderRadius: '100px',
                             fontSize: '12px',
@@ -540,7 +540,7 @@ export const AdminUsers = () => {
                             style={{
                               background: 'transparent',
                               border: 0,
-                              color: '#f04b28',
+                              color: '#1d4ed8',
                               fontSize: '13px',
                               fontWeight: 600,
                               cursor: 'pointer',
@@ -600,7 +600,7 @@ export const AdminUsers = () => {
     {/* Tab 2: Password Reset Requests Management Table */}
     {activeTab === 'password-requests' && (
       <div style={{ width: '100%' }}>
-        <div style={{ background: '#fff9f5', border: '1px solid #f2e7e1', borderRadius: '16px', padding: '16px 20px', marginBottom: '18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+        <div style={{ background: '#f8fafc', border: '1px solid #f2e7e1', borderRadius: '16px', padding: '16px 20px', marginBottom: '18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
           <div>
             <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800, color: '#2c2320', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span>🔑</span> In-App Password Reset Requests
@@ -634,7 +634,7 @@ export const AdminUsers = () => {
             borderRadius: '16px',
             border: '1px solid rgba(44, 35, 32, 0.05)',
             overflow: 'hidden',
-            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(255,107,74,0.18)'
+            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(37, 99, 235,0.18)'
           }}
         >
           <div style={{ overflowX: 'auto', width: '100%' }}>
@@ -852,7 +852,7 @@ export const AdminUsers = () => {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#6b5d56' }}>System Role:</span>
-                <strong style={{ textTransform: 'capitalize', color: '#f04b28' }}>{selectedUser.role}</strong>
+                <strong style={{ textTransform: 'capitalize', color: '#1d4ed8' }}>{selectedUser.role}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#6b5d56' }}>Mobile Number:</span>
@@ -866,7 +866,7 @@ export const AdminUsers = () => {
               {/* Password Display Field */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', padding: '8px 12px', borderRadius: '8px', border: '1px solid #f0e8e4' }}>
                 <span style={{ color: '#9a3412', fontWeight: 700 }}>🔑 Account Password:</span>
-                <span style={{ fontFamily: 'monospace', background: '#ffe4db', color: '#c8391b', padding: '3px 10px', borderRadius: '6px', fontWeight: 700, fontSize: '14px' }}>
+                <span style={{ fontFamily: 'monospace', background: '#dbeafe', color: '#1e40af', padding: '3px 10px', borderRadius: '6px', fontWeight: 700, fontSize: '14px' }}>
                   {selectedUser.password || 'Not available'}
                 </span>
               </div>

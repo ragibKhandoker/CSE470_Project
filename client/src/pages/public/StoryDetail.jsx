@@ -48,8 +48,8 @@ export const StoryDetail = () => {
             bannerImage: s.banner_image || s.image || fallbackStory?.bannerImage || 'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1600&q=80',
             cardImage: s.image || fallbackStory?.cardImage || 'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80',
             image: s.image || fallbackStory?.image || 'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80',
-            tagBg: s.tag_bg || fallbackStory?.tagBg || '#ffe4db',
-            tagColor: s.tag_color || fallbackStory?.tagColor || '#d9381e',
+            tagBg: s.tag_bg || fallbackStory?.tagBg || '#dbeafe',
+            tagColor: s.tag_color || fallbackStory?.tagColor || '#1e40af',
             tagIcon: s.tag_icon || fallbackStory?.tagIcon || '🤝',
             category: s.category || fallbackStory?.category || 'Story',
             readTime: s.read_time || fallbackStory?.readTime || '4 min read',
@@ -134,7 +134,7 @@ export const StoryDetail = () => {
   const moreStories = allStories.filter(s => s.id !== story?.id).slice(0, 2);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fff9f5', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden' }}>
       
       {/* ========================================================
           1. NAVIGATION BAR (Matching Home & Stories)
@@ -144,7 +144,7 @@ export const StoryDetail = () => {
           
           {/* Brand Logo */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(240, 75, 40, 0.35)' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(29, 78, 216, 0.35)' }}>
               🍲
             </div>
             <span style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 800, color: '#2c2320', letterSpacing: '-0.5px' }}>
@@ -167,7 +167,7 @@ export const StoryDetail = () => {
             >
               Donate
             </Link>
-            <Link to="/stories" className="nav-link-item" style={{ textDecoration: 'none', color: '#f04b28', fontSize: '14px', fontWeight: 700 }}>
+            <Link to="/stories" className="nav-link-item" style={{ textDecoration: 'none', color: '#1d4ed8', fontSize: '14px', fontWeight: 700 }}>
               Stories
             </Link>
           </div>
@@ -178,7 +178,7 @@ export const StoryDetail = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <Link
                   to={user.role === 'super_admin' ? '/super-admin/dashboard' : `/${user.role}/dashboard`}
-                  style={{ textDecoration: 'none', background: '#ffebe6', color: '#d9381e', padding: '8px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700 }}
+                  style={{ textDecoration: 'none', background: '#dbeafe', color: '#1e40af', padding: '8px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700 }}
                 >
                   Dashboard ({user.name?.split(' ')[0] || user.role})
                 </Link>
@@ -199,13 +199,13 @@ export const StoryDetail = () => {
                   className="btn-primary-hover"
                   style={{
                     textDecoration: 'none',
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     padding: '10px 20px',
                     borderRadius: '100px',
                     fontSize: '13px',
                     fontWeight: 700,
-                    boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)',
+                    boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px'
@@ -244,7 +244,7 @@ export const StoryDetail = () => {
             className="nav-mobile-drawer"
             style={{
               borderTop: '1px solid rgba(44, 35, 32, 0.08)',
-              background: '#fff9f5',
+              background: '#f8fafc',
               padding: '16px 24px 24px',
               gap: '12px'
             }}
@@ -273,7 +273,7 @@ export const StoryDetail = () => {
             <Link
               to="/stories"
               onClick={() => setMobileMenuOpen(false)}
-              style={{ textDecoration: 'none', color: '#f04b28', fontSize: '15px', fontWeight: 700, padding: '4px 0' }}
+              style={{ textDecoration: 'none', color: '#1d4ed8', fontSize: '15px', fontWeight: 700, padding: '4px 0' }}
             >
               Stories
             </Link>
@@ -283,7 +283,7 @@ export const StoryDetail = () => {
                 <Link
                   to={user.role === 'super_admin' ? '/super-admin/dashboard' : `/${user.role}/dashboard`}
                   onClick={() => setMobileMenuOpen(false)}
-                  style={{ textDecoration: 'none', background: '#ffebe6', color: '#d9381e', padding: '10px 16px', borderRadius: '100px', fontSize: '14px', fontWeight: 700, textAlign: 'center' }}
+                  style={{ textDecoration: 'none', background: '#dbeafe', color: '#1e40af', padding: '10px 16px', borderRadius: '100px', fontSize: '14px', fontWeight: 700, textAlign: 'center' }}
                 >
                   Dashboard ({user.name?.split(' ')[0] || user.role})
                 </Link>
@@ -309,13 +309,13 @@ export const StoryDetail = () => {
                   className="btn-primary-hover"
                   style={{
                     textDecoration: 'none',
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     padding: '12px 20px',
                     borderRadius: '100px',
                     fontSize: '14px',
                     fontWeight: 700,
-                    boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)',
+                    boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -347,14 +347,14 @@ export const StoryDetail = () => {
             to="/stories"
             style={{
               display: 'inline-block',
-              background: '#ff6b4a',
+              background: '#2563eb',
               color: '#ffffff',
               padding: '12px 28px',
               borderRadius: '100px',
               fontWeight: 700,
               fontSize: '13px',
               textDecoration: 'none',
-              boxShadow: '0 4px 14px rgba(255, 107, 74, 0.35)'
+              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)'
             }}
           >
             ← Back to All Stories
@@ -378,7 +378,7 @@ export const StoryDetail = () => {
             position: 'absolute',
             inset: 0,
             backgroundImage:
-              'linear-gradient(to top, #fff9f5 0%, rgba(255, 249, 245, 0.85) 12%, rgba(255, 249, 245, 0.4) 30%, rgba(44, 35, 32, 0.35) 60%, rgba(44, 35, 32, 0.15) 100%)',
+              'linear-gradient(to top, #f8fafc 0%, rgba(255, 249, 245, 0.85) 12%, rgba(255, 249, 245, 0.4) 30%, rgba(44, 35, 32, 0.35) 60%, rgba(44, 35, 32, 0.15) 100%)',
             pointerEvents: 'none'
           }}
         />
@@ -417,7 +417,7 @@ export const StoryDetail = () => {
             borderRadius: '24px',
             padding: 'clamp(24px, 4vw, 36px)',
             border: '1px solid rgba(44, 35, 32, 0.08)',
-            boxShadow: '0 10px 30px rgba(255, 107, 74, 0.14), 0 24px 60px rgba(44, 35, 32, 0.1)'
+            boxShadow: '0 10px 30px rgba(37, 99, 235, 0.14), 0 24px 60px rgba(44, 35, 32, 0.1)'
           }}
         >
           {/* Main Fraunces Headline */}
@@ -457,7 +457,7 @@ export const StoryDetail = () => {
               <img
                 src={story.authorAvatar}
                 alt={story.author}
-                style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ffebe6' }}
+                style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #dbeafe' }}
               />
               <div>
                 <div style={{ fontSize: '14px', fontWeight: 800, color: '#2c2320' }}>
@@ -480,11 +480,11 @@ export const StoryDetail = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: hasLiked ? '#ffebe6' : 'rgba(44, 35, 32, 0.05)',
-                  border: hasLiked ? '1px solid #ff6b4a' : '1px solid transparent',
+                  background: hasLiked ? '#dbeafe' : 'rgba(44, 35, 32, 0.05)',
+                  border: hasLiked ? '1px solid #2563eb' : '1px solid transparent',
                   padding: '8px 16px',
                   borderRadius: '100px',
-                  color: hasLiked ? '#d9381e' : '#6b5d56',
+                  color: hasLiked ? '#1e40af' : '#6b5d56',
                   fontSize: '14px',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -564,7 +564,7 @@ export const StoryDetail = () => {
           .story-rich-content h5, .story-narrative-paragraph h5 { font-size: 16px; font-weight: 700; color: #2c2320; margin: 18px 0 6px; }
           .story-rich-content h6, .story-narrative-paragraph h6 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #6b5d56; margin: 16px 0 6px; }
           .story-rich-content p, .story-narrative-paragraph p { font-size: 16px; line-height: 1.8; color: #2c2320; margin: 0 0 20px; }
-          .story-rich-content a, .story-narrative-paragraph a { color: #ff6b4a; text-decoration: underline; font-weight: 600; }
+          .story-rich-content a, .story-narrative-paragraph a { color: #2563eb; text-decoration: underline; font-weight: 600; }
           .story-rich-content strong, .story-rich-content b, .story-narrative-paragraph strong, .story-narrative-paragraph b { font-weight: 700; color: #2c2320; }
           .story-rich-content em, .story-rich-content i, .story-narrative-paragraph em, .story-narrative-paragraph i { font-style: italic; }
           .story-rich-content u, .story-narrative-paragraph u { text-decoration: underline; }
@@ -591,11 +591,11 @@ export const StoryDetail = () => {
             style={{
               position: 'relative',
               background: '#ffffff',
-              borderLeft: '4px solid #ff8461',
+              borderLeft: '4px solid #60a5fa',
               borderRadius: '18px',
               padding: '24px 28px 24px 36px',
               margin: '36px 0',
-              boxShadow: '0 4px 12px rgba(44, 35, 32, 0.04), 0 16px 36px rgba(255, 107, 74, 0.12)'
+              boxShadow: '0 4px 12px rgba(44, 35, 32, 0.04), 0 16px 36px rgba(37, 99, 235, 0.12)'
             }}
           >
             {/* Large Decorative Quote Glyph */}
@@ -710,13 +710,13 @@ export const StoryDetail = () => {
           <button
             onClick={handleLike}
             style={{
-              background: hasLiked ? '#ffebe6' : '#ffffff',
-              border: hasLiked ? '1px solid #ff6b4a' : '1px solid rgba(44, 35, 32, 0.12)',
+              background: hasLiked ? '#dbeafe' : '#ffffff',
+              border: hasLiked ? '1px solid #2563eb' : '1px solid rgba(44, 35, 32, 0.12)',
               borderRadius: '100px',
               padding: '8px 20px',
               fontSize: '14px',
               fontWeight: 700,
-              color: hasLiked ? '#d9381e' : '#6b5d56',
+              color: hasLiked ? '#1e40af' : '#6b5d56',
               cursor: 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
@@ -801,7 +801,7 @@ export const StoryDetail = () => {
 
                 <div style={{ padding: '0 16px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', color: '#6b5d56' }}>
                   <span>⏱️ {s.readTime}</span>
-                  <span style={{ color: '#ff6b4a', fontWeight: 700 }}>Read →</span>
+                  <span style={{ color: '#2563eb', fontWeight: 700 }}>Read →</span>
                 </div>
               </Link>
             ))}
@@ -815,7 +815,7 @@ export const StoryDetail = () => {
               textDecoration: 'none',
               background: '#ffffff',
               border: '1.5px solid #ffc7b6',
-              color: '#c8391b',
+              color: '#1e40af',
               padding: '10px 22px',
               borderRadius: '100px',
               fontSize: '14px',
@@ -845,10 +845,10 @@ export const StoryDetail = () => {
               border: '1.5px solid #ffffff',
               borderRadius: '32px',
               padding: 'clamp(28px, 4vw, 36px)',
-              boxShadow: '0 12px 32px rgba(255, 107, 74, 0.15)'
+              boxShadow: '0 12px 32px rgba(37, 99, 235, 0.15)'
             }}
           >
-            <div className="cta-icon" style={{ width: '56px', height: '56px', borderRadius: '18px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', marginBottom: '20px', boxShadow: '0 8px 16px rgba(240, 75, 40, 0.35)', color: '#fff' }}>
+            <div className="cta-icon" style={{ width: '56px', height: '56px', borderRadius: '18px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', marginBottom: '20px', boxShadow: '0 8px 16px rgba(29, 78, 216, 0.35)', color: '#fff' }}>
               🎁
             </div>
             <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: '24px', fontWeight: 800, color: '#2c2320', margin: '0 0 10px' }}>
@@ -935,7 +935,7 @@ export const StoryDetail = () => {
               boxShadow: '0 20px 50px rgba(44, 35, 32, 0.06)'
             }}
           >
-            <div style={{ width: '56px', height: '56px', borderRadius: '18px', background: '#ff6b4a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', margin: '0 auto 18px', color: '#fff', boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '18px', background: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', margin: '0 auto 18px', color: '#fff', boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)' }}>
               💌
             </div>
             <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: 800, color: '#2c2320', margin: '0 0 10px' }}>
@@ -964,14 +964,14 @@ export const StoryDetail = () => {
                     borderRadius: '100px',
                     border: '1.5px solid #ffc7b6',
                     fontSize: '14px',
-                    outlineColor: '#ff6b4a'
+                    outlineColor: '#2563eb'
                   }}
                 />
                 <button
                   type="submit"
                   className="btn-primary-hover"
                   style={{
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     border: 0,
                     padding: '12px 26px',
@@ -979,7 +979,7 @@ export const StoryDetail = () => {
                     fontSize: '14px',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    boxShadow: '0 4px 14px rgba(255, 107, 74, 0.3)'
+                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)'
                   }}
                 >
                   Subscribe
@@ -996,7 +996,7 @@ export const StoryDetail = () => {
       {/* ========================================================
           8. 4-COLUMN FOOTER (From Figma Node 8:29970)
       ======================================================== */}
-      <footer style={{ background: '#fdf1e9', borderTop: '1px solid #ffe4db', padding: '70px 24px 40px' }}>
+      <footer style={{ background: '#fdf1e9', borderTop: '1px solid #dbeafe', padding: '70px 24px 40px' }}>
         <div style={{ maxWidth: '1152px', margin: '0 auto' }}>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '48px', marginBottom: '60px' }}>
@@ -1004,7 +1004,7 @@ export const StoryDetail = () => {
             {/* Col 1: Brand Info */}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-                <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px' }}>
+                <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px' }}>
                   🍲
                 </div>
                 <span style={{ fontFamily: "'Fraunces', serif", fontSize: '20px', fontWeight: 800, color: '#2c2320' }}>

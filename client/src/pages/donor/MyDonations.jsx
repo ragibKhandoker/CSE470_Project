@@ -209,11 +209,11 @@ export const MyDonations = () => {
         {pickupRequests.length > 0 && (
           <div style={{ marginBottom: 32 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 4, height: 24, borderRadius: 2, background: '#ff6b4a' }} />
+              <div style={{ width: 4, height: 24, borderRadius: 2, background: '#2563eb' }} />
               <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: '#2c2320', fontFamily: "'Fraunces', serif" }}>
                 🚚 NGO Pickup Requests
               </h3>
-              <span style={{ background: '#ff6b4a', color: '#fff', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '10px' }}>
+              <span style={{ background: '#2563eb', color: '#fff', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '10px' }}>
                 {pickupRequests.length}
               </span>
             </div>
@@ -224,7 +224,7 @@ export const MyDonations = () => {
                   style={{
                     background: '#fffbf8',
                     borderRadius: '16px',
-                    border: '1px solid rgba(255, 107, 74, 0.2)',
+                    border: '1px solid rgba(37, 99, 235, 0.2)',
                     padding: '18px 20px',
                     display: 'flex',
                     alignItems: 'center',
@@ -363,9 +363,9 @@ export const MyDonations = () => {
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                background: viewMode === 'grid' ? '#ff6b4a' : 'transparent',
+                background: viewMode === 'grid' ? '#2563eb' : 'transparent',
                 color: viewMode === 'grid' ? '#ffffff' : '#6b5d56',
-                boxShadow: viewMode === 'grid' ? '0 4px 12px rgba(255, 107, 74, 0.28)' : 'none',
+                boxShadow: viewMode === 'grid' ? '0 4px 12px rgba(37, 99, 235, 0.28)' : 'none',
                 transition: 'all 0.18s ease'
               }}
             >
@@ -383,9 +383,9 @@ export const MyDonations = () => {
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                background: viewMode === 'table' ? '#ff6b4a' : 'transparent',
+                background: viewMode === 'table' ? '#2563eb' : 'transparent',
                 color: viewMode === 'table' ? '#ffffff' : '#6b5d56',
-                boxShadow: viewMode === 'table' ? '0 4px 12px rgba(255, 107, 74, 0.28)' : 'none',
+                boxShadow: viewMode === 'table' ? '0 4px 12px rgba(37, 99, 235, 0.28)' : 'none',
                 transition: 'all 0.18s ease'
               }}
             >
@@ -437,7 +437,7 @@ export const MyDonations = () => {
             <button
               onClick={() => navigate('/donor/post-food')}
               style={{
-                background: 'linear-gradient(174deg, #ff8461 0%, #f04b28 100%)',
+                background: 'linear-gradient(174deg, #60a5fa 0%, #1d4ed8 100%)',
                 color: '#ffffff',
                 border: 0,
                 padding: '12px 24px',
@@ -445,7 +445,7 @@ export const MyDonations = () => {
                 fontWeight: 600,
                 fontSize: '14px',
                 cursor: 'pointer',
-                boxShadow: '0 8px 20px -6px rgba(255,107,74,0.4)'
+                boxShadow: '0 8px 20px -6px rgba(37, 99, 235,0.4)'
               }}
             >
               + Post New Food
@@ -566,9 +566,9 @@ export const MyDonations = () => {
                           flex: 1,
                           height: '42px',
                           background: '#ffffff',
-                          border: '1.5px solid #ff6b4a',
+                          border: '1.5px solid #2563eb',
                           borderRadius: '12px',
-                          color: '#ff6b4a',
+                          color: '#2563eb',
                           fontSize: '14px',
                           fontWeight: 600,
                           cursor: 'pointer',
@@ -735,7 +735,7 @@ export const MyDonations = () => {
                               style={{
                                 background: 'transparent',
                                 border: 0,
-                                color: '#ff6b4a',
+                                color: '#2563eb',
                                 fontSize: '14px',
                                 fontWeight: 700,
                                 cursor: 'pointer',
@@ -941,7 +941,7 @@ export const MyDonations = () => {
                       flex: 1,
                       minWidth: '160px',
                       height: '44px',
-                      background: 'linear-gradient(174deg, #ff8461 0%, #f04b28 100%)',
+                      background: 'linear-gradient(174deg, #60a5fa 0%, #1d4ed8 100%)',
                       color: '#ffffff',
                       border: 0,
                       borderRadius: '12px',

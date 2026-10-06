@@ -225,7 +225,7 @@ export const Reports = () => {
                   fontWeight: 700,
                   border: 'none',
                   cursor: 'pointer',
-                  background: statusFilter === tab.id ? '#ff6b4a' : '#f5eee9',
+                  background: statusFilter === tab.id ? '#2563eb' : '#f5eee9',
                   color: statusFilter === tab.id ? '#ffffff' : '#6b5d56',
                   transition: 'all 0.15s ease'
                 }}
@@ -430,7 +430,7 @@ export const Reports = () => {
                               boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
                               transition: 'background 0.15s'
                             }}
-                            onMouseOver={(e) => (e.currentTarget.style.background = '#ff6b4a')}
+                            onMouseOver={(e) => (e.currentTarget.style.background = '#2563eb')}
                             onMouseOut={(e) => (e.currentTarget.style.background = '#2c2320')}
                           >
                             Review &amp; Action →
@@ -484,7 +484,7 @@ export const Reports = () => {
                 }}
               >
                 <div>
-                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#ff6b4a', textTransform: 'uppercase' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#2563eb', textTransform: 'uppercase' }}>
                     Incident Investigation
                   </span>
                   <h3 style={{ margin: '2px 0 0', fontSize: '19px', fontWeight: 800, color: '#2c2320' }}>
@@ -506,7 +506,7 @@ export const Reports = () => {
                 {/* Incident Information Cards */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                   {/* Food & Donor Box */}
-                  <div style={{ background: '#fff9f5', border: '1px solid #f2e2d8', borderRadius: '14px', padding: '14px 16px' }}>
+                  <div style={{ background: '#f8fafc', border: '1px solid #f2e2d8', borderRadius: '14px', padding: '14px 16px' }}>
                     <div style={{ fontSize: '11px', fontWeight: 800, color: '#c2410c', textTransform: 'uppercase', marginBottom: '6px' }}>
                       Donated Food &amp; Donor
                     </div>
@@ -574,7 +574,7 @@ export const Reports = () => {
                         rel="noopener noreferrer"
                         style={{
                           fontSize: '12px',
-                          color: '#ff6b4a',
+                          color: '#2563eb',
                           fontWeight: 700,
                           textDecoration: 'none',
                           display: 'inline-flex',
@@ -732,12 +732,12 @@ export const Reports = () => {
                         padding: '10px 22px',
                         borderRadius: '10px',
                         border: 'none',
-                        background: '#ff6b4a',
+                        background: '#2563eb',
                         fontSize: '13px',
                         fontWeight: 700,
                         color: '#ffffff',
                         cursor: savingResolution ? 'not-allowed' : 'pointer',
-                        boxShadow: '0 4px 14px rgba(255,107,74,0.35)'
+                        boxShadow: '0 4px 14px rgba(37, 99, 235,0.35)'
                       }}
                     >
                       {savingResolution ? 'Saving Resolution...' : 'Save Resolution'}

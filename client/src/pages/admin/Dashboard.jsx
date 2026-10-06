@@ -126,9 +126,9 @@ export const AdminDashboard = () => {
               <span style={{ fontSize: '22px' }}>👑</span>
               <span
                 style={{
-                  background: 'rgba(255, 107, 74, 0.2)',
-                  color: '#ff8461',
-                  border: '1px solid rgba(255, 107, 74, 0.35)',
+                  background: 'rgba(37, 99, 235, 0.2)',
+                  color: '#60a5fa',
+                  border: '1px solid rgba(37, 99, 235, 0.35)',
                   fontSize: '11px',
                   fontWeight: 800,
                   padding: '3px 10px',
@@ -175,7 +175,7 @@ export const AdminDashboard = () => {
               onClick={fetchStats}
               disabled={refreshing}
               style={{
-                background: '#ff6b4a',
+                background: '#2563eb',
                 color: '#ffffff',
                 border: 'none',
                 padding: '9px 18px',
@@ -186,7 +186,7 @@ export const AdminDashboard = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                boxShadow: '0 4px 14px rgba(255, 107, 74, 0.4)',
+                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4)',
                 transition: 'all 0.15s ease'
               }}
             >
@@ -202,7 +202,7 @@ export const AdminDashboard = () => {
         {(pendingVerifications > 0 || activeBotAlerts > 0 || pendingFoodReports > 0 || pendingPasswordRequests > 0) && (
           <div
             style={{
-              background: '#fff9f5',
+              background: '#f8fafc',
               borderRadius: '16px',
               padding: '16px 22px',
               border: '1.5px solid #fed7aa',
@@ -355,7 +355,7 @@ export const AdminDashboard = () => {
                   🎁 {roleBreakdown.receiver || 0} Receivers
                 </span>
               </div>
-              <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#ff6b4a' }}>
+              <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#2563eb' }}>
                 Manage Accounts &amp; Verifications →
               </Link>
             </div>
@@ -380,11 +380,11 @@ export const AdminDashboard = () => {
                 <span style={{ fontSize: '12px', fontWeight: 700, color: '#6b5d56', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   🍲 Food Rescued &amp; Distributed
                 </span>
-                <span style={{ background: '#fff0ec', color: '#c8391b', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px' }}>
+                <span style={{ background: '#fff0ec', color: '#1e40af', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px' }}>
                   {totalFoodPosts} Posts
                 </span>
               </div>
-              <div style={{ fontSize: '38px', fontWeight: 800, color: '#ff6b4a', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>
+              <div style={{ fontSize: '38px', fontWeight: 800, color: '#2563eb', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>
                 {loading ? '...' : totalPortions}
                 <span style={{ fontSize: '16px', fontWeight: 600, color: '#6b5d56', marginLeft: '6px' }}>servings</span>
               </div>
@@ -402,7 +402,7 @@ export const AdminDashboard = () => {
                   📦 {rescuedFoodPosts} In Distribution / Rescued
                 </span>
               </div>
-              <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#ff6b4a' }}>
+              <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#2563eb' }}>
                 Audit Food Rescue Threads →
               </Link>
             </div>
@@ -449,7 +449,7 @@ export const AdminDashboard = () => {
                   🕶️ {anonRequests} Anonymous
                 </span>
               </div>
-              <Link to="/admin/analytics" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#ff6b4a' }}>
+              <Link to="/admin/analytics" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#2563eb' }}>
                 View Request Heatmaps →
               </Link>
             </div>
@@ -512,7 +512,7 @@ export const AdminDashboard = () => {
                   🚩 {totalFoodReports} Incident Logs
                 </span>
               </div>
-              <Link to="/admin/bot-alerts" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#ff6b4a' }}>
+              <Link to="/admin/bot-alerts" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#2563eb' }}>
                 Audit Bot Alerts &amp; Telemetry →
               </Link>
             </div>
@@ -542,7 +542,7 @@ export const AdminDashboard = () => {
                   Live distribution of servings across major culinary categories
                 </p>
               </div>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#ff6b4a' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: '#2563eb' }}>
                 {totalPortions} Total Servings
               </span>
             </div>
@@ -555,7 +555,7 @@ export const AdminDashboard = () => {
               ) : (
                 foodTypeBreakdown.map((item, idx) => {
                   const pct = Math.round(((item.portions || 0) / totalFoodPortionsSum) * 100) || 0;
-                  const colors = ['#ff6b4a', '#d97706', '#10b981', '#6366f1', '#ec4899'];
+                  const colors = ['#2563eb', '#d97706', '#10b981', '#6366f1', '#ec4899'];
                   const barColor = colors[idx % colors.length];
 
                   return (
@@ -605,7 +605,7 @@ export const AdminDashboard = () => {
                   Distribution of registered stakeholders and governance roles
                 </p>
               </div>
-              <Link to="/admin/users" style={{ fontSize: '12px', fontWeight: 700, color: '#ff6b4a', textDecoration: 'none' }}>
+              <Link to="/admin/users" style={{ fontSize: '12px', fontWeight: 700, color: '#2563eb', textDecoration: 'none' }}>
                 All Users →
               </Link>
             </div>
@@ -693,7 +693,7 @@ export const AdminDashboard = () => {
                     Newest surplus meals posted by verified donors
                   </p>
                 </div>
-                <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '12px', fontWeight: 700, color: '#ff6b4a' }}>
+                <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '12px', fontWeight: 700, color: '#2563eb' }}>
                   View All Threads →
                 </Link>
               </div>
@@ -727,8 +727,8 @@ export const AdminDashboard = () => {
                             </strong>
                             <span
                               style={{
-                                background: '#ffe4db',
-                                color: '#c8391b',
+                                background: '#dbeafe',
+                                color: '#1e40af',
                                 fontSize: '11px',
                                 fontWeight: 700,
                                 padding: '1px 6px',
@@ -768,7 +768,7 @@ export const AdminDashboard = () => {
             </div>
 
             <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #f3f4f6', textAlign: 'center' }}>
-              <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '13px', fontWeight: 700, color: '#ff6b4a' }}>
+              <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '13px', fontWeight: 700, color: '#2563eb' }}>
                 Inspect Full Lifecycle Delivery Threads →
               </Link>
             </div>
@@ -797,7 +797,7 @@ export const AdminDashboard = () => {
                     Citizens, donors, and NGOs onboarded to ShareMeal
                   </p>
                 </div>
-                <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '12px', fontWeight: 700, color: '#ff6b4a' }}>
+                <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '12px', fontWeight: 700, color: '#2563eb' }}>
                   Manage Users →
                 </Link>
               </div>
@@ -838,8 +838,8 @@ export const AdminDashboard = () => {
                               width: '36px',
                               height: '36px',
                               borderRadius: '50%',
-                              background: '#ffe4db',
-                              color: '#ff6b4a',
+                              background: '#dbeafe',
+                              color: '#2563eb',
                               fontWeight: 800,
                               fontSize: '12px',
                               display: 'flex',
@@ -900,7 +900,7 @@ export const AdminDashboard = () => {
             </div>
 
             <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #f3f4f6', textAlign: 'center' }}>
-              <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '13px', fontWeight: 700, color: '#ff6b4a' }}>
+              <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '13px', fontWeight: 700, color: '#2563eb' }}>
                 Open Comprehensive User Management Directory →
               </Link>
             </div>

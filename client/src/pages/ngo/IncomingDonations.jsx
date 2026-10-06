@@ -150,7 +150,7 @@ export const IncomingDonations = () => {
             background: 'linear-gradient(135deg, #fff7ed, #ffedd5)',
             borderRadius: '16px',
             padding: '16px 20px',
-            border: '1px solid rgba(255, 107, 74, 0.2)',
+            border: '1px solid rgba(37, 99, 235, 0.2)',
             display: 'flex',
             alignItems: 'center',
             gap: 12
@@ -223,13 +223,13 @@ export const IncomingDonations = () => {
                   style={{
                     padding: '7px 16px',
                     borderRadius: '20px',
-                    border: isSelected ? '1.5px solid #ff6b4a' : '1px solid rgba(44, 35, 32, 0.1)',
-                    background: isSelected ? '#ff6b4a' : '#ffffff',
+                    border: isSelected ? '1.5px solid #2563eb' : '1px solid rgba(44, 35, 32, 0.1)',
+                    background: isSelected ? '#2563eb' : '#ffffff',
                     color: isSelected ? '#ffffff' : '#6b5d56',
                     fontSize: '13px',
                     fontWeight: isSelected ? 700 : 500,
                     cursor: 'pointer',
-                    boxShadow: isSelected ? '0 4px 10px rgba(255, 107, 74, 0.3)' : 'none',
+                    boxShadow: isSelected ? '0 4px 10px rgba(37, 99, 235, 0.3)' : 'none',
                     transition: 'all 0.15s ease'
                   }}
                 >
@@ -352,7 +352,7 @@ export const IncomingDonations = () => {
                       disabled={alreadySent}
                       style={{
                         width: '100%',
-                        background: alreadySent ? '#d1fae5' : '#ff6b4a',
+                        background: alreadySent ? '#d1fae5' : '#2563eb',
                         color: alreadySent ? '#065f46' : '#ffffff',
                         border: 'none',
                         borderRadius: '14px',
@@ -360,11 +360,11 @@ export const IncomingDonations = () => {
                         fontSize: '14px',
                         fontWeight: 700,
                         cursor: alreadySent ? 'default' : 'pointer',
-                        boxShadow: alreadySent ? 'none' : '0 4px 12px rgba(255, 107, 74, 0.3)',
+                        boxShadow: alreadySent ? 'none' : '0 4px 12px rgba(37, 99, 235, 0.3)',
                         transition: 'all 0.15s ease'
                       }}
-                      onMouseOver={(e) => { if (!alreadySent) e.currentTarget.style.background = '#f04b28'; }}
-                      onMouseOut={(e) => { if (!alreadySent) e.currentTarget.style.background = '#ff6b4a'; }}
+                      onMouseOver={(e) => { if (!alreadySent) e.currentTarget.style.background = '#1d4ed8'; }}
+                      onMouseOut={(e) => { if (!alreadySent) e.currentTarget.style.background = '#2563eb'; }}
                     >
                       {alreadySent ? '✅ Pickup Request Sent' : '🚚 Request Pickup'}
                     </button>
@@ -426,7 +426,7 @@ export const IncomingDonations = () => {
                     {pickupModalItem.food_name || pickupModalItem.title || (pickupModalItem.food_type ? `${pickupModalItem.food_type} Meals` : 'Food Donation')} — {pickupModalItem.quantity} servings
                   </h4>
                   <div style={{ fontSize: '12px', color: '#786d66', display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
-                    <span style={{ background: '#ffe4db', color: '#c8391b', padding: '1px 8px', borderRadius: '6px', fontWeight: 600, fontSize: '11px' }}>
+                    <span style={{ background: '#dbeafe', color: '#1e40af', padding: '1px 8px', borderRadius: '6px', fontWeight: 600, fontSize: '11px' }}>
                       {pickupModalItem.food_type || 'Cooked'}
                     </span>
                     <span>·</span>
@@ -467,7 +467,7 @@ export const IncomingDonations = () => {
                   disabled={submitting}
                   style={{
                     width: '100%',
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '12px',

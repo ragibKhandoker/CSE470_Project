@@ -274,7 +274,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#fff9f5', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{`
         @media (max-width: 768px) {
           .admin-sidebar {
@@ -344,12 +344,12 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                 width: 36,
                 height: 36,
                 borderRadius: 12,
-                background: '#ff6b4a',
+                background: '#2563eb',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
-                boxShadow: '0px 6px 7px rgba(255,107,74,0.6)',
+                boxShadow: '0px 6px 7px rgba(37, 99, 235,0.6)',
                 flexShrink: 0
               }}
             >
@@ -384,9 +384,9 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                     fontWeight: 500,
                     boxSizing: 'border-box',
                     transition: 'all 0.15s ease-in-out',
-                    background: isActive ? '#ff6b4a' : 'transparent',
+                    background: isActive ? '#2563eb' : 'transparent',
                     color: isActive ? '#ffffff' : '#6b5d56',
-                    boxShadow: isActive ? '0px 8px 9px rgba(255,107,74,0.55)' : 'none'
+                    boxShadow: isActive ? '0px 8px 9px rgba(37, 99, 235,0.55)' : 'none'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -427,8 +427,8 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                 width: 36,
                 height: 36,
                 borderRadius: '50%',
-                background: '#ffe4db',
-                color: '#c8391b',
+                background: '#dbeafe',
+                color: '#1e40af',
                 fontWeight: 700,
                 fontSize: 13,
                 display: 'flex',
@@ -540,7 +540,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                     position: 'absolute',
                     top: -2,
                     left: 24,
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     fontSize: '9px',
                     fontWeight: 700,
@@ -597,7 +597,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                           background: 'transparent',
                           border: 'none',
                           fontSize: '11px',
-                          color: '#ff6b4a',
+                          color: '#2563eb',
                           fontWeight: 700,
                           cursor: 'pointer',
                           padding: '2px 6px',
@@ -622,7 +622,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                         fontWeight: 700,
                         border: 'none',
                         cursor: 'pointer',
-                        background: notifTab === 'all' ? '#ff6b4a' : '#efe8e4',
+                        background: notifTab === 'all' ? '#2563eb' : '#efe8e4',
                         color: notifTab === 'all' ? '#ffffff' : '#6b5d56'
                       }}
                     >
@@ -639,7 +639,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                         fontWeight: 700,
                         border: 'none',
                         cursor: 'pointer',
-                        background: notifTab === 'threads' ? '#ff6b4a' : '#efe8e4',
+                        background: notifTab === 'threads' ? '#2563eb' : '#efe8e4',
                         color: notifTab === 'threads' ? '#ffffff' : '#6b5d56'
                       }}
                     >
@@ -684,7 +684,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                               <span style={{ fontSize: '11px', color: '#9a3412', fontWeight: 600 }}>{notif.time}</span>
                             </div>
                             <p style={{ margin: 0, fontSize: '12px', color: '#6b5d56', lineHeight: '16px' }}>{notif.subtitle}</p>
-                            <div style={{ marginTop: 8, fontSize: '11px', color: '#ff6b4a', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
+                            <div style={{ marginTop: 8, fontSize: '11px', color: '#2563eb', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
                               <span>View Activity Thread Lifecycle →</span>
                             </div>
                           </div>
@@ -736,7 +736,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                               <p style={{ margin: 0, fontSize: '12px', color: '#6b5d56', lineHeight: '16px' }}>
                                 Donated by {thread.donor.name} • {thread.initial_quantity} portions ({thread.formatted_created_at || 'Recently'})
                               </p>
-                              <div style={{ marginTop: 8, fontSize: '11px', color: '#ff6b4a', fontWeight: 700 }}>
+                              <div style={{ marginTop: 8, fontSize: '11px', color: '#2563eb', fontWeight: 700 }}>
                                 📋 Inspect Full Lifecycle Thread ({thread.steps.length} Steps) →
                               </div>
                             </div>
@@ -752,7 +752,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
         </header>
 
         {/* Dynamic Page Content */}
-        <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: '#fff9f5' }}>
+        <main style={{ flex: 1, padding: '24px', overflowY: 'auto', background: '#f8fafc' }}>
           {children}
         </main>
       </div>
@@ -825,7 +825,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
             )}
 
             {/* Key Stakeholders Strip */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px', marginBottom: '20px', background: '#fff9f5', padding: '12px', borderRadius: '14px', border: '1px solid #f2e7e1' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px', marginBottom: '20px', background: '#f8fafc', padding: '12px', borderRadius: '14px', border: '1px solid #f2e7e1' }}>
               <div>
                 <div style={{ fontSize: '10px', fontWeight: 700, color: '#8d7870', textTransform: 'uppercase' }}>🍲 Donor</div>
                 <div style={{ fontSize: '12px', fontWeight: 700, color: '#2c2320' }}>{selectedThread.donor.name}</div>
@@ -968,7 +968,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
               <button
                 type="button"
                 onClick={() => setSelectedThread(null)}
-                style={{ background: '#ff6b4a', color: '#ffffff', border: 0, borderRadius: '10px', padding: '10px 24px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+                style={{ background: '#2563eb', color: '#ffffff', border: 0, borderRadius: '10px', padding: '10px 24px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
               >
                 Close Thread Audit
               </button>
@@ -1063,7 +1063,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
               <button
                 type="button"
                 onClick={() => setSelectedNotification(null)}
-                style={{ background: '#ff6b4a', color: '#ffffff', border: 0, borderRadius: '10px', padding: '10px 20px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+                style={{ background: '#2563eb', color: '#ffffff', border: 0, borderRadius: '10px', padding: '10px 20px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
               >
                 Close
               </button>
@@ -1080,7 +1080,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
             
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid #eee5e0', paddingBottom: '12px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#ffe4db', color: '#c8391b', fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#dbeafe', color: '#1e40af', fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   {getInitials(user?.name || 'Administrator')}
                 </div>
                 <div>

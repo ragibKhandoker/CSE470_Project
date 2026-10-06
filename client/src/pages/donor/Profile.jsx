@@ -130,8 +130,8 @@ export const Profile = () => {
                   width: 56,
                   height: 56,
                   borderRadius: '50%',
-                  background: '#ffe4db',
-                  color: '#c8391b',
+                  background: '#dbeafe',
+                  color: '#1e40af',
                   fontSize: 22,
                   fontWeight: 800,
                   display: 'flex',
@@ -204,7 +204,7 @@ export const Profile = () => {
                 style={{
                   width: `${completionPercentage}%`,
                   height: '100%',
-                  background: completionPercentage === 100 ? 'linear-gradient(90deg, #10b981, #059669)' : 'linear-gradient(90deg, #ff6b4a, #ea580c)',
+                  background: completionPercentage === 100 ? 'linear-gradient(90deg, #10b981, #059669)' : 'linear-gradient(90deg, #2563eb, #1d4ed8)',
                   borderRadius: '100px',
                   transition: 'width 0.4s ease'
                 }}
@@ -398,7 +398,7 @@ export const Profile = () => {
               type="submit"
               disabled={saving}
               style={{
-                background: '#ff684e',
+                background: '#2563eb',
                 color: '#ffffff',
                 border: 0,
                 borderRadius: '12px',
@@ -407,7 +407,7 @@ export const Profile = () => {
                 fontWeight: 700,
                 cursor: 'pointer',
                 marginTop: '12px',
-                boxShadow: '0 4px 12px rgba(255, 104, 78, 0.3)'
+                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
               }}
             >
               {saving ? 'Saving Profile...' : 'Save Profile Changes →'}

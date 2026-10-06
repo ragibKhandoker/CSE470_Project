@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useDisplayMode } from '../../context/DisplayModeContext';
 import { API_BASE_URL } from '../../utils/constants';
 import PartnersTicker from '../../components/home/PartnersTicker';
 import TrendingFoodSection from '../../components/home/TrendingFoodSection';
@@ -10,6 +11,7 @@ import './Home.css';
 
 export const Home = () => {
   const { user, logout } = useAuth();
+  const { displayMode, cycleDisplayMode } = useDisplayMode();
   const navigate = useNavigate();
 
   // FAQ Accordion state
@@ -24,6 +26,11 @@ export const Home = () => {
 
   // Anonymous Mode interactive demo toggle in dark card
   const [demoAnonymous, setDemoAnonymous] = useState(true);
+  const displayModeLabels = {
+    color: 'Color theme',
+    'contrast-light': 'Black & white',
+    'contrast-dark': 'Dark mode'
+  };
 
   // FAQ Data from Figma
   const faqs = [
@@ -85,8 +92,8 @@ export const Home = () => {
             id: s.id,
             slug: s.slug,
             tag: s.category || 'Story',
-            tagColor: s.tag_color || '#d9381e',
-            tagBg: s.tag_bg || '#ffe4db',
+            tagColor: s.tag_color || '#1e40af',
+            tagBg: s.tag_bg || '#dbeafe',
             readTime: s.read_time || '4 min read',
             title: s.title,
             image: s.image || 'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80'
@@ -108,7 +115,7 @@ export const Home = () => {
 
 
   return (
-    <div style={{ minHeight: '100vh', background: '#fff9f5', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden' }}>
       
       {/* ========================================================
           1. NAVIGATION BAR (From Figma Node 8:22362)
@@ -118,7 +125,7 @@ export const Home = () => {
           
           {/* Brand Logo */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(240, 75, 40, 0.35)' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(29, 78, 216, 0.35)' }}>
               🍲
             </div>
             <span style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 800, color: '#2c2320', letterSpacing: '-0.5px' }}>
@@ -148,11 +155,29 @@ export const Home = () => {
 
           {/* Right Action Buttons (Desktop / Tablet) */}
           <div className="nav-desktop-actions">
+            <button
+              type="button"
+              onClick={cycleDisplayMode}
+              aria-label={`Switch display mode. Current mode: ${displayModeLabels[displayMode]}`}
+              style={{
+                background: '#ffffff',
+                border: '1px solid #1d4ed8',
+                borderRadius: '100px',
+                padding: '9px 14px',
+                color: '#1d4ed8',
+                fontSize: '12px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              ◐ {displayModeLabels[displayMode]}
+            </button>
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <Link
                   to={user.role === 'super_admin' ? '/super-admin/dashboard' : `/${user.role}/dashboard`}
-                  style={{ textDecoration: 'none', background: '#ffebe6', color: '#d9381e', padding: '8px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700 }}
+                  style={{ textDecoration: 'none', background: '#dbeafe', color: '#1e40af', padding: '8px 16px', borderRadius: '100px', fontSize: '13px', fontWeight: 700 }}
                 >
                   Dashboard ({user.name?.split(' ')[0]})
                 </Link>
@@ -173,13 +198,13 @@ export const Home = () => {
                   className="btn-primary-hover"
                   style={{
                     textDecoration: 'none',
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     padding: '10px 20px',
                     borderRadius: '100px',
                     fontSize: '13px',
                     fontWeight: 700,
-                    boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)',
+                    boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px'
@@ -218,7 +243,7 @@ export const Home = () => {
             className="nav-mobile-drawer"
             style={{
               borderTop: '1px solid rgba(44, 35, 32, 0.08)',
-              background: '#fff9f5',
+              background: '#f8fafc',
               padding: '16px 24px 24px',
               gap: '12px'
             }}
@@ -247,17 +272,34 @@ export const Home = () => {
             <Link
               to="/stories"
               onClick={() => setMobileMenuOpen(false)}
-              style={{ textDecoration: 'none', color: '#f04b28', fontSize: '15px', fontWeight: 700, padding: '4px 0' }}
+              style={{ textDecoration: 'none', color: '#1d4ed8', fontSize: '15px', fontWeight: 700, padding: '4px 0' }}
             >
               Stories
             </Link>
             <div style={{ height: '1px', background: 'rgba(44, 35, 32, 0.08)', margin: '6px 0' }} />
+            <button
+              type="button"
+              onClick={cycleDisplayMode}
+              aria-label={`Switch display mode. Current mode: ${displayModeLabels[displayMode]}`}
+              style={{
+                background: '#ffffff',
+                border: '1px solid #1d4ed8',
+                borderRadius: '100px',
+                padding: '10px 14px',
+                color: '#1d4ed8',
+                fontSize: '14px',
+                fontWeight: 700,
+                cursor: 'pointer'
+              }}
+            >
+              ◐ {displayModeLabels[displayMode]}
+            </button>
             {user ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <Link
                   to={user.role === 'super_admin' ? '/super-admin/dashboard' : `/${user.role}/dashboard`}
                   onClick={() => setMobileMenuOpen(false)}
-                  style={{ textDecoration: 'none', background: '#ffebe6', color: '#d9381e', padding: '10px 16px', borderRadius: '100px', fontSize: '14px', fontWeight: 700, textAlign: 'center' }}
+                  style={{ textDecoration: 'none', background: '#dbeafe', color: '#1e40af', padding: '10px 16px', borderRadius: '100px', fontSize: '14px', fontWeight: 700, textAlign: 'center' }}
                 >
                   Dashboard ({user.name?.split(' ')[0]})
                 </Link>
@@ -283,13 +325,13 @@ export const Home = () => {
                   className="btn-primary-hover"
                   style={{
                     textDecoration: 'none',
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     padding: '12px 20px',
                     borderRadius: '100px',
                     fontSize: '14px',
                     fontWeight: 700,
-                    boxShadow: '0 8px 20px rgba(255, 107, 74, 0.35)',
+                    boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -320,9 +362,9 @@ export const Home = () => {
           <div>
             
             {/* Pill Chip */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#ffe4db', padding: '6px 14px', borderRadius: '100px', marginBottom: '20px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#dbeafe', padding: '6px 14px', borderRadius: '100px', marginBottom: '20px' }}>
               <span style={{ fontSize: '13px' }}>✨</span>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#c8391b', letterSpacing: '0.2px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: '#1e40af', letterSpacing: '0.2px' }}>
                 {homeData.heroMealsCount || '482,000+ meals rescued & counting'}
               </span>
             </div>
@@ -330,7 +372,7 @@ export const Home = () => {
             {/* Main Editorial Headline with Curved Underline */}
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(40px, 5vw, 62px)', fontWeight: 800, lineHeight: 1.08, letterSpacing: '-1.5px', margin: '0 0 24px', color: '#2c2320' }}>
               Turn today's surplus into{' '}
-              <span style={{ position: 'relative', display: 'inline-block', color: '#f04b28' }}>
+              <span style={{ position: 'relative', display: 'inline-block', color: '#1d4ed8' }}>
                 someone's meal
                 {/* Curved Underline SVG */}
                 <svg
@@ -339,7 +381,7 @@ export const Home = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   style={{ position: 'absolute', left: 0, bottom: '-8px', width: '100%', height: '12px', pointerEvents: 'none' }}
                 >
-                  <path d="M4 10C80 3 260 -2 404 8" stroke="#f04b28" strokeWidth="4" strokeLinecap="round" />
+                  <path d="M4 10C80 3 260 -2 404 8" stroke="#1d4ed8" strokeWidth="4" strokeLinecap="round" />
                 </svg>
               </span>
             </h1>
@@ -355,7 +397,7 @@ export const Home = () => {
                 className="btn-primary-hover"
                 style={{
                   textDecoration: 'none',
-                  background: '#ff6b4a',
+                  background: '#2563eb',
                   color: '#ffffff',
                   padding: '14px 28px',
                   borderRadius: '100px',
@@ -364,7 +406,7 @@ export const Home = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '8px',
-                  boxShadow: '0 12px 28px rgba(255, 107, 74, 0.4)'
+                  boxShadow: '0 12px 28px rgba(37, 99, 235, 0.4)'
                 }}
               >
                 <span>🎁</span> Donate food
@@ -375,7 +417,7 @@ export const Home = () => {
                 style={{
                   textDecoration: 'none',
                   background: 'rgba(255, 255, 255, 0.7)',
-                  color: '#c8391b',
+                  color: '#1e40af',
                   border: '1.5px solid #ffa286',
                   padding: '14px 28px',
                   borderRadius: '100px',
@@ -393,7 +435,7 @@ export const Home = () => {
             {/* NGO Community Trust Avatars */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                {['#ff8461', '#f5c14e', '#5ec98f', '#6aa6ee'].map((bg, idx) => (
+                {['#60a5fa', '#f5c14e', '#5ec98f', '#6aa6ee'].map((bg, idx) => (
                   <div
                     key={idx}
                     style={{
@@ -401,7 +443,7 @@ export const Home = () => {
                       height: '36px',
                       borderRadius: '50%',
                       background: bg,
-                      border: '2px solid #fff9f5',
+                      border: '2px solid #f8fafc',
                       marginLeft: idx > 0 ? '-10px' : 0,
                       display: 'flex',
                       alignItems: 'center',
@@ -435,7 +477,7 @@ export const Home = () => {
                 borderRadius: '32px',
                 background: '#ffe9e2',
                 border: '5px solid #ffffff',
-                boxShadow: '0 20px 50px -10px rgba(255, 107, 74, 0.25), 0 40px 90px -30px rgba(44, 35, 32, 0.2)'
+                boxShadow: '0 20px 50px -10px rgba(37, 99, 235, 0.25), 0 40px 90px -30px rgba(44, 35, 32, 0.2)'
               }}
             >
               <img
@@ -565,7 +607,7 @@ export const Home = () => {
                   {cat.count}
                 </div>
               </div>
-              <span className="cat-arrow" style={{ color: '#ff6b4a', fontSize: '18px', fontWeight: 800, display: 'inline-block' }}>→</span>
+              <span className="cat-arrow" style={{ color: '#2563eb', fontSize: '18px', fontWeight: 800, display: 'inline-block' }}>→</span>
             </Link>
           ))}
 
@@ -584,8 +626,8 @@ export const Home = () => {
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           
           <div style={{ marginBottom: '48px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f04b28', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '10px' }}>
-              <span style={{ width: '24px', height: '2px', background: '#f04b28' }}></span> HOW IT WORKS
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1d4ed8', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '10px' }}>
+              <span style={{ width: '24px', height: '2px', background: '#1d4ed8' }}></span> HOW IT WORKS
             </div>
             <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(32px, 4vw, 44px)', fontWeight: 800, color: '#2c2320', margin: 0, letterSpacing: '-1px' }}>
               From surplus to shared in four gentle steps
@@ -668,7 +710,7 @@ export const Home = () => {
             }}
           >
             {/* Ambient Background Glows */}
-            <div style={{ position: 'absolute', top: '-60px', right: '-60px', width: '300px', height: '300px', borderRadius: '50%', background: 'rgba(240, 75, 40, 0.2)', filter: 'blur(70px)' }} />
+            <div style={{ position: 'absolute', top: '-60px', right: '-60px', width: '300px', height: '300px', borderRadius: '50%', background: 'rgba(29, 78, 216, 0.2)', filter: 'blur(70px)' }} />
             <div style={{ position: 'absolute', bottom: '-60px', left: '10%', width: '260px', height: '260px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.15)', filter: 'blur(70px)' }} />
 
             {/* Left Column: Copy & Checklist */}
@@ -678,7 +720,7 @@ export const Home = () => {
               </div>
 
               <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(32px, 4vw, 44px)', fontWeight: 800, lineHeight: 1.15, margin: '0 0 20px', letterSpacing: '-1px' }}>
-                Find a meal with <span style={{ color: '#f04b28' }}>no judgment, no trace</span>
+                Find a meal with <span style={{ color: '#1d4ed8' }}>no judgment, no trace</span>
               </h2>
 
               <p style={{ fontSize: '16px', lineHeight: 1.6, color: '#a89d97', margin: '0 0 32px', maxWidth: '440px' }}>
@@ -693,7 +735,7 @@ export const Home = () => {
                   'Encrypted database'
                 ].map((perk, idx) => (
                   <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', fontWeight: 600, color: '#e5ded9' }}>
-                    <span style={{ width: '20px', height: '20px', borderRadius: '50%', background: 'rgba(240, 75, 40, 0.25)', color: '#ff8461', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 800 }}>
+                    <span style={{ width: '20px', height: '20px', borderRadius: '50%', background: 'rgba(29, 78, 216, 0.25)', color: '#60a5fa', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 800 }}>
                       ✓
                     </span>
                     {perk}
@@ -719,7 +761,7 @@ export const Home = () => {
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>
+                    <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>
                       🕵️
                     </div>
                     <div>
@@ -746,7 +788,7 @@ export const Home = () => {
                         width: '48px',
                         height: '26px',
                         borderRadius: '100px',
-                        background: demoAnonymous ? '#ff6b4a' : '#4b5563',
+                        background: demoAnonymous ? '#2563eb' : '#4b5563',
                         border: 0,
                         padding: '3px',
                         cursor: 'pointer',
@@ -791,8 +833,8 @@ export const Home = () => {
           
           {/* Left Column */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#f04b28', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '8px' }}>
-              <span style={{ width: '24px', height: '2px', background: '#f04b28' }}></span> GOOD TO KNOW
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1d4ed8', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '8px' }}>
+              <span style={{ width: '24px', height: '2px', background: '#1d4ed8' }}></span> GOOD TO KNOW
             </div>
             <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(32px, 4vw, 44px)', fontWeight: 800, color: '#2c2320', margin: '0 0 16px', letterSpacing: '-1px' }}>
               Questions, answered
@@ -800,7 +842,7 @@ export const Home = () => {
             <p style={{ fontSize: '16px', lineHeight: 1.6, color: '#6b5d56', margin: '0 0 24px', maxWidth: '380px' }}>
               Still wondering about something? Our support team and community champions reply promptly.
             </p>
-            <a href="mailto:support@sharemeal.org" style={{ textDecoration: 'none', color: '#f04b28', fontWeight: 700, fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <a href="mailto:support@sharemeal.org" style={{ textDecoration: 'none', color: '#1d4ed8', fontWeight: 700, fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               Visit the help centre <span>→</span>
             </a>
           </div>
@@ -836,7 +878,7 @@ export const Home = () => {
                   <span style={{ fontSize: '16px', fontWeight: 800, color: '#2c2320' }}>
                     {faq.q}
                   </span>
-                  <span className="faq-badge" style={{ width: '28px', height: '28px', borderRadius: '50%', background: openFaq === idx ? '#ffe4db' : '#f3f4f6', color: openFaq === idx ? '#c8391b' : '#6b5d56', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold' }}>
+                  <span className="faq-badge" style={{ width: '28px', height: '28px', borderRadius: '50%', background: openFaq === idx ? '#dbeafe' : '#f3f4f6', color: openFaq === idx ? '#1e40af' : '#6b5d56', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold' }}>
                     {openFaq === idx ? '−' : '+'}
                   </span>
                 </button>
@@ -866,7 +908,7 @@ export const Home = () => {
               border: '1.5px solid #fed7aa',
               borderRadius: '28px',
               padding: '36px',
-              boxShadow: '0 8px 24px rgba(240, 75, 40, 0.06)'
+              boxShadow: '0 8px 24px rgba(29, 78, 216, 0.06)'
             }}
           >
             <div className="cta-icon" style={{ width: '56px', height: '56px', borderRadius: '18px', background: '#ffedd5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', marginBottom: '20px' }}>
@@ -987,14 +1029,14 @@ export const Home = () => {
                     borderRadius: '100px',
                     border: '1.5px solid #e5ded9',
                     fontSize: '14px',
-                    outlineColor: '#ff6b4a'
+                    outlineColor: '#2563eb'
                   }}
                 />
                 <button
                   type="submit"
                   className="btn-primary-hover"
                   style={{
-                    background: '#ff6b4a',
+                    background: '#2563eb',
                     color: '#ffffff',
                     border: 0,
                     padding: '12px 26px',
@@ -1002,7 +1044,7 @@ export const Home = () => {
                     fontSize: '14px',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    boxShadow: '0 4px 14px rgba(255, 107, 74, 0.3)'
+                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)'
                   }}
                 >
                   Subscribe
@@ -1026,7 +1068,7 @@ export const Home = () => {
             {/* Col 1: Brand Info */}
             <div style={{ gridColumn: 'span 1' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
-                <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'linear-gradient(135deg, #ff8461 0%, #f04b28 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px' }}>
+                <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px' }}>
                   🍲
                 </div>
                 <span style={{ fontFamily: "'Fraunces', serif", fontSize: '20px', fontWeight: 800, color: '#2c2320' }}>
