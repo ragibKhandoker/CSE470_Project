@@ -65,7 +65,7 @@ export const AdminDashboard = () => {
       case 'available':
         return { bg: '#ecfdf5', color: '#059669', label: 'Available' };
       case 'at_ngo_point':
-        return { bg: '#eff6ff', color: '#2563eb', label: 'At NGO Hub' };
+        return { bg: 'var(--brand-soft)', color: 'var(--brand-primary)', label: 'At NGO Hub' };
       case 'collected':
         return { bg: '#fef3c7', color: '#d97706', label: 'Picked Up' };
       case 'completed':
@@ -84,7 +84,7 @@ export const AdminDashboard = () => {
       case 'ngo':
         return { bg: '#fff7ed', color: '#ea580c', label: 'NGO' };
       case 'receiver':
-        return { bg: '#eff6ff', color: '#2563eb', label: 'Receiver' };
+        return { bg: 'var(--brand-soft)', color: 'var(--brand-primary)', label: 'Receiver' };
       case 'ngo_staff':
         return { bg: '#fdf4ff', color: '#c026d3', label: 'NGO Staff' };
       case 'admin':
@@ -126,9 +126,9 @@ export const AdminDashboard = () => {
               <span style={{ fontSize: '22px' }}>👑</span>
               <span
                 style={{
-                  background: 'rgba(37, 99, 235, 0.2)',
-                  color: '#60a5fa',
-                  border: '1px solid rgba(37, 99, 235, 0.35)',
+                  background: 'rgba(var(--brand-primary-rgb), 0.2)',
+                  color: 'var(--brand-primary-light)',
+                  border: '1px solid rgba(var(--brand-primary-rgb), 0.35)',
                   fontSize: '11px',
                   fontWeight: 800,
                   padding: '3px 10px',
@@ -175,7 +175,7 @@ export const AdminDashboard = () => {
               onClick={fetchStats}
               disabled={refreshing}
               style={{
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 border: 'none',
                 padding: '9px 18px',
@@ -186,7 +186,7 @@ export const AdminDashboard = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4)',
+                boxShadow: '0 4px 14px rgba(var(--brand-primary-rgb), 0.4)',
                 transition: 'all 0.15s ease'
               }}
             >
@@ -355,7 +355,7 @@ export const AdminDashboard = () => {
                   🎁 {roleBreakdown.receiver || 0} Receivers
                 </span>
               </div>
-              <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#2563eb' }}>
+              <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                 Manage Accounts &amp; Verifications →
               </Link>
             </div>
@@ -380,11 +380,11 @@ export const AdminDashboard = () => {
                 <span style={{ fontSize: '12px', fontWeight: 700, color: '#6b5d56', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   🍲 Food Rescued &amp; Distributed
                 </span>
-                <span style={{ background: '#fff0ec', color: '#1e40af', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px' }}>
+                <span style={{ background: '#fff0ec', color: 'var(--brand-primary-deep)', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px' }}>
                   {totalFoodPosts} Posts
                 </span>
               </div>
-              <div style={{ fontSize: '38px', fontWeight: 800, color: '#2563eb', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>
+              <div style={{ fontSize: '38px', fontWeight: 800, color: 'var(--brand-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>
                 {loading ? '...' : totalPortions}
                 <span style={{ fontSize: '16px', fontWeight: 600, color: '#6b5d56', marginLeft: '6px' }}>servings</span>
               </div>
@@ -398,11 +398,11 @@ export const AdminDashboard = () => {
                 <span style={{ background: '#ecfdf5', color: '#047857', padding: '3px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: 700 }}>
                   🟢 {availableFoodPosts} Available Now
                 </span>
-                <span style={{ background: '#eff6ff', color: '#1d4ed8', padding: '3px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: 700 }}>
+                <span style={{ background: 'var(--brand-soft)', color: 'var(--brand-primary-dark)', padding: '3px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: 700 }}>
                   📦 {rescuedFoodPosts} In Distribution / Rescued
                 </span>
               </div>
-              <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#2563eb' }}>
+              <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                 Audit Food Rescue Threads →
               </Link>
             </div>
@@ -427,11 +427,11 @@ export const AdminDashboard = () => {
                 <span style={{ fontSize: '12px', fontWeight: 700, color: '#6b5d56', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   🚚 Requests &amp; Fulfillment
                 </span>
-                <span style={{ background: '#eff6ff', color: '#2563eb', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px' }}>
+                <span style={{ background: 'var(--brand-soft)', color: 'var(--brand-primary)', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px' }}>
                   {totalRequests} Total
                 </span>
               </div>
-              <div style={{ fontSize: '38px', fontWeight: 800, color: '#2563eb', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>
+              <div style={{ fontSize: '38px', fontWeight: 800, color: 'var(--brand-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>
                 {loading ? '...' : completedRequests}
                 <span style={{ fontSize: '16px', fontWeight: 600, color: '#6b5d56', marginLeft: '6px' }}>fulfilled</span>
               </div>
@@ -449,7 +449,7 @@ export const AdminDashboard = () => {
                   🕶️ {anonRequests} Anonymous
                 </span>
               </div>
-              <Link to="/admin/analytics" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#2563eb' }}>
+              <Link to="/admin/analytics" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                 View Request Heatmaps →
               </Link>
             </div>
@@ -512,7 +512,7 @@ export const AdminDashboard = () => {
                   🚩 {totalFoodReports} Incident Logs
                 </span>
               </div>
-              <Link to="/admin/bot-alerts" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: '#2563eb' }}>
+              <Link to="/admin/bot-alerts" style={{ textDecoration: 'none', fontSize: '12.5px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                 Audit Bot Alerts &amp; Telemetry →
               </Link>
             </div>
@@ -542,7 +542,7 @@ export const AdminDashboard = () => {
                   Live distribution of servings across major culinary categories
                 </p>
               </div>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#2563eb' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                 {totalPortions} Total Servings
               </span>
             </div>
@@ -555,7 +555,7 @@ export const AdminDashboard = () => {
               ) : (
                 foodTypeBreakdown.map((item, idx) => {
                   const pct = Math.round(((item.portions || 0) / totalFoodPortionsSum) * 100) || 0;
-                  const colors = ['#2563eb', '#d97706', '#10b981', '#6366f1', '#ec4899'];
+                  const colors = ['var(--brand-primary)', '#d97706', '#10b981', '#6366f1', '#ec4899'];
                   const barColor = colors[idx % colors.length];
 
                   return (
@@ -605,7 +605,7 @@ export const AdminDashboard = () => {
                   Distribution of registered stakeholders and governance roles
                 </p>
               </div>
-              <Link to="/admin/users" style={{ fontSize: '12px', fontWeight: 700, color: '#2563eb', textDecoration: 'none' }}>
+              <Link to="/admin/users" style={{ fontSize: '12px', fontWeight: 700, color: 'var(--brand-primary)', textDecoration: 'none' }}>
                 All Users →
               </Link>
             </div>
@@ -693,7 +693,7 @@ export const AdminDashboard = () => {
                     Newest surplus meals posted by verified donors
                   </p>
                 </div>
-                <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '12px', fontWeight: 700, color: '#2563eb' }}>
+                <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '12px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                   View All Threads →
                 </Link>
               </div>
@@ -727,8 +727,8 @@ export const AdminDashboard = () => {
                             </strong>
                             <span
                               style={{
-                                background: '#dbeafe',
-                                color: '#1e40af',
+                                background: 'var(--brand-soft)',
+                                color: 'var(--brand-primary-deep)',
                                 fontSize: '11px',
                                 fontWeight: 700,
                                 padding: '1px 6px',
@@ -768,7 +768,7 @@ export const AdminDashboard = () => {
             </div>
 
             <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #f3f4f6', textAlign: 'center' }}>
-              <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '13px', fontWeight: 700, color: '#2563eb' }}>
+              <Link to="/admin/food-threads" style={{ textDecoration: 'none', fontSize: '13px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                 Inspect Full Lifecycle Delivery Threads →
               </Link>
             </div>
@@ -797,7 +797,7 @@ export const AdminDashboard = () => {
                     Citizens, donors, and NGOs onboarded to ShareMeal
                   </p>
                 </div>
-                <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '12px', fontWeight: 700, color: '#2563eb' }}>
+                <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '12px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                   Manage Users →
                 </Link>
               </div>
@@ -838,8 +838,8 @@ export const AdminDashboard = () => {
                               width: '36px',
                               height: '36px',
                               borderRadius: '50%',
-                              background: '#dbeafe',
-                              color: '#2563eb',
+                              background: 'var(--brand-soft)',
+                              color: 'var(--brand-primary)',
                               fontWeight: 800,
                               fontSize: '12px',
                               display: 'flex',
@@ -900,7 +900,7 @@ export const AdminDashboard = () => {
             </div>
 
             <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #f3f4f6', textAlign: 'center' }}>
-              <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '13px', fontWeight: 700, color: '#2563eb' }}>
+              <Link to="/admin/users" style={{ textDecoration: 'none', fontSize: '13px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                 Open Comprehensive User Management Directory →
               </Link>
             </div>

@@ -141,7 +141,7 @@ export const Analytics = () => {
               type="button"
               onClick={() => setPeriod('7days')}
               style={{
-                background: period === '7days' ? '#2563eb' : '#ffffff',
+                background: period === '7days' ? 'var(--brand-primary)' : '#ffffff',
                 color: period === '7days' ? '#ffffff' : '#6b5d56',
                 border: period === '7days' ? 'none' : '1px solid rgba(44, 35, 32, 0.1)',
                 padding: '7px 18px',
@@ -149,7 +149,7 @@ export const Analytics = () => {
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                boxShadow: period === '7days' ? '0 4px 10px rgba(37, 99, 235, 0.4)' : 'none',
+                boxShadow: period === '7days' ? '0 4px 10px rgba(var(--brand-primary-rgb), 0.4)' : 'none',
                 transition: 'all 0.15s ease'
               }}
             >
@@ -159,7 +159,7 @@ export const Analytics = () => {
               type="button"
               onClick={() => setPeriod('30days')}
               style={{
-                background: period === '30days' ? '#2563eb' : '#ffffff',
+                background: period === '30days' ? 'var(--brand-primary)' : '#ffffff',
                 color: period === '30days' ? '#ffffff' : '#6b5d56',
                 border: period === '30days' ? 'none' : '1px solid rgba(44, 35, 32, 0.1)',
                 padding: '7px 18px',
@@ -167,7 +167,7 @@ export const Analytics = () => {
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                boxShadow: period === '30days' ? '0 4px 10px rgba(37, 99, 235, 0.4)' : 'none',
+                boxShadow: period === '30days' ? '0 4px 10px rgba(var(--brand-primary-rgb), 0.4)' : 'none',
                 transition: 'all 0.15s ease'
               }}
             >
@@ -177,7 +177,7 @@ export const Analytics = () => {
               type="button"
               onClick={() => setPeriod('custom')}
               style={{
-                background: period === 'custom' ? '#2563eb' : '#ffffff',
+                background: period === 'custom' ? 'var(--brand-primary)' : '#ffffff',
                 color: period === 'custom' ? '#ffffff' : '#6b5d56',
                 border: period === 'custom' ? 'none' : '1px solid rgba(44, 35, 32, 0.1)',
                 padding: '7px 18px',
@@ -185,7 +185,7 @@ export const Analytics = () => {
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                boxShadow: period === 'custom' ? '0 4px 10px rgba(37, 99, 235, 0.4)' : 'none',
+                boxShadow: period === 'custom' ? '0 4px 10px rgba(var(--brand-primary-rgb), 0.4)' : 'none',
                 transition: 'all 0.15s ease'
               }}
             >
@@ -200,7 +200,7 @@ export const Analytics = () => {
             style={{
               background: '#ffffff',
               border: '1px solid #ffa286',
-              color: '#1e40af',
+              color: 'var(--brand-primary-deep)',
               padding: '8px 20px',
               borderRadius: '20px',
               fontSize: '13px',
@@ -209,7 +209,7 @@ export const Analytics = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: '0 2px 6px rgba(30, 64, 175, 0.08)',
+              boxShadow: '0 2px 6px rgba(var(--brand-primary-deep-rgb), 0.08)',
               transition: 'all 0.15s ease'
             }}
             onMouseOver={(e) => (e.currentTarget.style.background = '#fff5f2')}
@@ -264,8 +264,8 @@ export const Analytics = () => {
             <svg width="100%" height="240" viewBox={`0 0 ${chartWidth} ${chartHeight + 40}`} style={{ overflow: 'visible' }}>
               <defs>
                 <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#2563eb" stopOpacity="0.25" />
-                  <stop offset="100%" stopColor="#2563eb" stopOpacity="0.0" />
+                  <stop offset="0%" stopColor="var(--brand-primary)" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="var(--brand-primary)" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
 
@@ -305,7 +305,7 @@ export const Analytics = () => {
                 <path
                   d={pathD}
                   fill="none"
-                  stroke="#2563eb"
+                  stroke="var(--brand-primary)"
                   strokeWidth="3.2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -324,7 +324,7 @@ export const Analytics = () => {
                       cx={x}
                       cy={y}
                       r={isHovered ? 7 : 5}
-                      fill="#2563eb"
+                      fill="var(--brand-primary)"
                       stroke="#ffffff"
                       strokeWidth="2.5"
                       style={{ cursor: 'pointer', transition: 'all 0.15s ease' }}

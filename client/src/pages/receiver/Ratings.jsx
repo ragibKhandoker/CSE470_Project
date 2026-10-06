@@ -281,7 +281,7 @@ export const ReceiverRatings = () => {
             type="button"
             onClick={handleOpenModal}
             style={{
-              background: '#2563eb',
+              background: 'var(--brand-primary)',
               color: '#ffffff',
               border: 'none',
               borderRadius: '20px',
@@ -289,7 +289,7 @@ export const ReceiverRatings = () => {
               fontSize: '13px',
               fontWeight: 700,
               cursor: 'pointer',
-              boxShadow: '0 4px 10px rgba(37, 99, 235, 0.3)'
+              boxShadow: '0 4px 10px rgba(var(--brand-primary-rgb), 0.3)'
             }}
           >
             + Leave a Rating
@@ -325,7 +325,7 @@ export const ReceiverRatings = () => {
               type="button"
               onClick={handleOpenModal}
               style={{
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '20px',
@@ -452,9 +452,9 @@ export const ReceiverRatings = () => {
                   flex: 1,
                   padding: '9px 12px',
                   borderRadius: '10px',
-                  border: newRating.targetType === 'ngo' ? '2px solid #2563eb' : '1px solid #e5e7eb',
+                  border: newRating.targetType === 'ngo' ? '2px solid var(--brand-primary)' : '1px solid #e5e7eb',
                   background: newRating.targetType === 'ngo' ? '#fff5f2' : '#ffffff',
-                  color: newRating.targetType === 'ngo' ? '#2563eb' : '#6b5d56',
+                  color: newRating.targetType === 'ngo' ? 'var(--brand-primary)' : '#6b5d56',
                   fontWeight: 700,
                   fontSize: '13px',
                   cursor: 'pointer',
@@ -480,9 +480,9 @@ export const ReceiverRatings = () => {
                   flex: 1,
                   padding: '9px 12px',
                   borderRadius: '10px',
-                  border: newRating.targetType === 'donor' ? '2px solid #2563eb' : '1px solid #e5e7eb',
+                  border: newRating.targetType === 'donor' ? '2px solid var(--brand-primary)' : '1px solid #e5e7eb',
                   background: newRating.targetType === 'donor' ? '#fff5f2' : '#ffffff',
-                  color: newRating.targetType === 'donor' ? '#2563eb' : '#6b5d56',
+                  color: newRating.targetType === 'donor' ? 'var(--brand-primary)' : '#6b5d56',
                   fontWeight: 700,
                   fontSize: '13px',
                   cursor: 'pointer',
@@ -586,7 +586,7 @@ export const ReceiverRatings = () => {
                 disabled={newRating.targetType === 'donor' && targets.receivedFoods.length === 0}
                 style={{
                   width: '100%',
-                  background: (newRating.targetType === 'donor' && targets.receivedFoods.length === 0) ? '#d1d5db' : '#2563eb',
+                  background: (newRating.targetType === 'donor' && targets.receivedFoods.length === 0) ? '#d1d5db' : 'var(--brand-primary)',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '12px',

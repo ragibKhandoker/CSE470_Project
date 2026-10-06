@@ -19,7 +19,7 @@ L.Icon.Default.mergeOptions({
 
 const createFoodMarkerIcon = (type) => {
   const isVeg = (type || '').toLowerCase().includes('veg');
-  const color = isVeg ? '#10b981' : '#2563eb';
+  const color = isVeg ? '#10b981' : 'var(--brand-primary)';
   return L.divIcon({
     className: 'custom-map-pin',
     html: `<div style="background: ${color}; color: #fff; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; border: 3px solid #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">${isVeg ? '🥬' : '🍲'}</div>`,
@@ -309,12 +309,12 @@ export const ReceiverFindFood = () => {
                 padding: '8px 16px',
                 borderRadius: '20px',
                 border: viewMode === 'grid' ? 'none' : '1px solid rgba(44, 35, 32, 0.1)',
-                background: viewMode === 'grid' ? '#2563eb' : '#ffffff',
+                background: viewMode === 'grid' ? 'var(--brand-primary)' : '#ffffff',
                 color: viewMode === 'grid' ? '#ffffff' : '#6b5d56',
                 fontSize: '13px',
                 fontWeight: 700,
                 cursor: 'pointer',
-                boxShadow: viewMode === 'grid' ? '0 4px 10px rgba(37, 99, 235, 0.3)' : 'none'
+                boxShadow: viewMode === 'grid' ? '0 4px 10px rgba(var(--brand-primary-rgb), 0.3)' : 'none'
               }}
             >
               <span>⊞</span>
@@ -331,12 +331,12 @@ export const ReceiverFindFood = () => {
                 padding: '8px 16px',
                 borderRadius: '20px',
                 border: viewMode === 'map' ? 'none' : '1px solid rgba(44, 35, 32, 0.1)',
-                background: viewMode === 'map' ? '#2563eb' : '#ffffff',
+                background: viewMode === 'map' ? 'var(--brand-primary)' : '#ffffff',
                 color: viewMode === 'map' ? '#ffffff' : '#6b5d56',
                 fontSize: '13px',
                 fontWeight: 700,
                 cursor: 'pointer',
-                boxShadow: viewMode === 'map' ? '0 4px 10px rgba(37, 99, 235, 0.3)' : 'none'
+                boxShadow: viewMode === 'map' ? '0 4px 10px rgba(var(--brand-primary-rgb), 0.3)' : 'none'
               }}
             >
               <span>🗺️</span>
@@ -355,9 +355,9 @@ export const ReceiverFindFood = () => {
                 style={{
                   padding: '7px 16px',
                   borderRadius: '20px',
-                  border: isSelected ? '1.5px solid #2563eb' : '1px solid rgba(44, 35, 32, 0.1)',
-                  background: isSelected ? 'rgba(37, 99, 235, 0.08)' : '#ffffff',
-                  color: isSelected ? '#2563eb' : '#6b5d56',
+                  border: isSelected ? '1.5px solid var(--brand-primary)' : '1px solid rgba(44, 35, 32, 0.1)',
+                  background: isSelected ? 'rgba(var(--brand-primary-rgb), 0.08)' : '#ffffff',
+                  color: isSelected ? 'var(--brand-primary)' : '#6b5d56',
                   fontSize: '13px',
                   fontWeight: isSelected ? 700 : 500,
                   cursor: 'pointer',
@@ -521,7 +521,7 @@ export const ReceiverFindFood = () => {
                           ? '#fff7ed'
                           : hasClaimed
                           ? (isFulfilled ? '#ecfdf5' : '#fffbeb')
-                          : '#2563eb',
+                          : 'var(--brand-primary)',
                         color: !isVerified
                           ? '#c2410c'
                           : hasClaimed
@@ -537,14 +537,14 @@ export const ReceiverFindFood = () => {
                         fontSize: '13px',
                         fontWeight: 700,
                         cursor: hasClaimed ? 'not-allowed' : 'pointer',
-                        boxShadow: hasClaimed || !isVerified ? 'none' : '0 4px 12px rgba(37, 99, 235, 0.3)',
+                        boxShadow: hasClaimed || !isVerified ? 'none' : '0 4px 12px rgba(var(--brand-primary-rgb), 0.3)',
                         transition: 'all 0.15s ease'
                       }}
                       onMouseOver={(e) => {
-                        if (!hasClaimed && isVerified) e.currentTarget.style.background = '#1d4ed8';
+                        if (!hasClaimed && isVerified) e.currentTarget.style.background = 'var(--brand-primary-dark)';
                       }}
                       onMouseOut={(e) => {
-                        if (!hasClaimed && isVerified) e.currentTarget.style.background = '#2563eb';
+                        if (!hasClaimed && isVerified) e.currentTarget.style.background = 'var(--brand-primary)';
                       }}
                     >
                       {!isVerified
@@ -608,7 +608,7 @@ export const ReceiverFindFood = () => {
                               ? '#fff7ed'
                               : hasClaimed
                               ? (isFulfilled ? '#ecfdf5' : '#fffbeb')
-                              : '#2563eb',
+                              : 'var(--brand-primary)',
                             color: !isVerified
                               ? '#c2410c'
                               : hasClaimed
@@ -764,7 +764,7 @@ export const ReceiverFindFood = () => {
                   disabled={submitting}
                   style={{
                     width: '100%',
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '12px',

@@ -84,7 +84,7 @@ export const HelpCentre = () => {
       {/* Hero Header */}
       <section style={{ padding: '64px 24px 48px', textAlign: 'center', background: 'linear-gradient(180deg, #fdf7f2 0%, #f8fafc 100%)', borderBottom: '1px solid rgba(44,35,32,0.06)' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#dbeafe', color: '#1e40af', padding: '6px 14px', borderRadius: '100px', fontSize: '12.5px', fontWeight: 700, marginBottom: '16px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--brand-soft)', color: 'var(--brand-primary-deep)', padding: '6px 14px', borderRadius: '100px', fontSize: '12.5px', fontWeight: 700, marginBottom: '16px' }}>
             <span>🎧</span> ShareMeal Support &amp; Knowledge Base
           </div>
           <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(32px, 5vw, 44px)', fontWeight: 800, color: '#2c2320', margin: '0 0 16px', lineHeight: 1.2 }}>
@@ -135,14 +135,14 @@ export const HelpCentre = () => {
                 gap: '8px',
                 padding: '10px 20px',
                 borderRadius: '100px',
-                border: activeCategory === c.id ? '1.5px solid #2563eb' : '1px solid #eee5e0',
-                background: activeCategory === c.id ? '#2563eb' : '#ffffff',
+                border: activeCategory === c.id ? '1.5px solid var(--brand-primary)' : '1px solid #eee5e0',
+                background: activeCategory === c.id ? 'var(--brand-primary)' : '#ffffff',
                 color: activeCategory === c.id ? '#ffffff' : '#5c504a',
                 fontSize: '13.5px',
                 fontWeight: 700,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                boxShadow: activeCategory === c.id ? '0 4px 12px rgba(37, 99, 235, 0.25)' : 'none'
+                boxShadow: activeCategory === c.id ? '0 4px 12px rgba(var(--brand-primary-rgb), 0.25)' : 'none'
               }}
             >
               <span>{c.icon}</span>
@@ -161,10 +161,10 @@ export const HelpCentre = () => {
                   key={faq.id}
                   style={{
                     background: '#ffffff',
-                    border: isOpen ? '1.5px solid #2563eb' : '1px solid #eee5e0',
+                    border: isOpen ? '1.5px solid var(--brand-primary)' : '1px solid #eee5e0',
                     borderRadius: '16px',
                     overflow: 'hidden',
-                    boxShadow: isOpen ? '0 6px 20px rgba(37, 99, 235, 0.08)' : '0 2px 8px rgba(44, 35, 32, 0.02)',
+                    boxShadow: isOpen ? '0 6px 20px rgba(var(--brand-primary-rgb), 0.08)' : '0 2px 8px rgba(44, 35, 32, 0.02)',
                     transition: 'all 0.2s ease'
                   }}
                 >
@@ -187,7 +187,7 @@ export const HelpCentre = () => {
                     }}
                   >
                     <span>{faq.q}</span>
-                    <span style={{ fontSize: '18px', color: '#2563eb', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }}>
+                    <span style={{ fontSize: '18px', color: 'var(--brand-primary)', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }}>
                       ▼
                     </span>
                   </button>
@@ -218,7 +218,7 @@ export const HelpCentre = () => {
             </p>
             <a
               href="mailto:help@sharemeal.org"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#2563eb', textDecoration: 'none', fontWeight: 700, fontSize: '13.5px' }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--brand-primary)', textDecoration: 'none', fontWeight: 700, fontSize: '13.5px' }}
             >
               help@sharemeal.org ➔
             </a>
@@ -243,7 +243,7 @@ export const HelpCentre = () => {
             </p>
             <Link
               to="/safety"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#2563eb', textDecoration: 'none', fontWeight: 700, fontSize: '13.5px' }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--brand-primary)', textDecoration: 'none', fontWeight: 700, fontSize: '13.5px' }}
             >
               View Safety Protocols ➔
             </Link>

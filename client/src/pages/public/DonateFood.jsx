@@ -40,12 +40,12 @@ export const DonateFood = () => {
         <div style={{ maxWidth: '820px', margin: '0 auto', position: 'relative', zIndex: 5, textAlign: 'center' }}>
           
           {/* Top Pill */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#dbeafe', color: '#1e40af', padding: '6px 16px', borderRadius: '100px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '20px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--brand-soft)', color: 'var(--brand-primary-deep)', padding: '6px 16px', borderRadius: '100px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '20px' }}>
             <span>🎁</span> DONOR COMMUNITY
           </div>
 
           <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, color: '#2c2320', margin: '0 0 16px', letterSpacing: '-1px', lineHeight: 1.15 }}>
-            Donate surplus food, <br /><span style={{ color: '#1d4ed8' }}>nourish your community</span>
+            Donate surplus food, <br /><span style={{ color: 'var(--brand-primary-dark)' }}>nourish your community</span>
           </h1>
 
           <p style={{ fontSize: '17px', lineHeight: 1.6, color: '#6b5d56', maxWidth: '580px', margin: '0 auto 40px' }}>
@@ -59,12 +59,12 @@ export const DonateFood = () => {
               borderRadius: '28px',
               padding: 'clamp(32px, 5vw, 48px)',
               border: '1.5px solid #fed7aa',
-              boxShadow: '0 20px 50px rgba(29, 78, 216, 0.08)',
+              boxShadow: '0 20px 50px rgba(var(--brand-primary-dark-rgb), 0.08)',
               marginBottom: '48px',
               textAlign: 'center'
             }}
           >
-            <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: 'linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', margin: '0 auto 20px', boxShadow: '0 8px 20px rgba(29, 78, 216, 0.15)' }}>
+            <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: 'linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', margin: '0 auto 20px', boxShadow: '0 8px 20px rgba(var(--brand-primary-dark-rgb), 0.15)' }}>
               🍲
             </div>
 
@@ -82,7 +82,7 @@ export const DonateFood = () => {
                 to="/signup?role=donor&step=2"
                 style={{
                   textDecoration: 'none',
-                  background: '#2563eb',
+                  background: 'var(--brand-primary)',
                   color: '#ffffff',
                   padding: '14px 32px',
                   borderRadius: '100px',
@@ -91,7 +91,7 @@ export const DonateFood = () => {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '8px',
-                  boxShadow: '0 12px 28px rgba(37, 99, 235, 0.35)',
+                  boxShadow: '0 12px 28px rgba(var(--brand-primary-rgb), 0.35)',
                   transition: 'transform 0.2s ease, background 0.2s ease'
                 }}
               >
@@ -152,7 +152,7 @@ export const DonateFood = () => {
 
           <div style={{ marginTop: '48px', fontSize: '14px', color: '#6b5d56' }}>
             Looking for food instead?{' '}
-            <Link to="/find-food" style={{ color: '#1d4ed8', fontWeight: 700, textDecoration: 'none' }}>
+            <Link to="/find-food" style={{ color: 'var(--brand-primary-dark)', fontWeight: 700, textDecoration: 'none' }}>
               Browse live available meals →
             </Link>
           </div>

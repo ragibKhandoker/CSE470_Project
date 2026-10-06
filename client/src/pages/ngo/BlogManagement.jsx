@@ -25,8 +25,8 @@ export const BlogManagement = () => {
     title: '',
     slug: '',
     category: 'Volunteer',
-    tag_color: '#1e40af',
-    tag_bg: '#dbeafe',
+    tag_color: 'var(--brand-primary-deep)',
+    tag_bg: 'var(--brand-soft)',
     tag_icon: '🤝',
     read_time: '4 min read',
     summary: '',
@@ -74,8 +74,8 @@ export const BlogManagement = () => {
       title: '',
       slug: '',
       category: 'Volunteer',
-      tag_color: '#1e40af',
-      tag_bg: '#dbeafe',
+      tag_color: 'var(--brand-primary-deep)',
+      tag_bg: 'var(--brand-soft)',
       tag_icon: '🤝',
       read_time: '4 min read',
       summary: '',
@@ -111,8 +111,8 @@ export const BlogManagement = () => {
       title: story.title || '',
       slug: story.slug || '',
       category: story.category || 'Volunteer',
-      tag_color: story.tag_color || '#1e40af',
-      tag_bg: story.tag_bg || '#dbeafe',
+      tag_color: story.tag_color || 'var(--brand-primary-deep)',
+      tag_bg: story.tag_bg || 'var(--brand-soft)',
       tag_icon: story.tag_icon || '🤝',
       read_time: story.read_time || '4 min read',
       summary: story.summary || '',
@@ -307,7 +307,7 @@ export const BlogManagement = () => {
             type="button"
             onClick={handleOpenCreate}
             style={{
-              background: '#2563eb',
+              background: 'var(--brand-primary)',
               color: '#ffffff',
               border: 'none',
               borderRadius: '20px',
@@ -318,11 +318,11 @@ export const BlogManagement = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
+              boxShadow: '0 4px 14px rgba(var(--brand-primary-rgb), 0.35)',
               transition: 'all 0.15s ease'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-            onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'var(--brand-primary-dark)')}
+            onMouseOut={(e) => (e.currentTarget.style.background = 'var(--brand-primary)')}
           >
             <span>+</span> Create New Story
           </button>
@@ -457,7 +457,7 @@ export const BlogManagement = () => {
                         <div style={{ fontWeight: 800, color: '#2c2320', fontSize: '14px', marginBottom: '2px' }}>
                           {story.title}
                         </div>
-                        <div style={{ fontSize: '12px', color: '#1d4ed8', fontWeight: 600 }}>
+                        <div style={{ fontSize: '12px', color: 'var(--brand-primary-dark)', fontWeight: 600 }}>
                           🔗 /stories/{story.slug || story.id}
                         </div>
                       </td>
@@ -466,8 +466,8 @@ export const BlogManagement = () => {
                       <td style={{ verticalAlign: 'middle' }}>
                         <span
                           style={{
-                            background: story.tag_bg || '#dbeafe',
-                            color: story.tag_color || '#1e40af',
+                            background: story.tag_bg || 'var(--brand-soft)',
+                            color: story.tag_color || 'var(--brand-primary-deep)',
                             padding: '3px 10px',
                             borderRadius: '12px',
                             fontSize: '11px',
@@ -500,7 +500,7 @@ export const BlogManagement = () => {
                               textDecoration: 'none',
                               background: '#fff3ee',
                               border: '1.5px solid #ffd4c6',
-                              color: '#1e40af',
+                              color: 'var(--brand-primary-deep)',
                               padding: '6px 13px',
                               borderRadius: '8px',
                               fontSize: '12px',
@@ -594,7 +594,7 @@ export const BlogManagement = () => {
                 <span style={{ fontWeight: 800, fontSize: '14px', color: '#2c2320' }}>
                   Story Live Preview
                 </span>
-                <span style={{ background: previewStory.tag_bg || '#dbeafe', color: previewStory.tag_color || '#1e40af', padding: '3px 10px', borderRadius: '100px', fontSize: '11px', fontWeight: 800 }}>
+                <span style={{ background: previewStory.tag_bg || 'var(--brand-soft)', color: previewStory.tag_color || 'var(--brand-primary-deep)', padding: '3px 10px', borderRadius: '100px', fontSize: '11px', fontWeight: 800 }}>
                   {previewStory.tag_icon || '🏷️'} {previewStory.category || 'Story'}
                 </span>
               </div>
@@ -605,7 +605,7 @@ export const BlogManagement = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     padding: '6px 14px',
                     borderRadius: '8px',
@@ -672,7 +672,7 @@ export const BlogManagement = () => {
                 <div style={{ fontSize: '12px', color: '#9c8e85' }}>
                   ⏱️ {previewStory.read_time || '4 min read'}
                 </div>
-                <div style={{ fontSize: '12px', color: '#1d4ed8', fontWeight: 600 }}>
+                <div style={{ fontSize: '12px', color: 'var(--brand-primary-dark)', fontWeight: 600 }}>
                   🔗 Public URL: <code>/stories/{previewStory.slug || previewStory.id}</code>
                 </div>
               </div>
@@ -684,7 +684,7 @@ export const BlogManagement = () => {
 
               {/* Quote */}
               {previewStory.quote && (
-                <div style={{ background: '#ffffff', borderLeft: '4px solid #2563eb', borderRadius: '12px', padding: '18px 22px', margin: '24px 0', boxShadow: '0 4px 14px rgba(44,35,32,0.04)' }}>
+                <div style={{ background: '#ffffff', borderLeft: '4px solid var(--brand-primary)', borderRadius: '12px', padding: '18px 22px', margin: '24px 0', boxShadow: '0 4px 14px rgba(44,35,32,0.04)' }}>
                   <p style={{ fontFamily: "'Fraunces', serif", fontStyle: 'italic', fontWeight: 600, fontSize: '16px', color: '#2c2320', margin: 0, lineHeight: 1.5 }}>
                     "{previewStory.quote}"
                   </p>
@@ -805,7 +805,7 @@ export const BlogManagement = () => {
                   rel="noopener noreferrer"
                   style={{
                     fontSize: '12px',
-                    color: '#1e40af',
+                    color: 'var(--brand-primary-deep)',
                     fontWeight: 700,
                     textDecoration: 'none',
                     display: 'inline-flex',
@@ -869,10 +869,10 @@ export const BlogManagement = () => {
                     value={formData.category}
                     onChange={(e) => {
                       const cat = e.target.value;
-                      let tag_color = '#1e40af';
-                      let tag_bg = '#dbeafe';
+                      let tag_color = 'var(--brand-primary-deep)';
+                      let tag_bg = 'var(--brand-soft)';
                       let tag_icon = '🤝';
-                      if (cat === 'NGO') { tag_color = '#1d4ed8'; tag_bg = '#eff6ff'; tag_icon = '🏢'; }
+                      if (cat === 'NGO') { tag_color = 'var(--brand-primary-dark)'; tag_bg = 'var(--brand-soft)'; tag_icon = '🏢'; }
                       else if (cat === 'Impact') { tag_color = '#15803d'; tag_bg = '#dcfce7'; tag_icon = '🌱'; }
                       setFormData({ ...formData, category: cat, tag_color, tag_bg, tag_icon });
                     }}
@@ -930,7 +930,7 @@ export const BlogManagement = () => {
                           type="button"
                           onClick={() => fileInputRef.current?.click()}
                           style={{
-                            background: '#2563eb',
+                            background: 'var(--brand-primary)',
                             color: '#fff',
                             border: 'none',
                             padding: '6px 14px',
@@ -973,7 +973,7 @@ export const BlogManagement = () => {
                       background: '#fffaf8',
                       transition: 'border-color 0.2s ease'
                     }}
-                    onMouseOver={(e) => (e.currentTarget.style.borderColor = '#2563eb')}
+                    onMouseOver={(e) => (e.currentTarget.style.borderColor = 'var(--brand-primary)')}
                     onMouseOut={(e) => (e.currentTarget.style.borderColor = '#e0d8d3')}
                   >
                     <div style={{ fontSize: '28px', marginBottom: '6px' }}>📷</div>
@@ -991,7 +991,7 @@ export const BlogManagement = () => {
                   <button
                     type="button"
                     onClick={() => setShowUrlFallback(!showUrlFallback)}
-                    style={{ background: 'none', border: 'none', color: '#2563eb', fontSize: '11px', fontWeight: 600, cursor: 'pointer', padding: 0 }}
+                    style={{ background: 'none', border: 'none', color: 'var(--brand-primary)', fontSize: '11px', fontWeight: 600, cursor: 'pointer', padding: 0 }}
                   >
                     {showUrlFallback ? 'Hide URL input' : 'Or paste image URL directly'}
                   </button>
@@ -1071,7 +1071,7 @@ export const BlogManagement = () => {
                     style={{
                       background: '#fff3ee',
                       border: '1px solid #ffd4c6',
-                      color: '#1e40af',
+                      color: 'var(--brand-primary-deep)',
                       borderRadius: '8px',
                       padding: '5px 12px',
                       fontSize: '11px',
@@ -1175,7 +1175,7 @@ export const BlogManagement = () => {
                   type="submit"
                   disabled={submitting}
                   style={{
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     border: 'none',
                     borderRadius: '10px',
                     padding: '10px 24px',
@@ -1183,7 +1183,7 @@ export const BlogManagement = () => {
                     fontWeight: 700,
                     color: '#ffffff',
                     cursor: submitting ? 'not-allowed' : 'pointer',
-                    boxShadow: '0 4px 12px rgba(37, 99, 235, 0.35)'
+                    boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.35)'
                   }}
                 >
                   {submitting ? 'Saving...' : editingStory ? 'Save Changes' : 'Publish Story →'}

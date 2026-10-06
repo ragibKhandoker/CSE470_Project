@@ -9,7 +9,7 @@ import foodPostService from '../../services/foodPostService';
 const getStatusConfig = (status) => {
   const s = String(status || '').toLowerCase();
   if (s.includes('collected by ngo') || s === 'collected') {
-    return { bg: '#ebf3fe', color: '#2563eb', border: '#bfdbfe', label: 'Collected by NGO' };
+    return { bg: '#ebf3fe', color: 'var(--brand-primary)', border: 'var(--brand-soft-border)', label: 'Collected by NGO' };
   }
   if (s.includes('available') || s === 'pending') {
     return { bg: '#fef9ee', color: '#d97706', border: '#fde68a', label: 'Available' };
@@ -209,11 +209,11 @@ export const MyDonations = () => {
         {pickupRequests.length > 0 && (
           <div style={{ marginBottom: 32 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 4, height: 24, borderRadius: 2, background: '#2563eb' }} />
+              <div style={{ width: 4, height: 24, borderRadius: 2, background: 'var(--brand-primary)' }} />
               <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: '#2c2320', fontFamily: "'Fraunces', serif" }}>
                 🚚 NGO Pickup Requests
               </h3>
-              <span style={{ background: '#2563eb', color: '#fff', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '10px' }}>
+              <span style={{ background: 'var(--brand-primary)', color: '#fff', fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '10px' }}>
                 {pickupRequests.length}
               </span>
             </div>
@@ -224,7 +224,7 @@ export const MyDonations = () => {
                   style={{
                     background: '#fffbf8',
                     borderRadius: '16px',
-                    border: '1px solid rgba(37, 99, 235, 0.2)',
+                    border: '1px solid rgba(var(--brand-primary-rgb), 0.2)',
                     padding: '18px 20px',
                     display: 'flex',
                     alignItems: 'center',
@@ -363,9 +363,9 @@ export const MyDonations = () => {
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                background: viewMode === 'grid' ? '#2563eb' : 'transparent',
+                background: viewMode === 'grid' ? 'var(--brand-primary)' : 'transparent',
                 color: viewMode === 'grid' ? '#ffffff' : '#6b5d56',
-                boxShadow: viewMode === 'grid' ? '0 4px 12px rgba(37, 99, 235, 0.28)' : 'none',
+                boxShadow: viewMode === 'grid' ? '0 4px 12px rgba(var(--brand-primary-rgb), 0.28)' : 'none',
                 transition: 'all 0.18s ease'
               }}
             >
@@ -383,9 +383,9 @@ export const MyDonations = () => {
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                background: viewMode === 'table' ? '#2563eb' : 'transparent',
+                background: viewMode === 'table' ? 'var(--brand-primary)' : 'transparent',
                 color: viewMode === 'table' ? '#ffffff' : '#6b5d56',
-                boxShadow: viewMode === 'table' ? '0 4px 12px rgba(37, 99, 235, 0.28)' : 'none',
+                boxShadow: viewMode === 'table' ? '0 4px 12px rgba(var(--brand-primary-rgb), 0.28)' : 'none',
                 transition: 'all 0.18s ease'
               }}
             >
@@ -437,7 +437,7 @@ export const MyDonations = () => {
             <button
               onClick={() => navigate('/donor/post-food')}
               style={{
-                background: 'linear-gradient(174deg, #60a5fa 0%, #1d4ed8 100%)',
+                background: 'linear-gradient(174deg, var(--brand-primary-light) 0%, var(--brand-primary-dark) 100%)',
                 color: '#ffffff',
                 border: 0,
                 padding: '12px 24px',
@@ -445,7 +445,7 @@ export const MyDonations = () => {
                 fontWeight: 600,
                 fontSize: '14px',
                 cursor: 'pointer',
-                boxShadow: '0 8px 20px -6px rgba(37, 99, 235,0.4)'
+                boxShadow: '0 8px 20px -6px rgba(var(--brand-primary-rgb), 0.4)'
               }}
             >
               + Post New Food
@@ -566,9 +566,9 @@ export const MyDonations = () => {
                           flex: 1,
                           height: '42px',
                           background: '#ffffff',
-                          border: '1.5px solid #2563eb',
+                          border: '1.5px solid var(--brand-primary)',
                           borderRadius: '12px',
-                          color: '#2563eb',
+                          color: 'var(--brand-primary)',
                           fontSize: '14px',
                           fontWeight: 600,
                           cursor: 'pointer',
@@ -735,7 +735,7 @@ export const MyDonations = () => {
                               style={{
                                 background: 'transparent',
                                 border: 0,
-                                color: '#2563eb',
+                                color: 'var(--brand-primary)',
                                 fontSize: '14px',
                                 fontWeight: 700,
                                 cursor: 'pointer',
@@ -941,7 +941,7 @@ export const MyDonations = () => {
                       flex: 1,
                       minWidth: '160px',
                       height: '44px',
-                      background: 'linear-gradient(174deg, #60a5fa 0%, #1d4ed8 100%)',
+                      background: 'linear-gradient(174deg, var(--brand-primary-light) 0%, var(--brand-primary-dark) 100%)',
                       color: '#ffffff',
                       border: 0,
                       borderRadius: '12px',

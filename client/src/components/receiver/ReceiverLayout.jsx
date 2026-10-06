@@ -248,12 +248,12 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                 width: 36,
                 height: 36,
                 borderRadius: 12,
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
-                boxShadow: '0px 6px 14px rgba(37, 99, 235, 0.35)',
+                boxShadow: '0px 6px 14px rgba(var(--brand-primary-rgb), 0.35)',
                 flexShrink: 0
               }}
             >
@@ -287,9 +287,9 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                     fontWeight: 500,
                     boxSizing: 'border-box',
                     transition: 'all 0.15s ease-in-out',
-                    background: isActive ? '#2563eb' : 'transparent',
+                    background: isActive ? 'var(--brand-primary)' : 'transparent',
                     color: isActive ? '#ffffff' : '#6b5d56',
-                    boxShadow: isActive ? '0px 6px 14px rgba(37, 99, 235, 0.45)' : 'none'
+                    boxShadow: isActive ? '0px 6px 14px rgba(var(--brand-primary-rgb), 0.45)' : 'none'
                   }}
                   onMouseOver={(e) => {
                     if (!isActive) e.currentTarget.style.background = '#f7f2ef';
@@ -334,7 +334,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                 height: 38,
                 borderRadius: '50%',
                 background: '#ffe8e0',
-                color: '#1d4ed8',
+                color: 'var(--brand-primary-dark)',
                 fontWeight: 700,
                 fontSize: 14,
                 display: 'flex',
@@ -444,7 +444,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                     position: 'absolute',
                     top: -2,
                     right: -2,
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     fontSize: '10px',
                     fontWeight: 700,
@@ -454,7 +454,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 2px 5px rgba(37, 99, 235, 0.4)'
+                    boxShadow: '0 2px 5px rgba(var(--brand-primary-rgb), 0.4)'
                   }}
                 >
                   {unreadCount}
@@ -499,7 +499,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                           background: 'transparent',
                           border: 'none',
                           fontSize: '11px',
-                          color: '#2563eb',
+                          color: 'var(--brand-primary)',
                           fontWeight: 700,
                           cursor: 'pointer',
                           padding: '2px 6px',
@@ -552,7 +552,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                               type="button"
                               onClick={(e) => handleLeaveReview(e, notif)}
                               style={{
-                                background: 'linear-gradient(135deg, #2563eb 0%, #ea580c 100%)',
+                                background: 'linear-gradient(135deg, var(--brand-primary) 0%, #ea580c 100%)',
                                 color: '#ffffff',
                                 border: 'none',
                                 borderRadius: '6px',
@@ -572,7 +572,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                           )}
 
                           {notif.thread && (
-                            <span style={{ fontSize: '10px', background: '#dbeafe', color: '#ea580c', padding: '2px 8px', borderRadius: '6px', fontWeight: 700 }}>
+                            <span style={{ fontSize: '10px', background: 'var(--brand-soft)', color: '#ea580c', padding: '2px 8px', borderRadius: '6px', fontWeight: 700 }}>
                               📋 View Claim Thread →
                             </span>
                           )}
@@ -597,7 +597,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                 height: 38,
                 borderRadius: '50%',
                 background: '#ffe8e0',
-                color: '#1d4ed8',
+                color: 'var(--brand-primary-dark)',
                 fontWeight: 700,
                 fontSize: 13,
                 display: 'flex',

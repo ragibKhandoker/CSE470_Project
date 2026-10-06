@@ -229,7 +229,7 @@ export const ReceiverHistory = () => {
       case 'pending':
         return { label: '🚩 Reported (Pending)', bg: '#fff7ed', color: '#c2410c', border: '#fdba74' };
       case 'investigating':
-        return { label: '🔍 Under Investigation', bg: '#eff6ff', color: '#1d4ed8', border: '#93c5fd' };
+        return { label: '🔍 Under Investigation', bg: 'var(--brand-soft)', color: 'var(--brand-primary-dark)', border: '#93c5fd' };
       case 'resolved':
         return { label: '✅ Resolved', bg: '#ecfdf5', color: '#047857', border: '#6ee7b7' };
       case 'dismissed':

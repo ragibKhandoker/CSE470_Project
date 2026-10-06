@@ -184,9 +184,9 @@ export const ReceiverProfile = () => {
                 setError('');
               }}
               style={{
-                background: isEditing ? '#2563eb' : '#ffffff',
-                color: isEditing ? '#ffffff' : '#2563eb',
-                border: '1.5px solid #2563eb',
+                background: isEditing ? 'var(--brand-primary)' : '#ffffff',
+                color: isEditing ? '#ffffff' : 'var(--brand-primary)',
+                border: '1.5px solid var(--brand-primary)',
                 borderRadius: '24px',
                 padding: '8px 20px',
                 fontSize: '13px',
@@ -288,7 +288,7 @@ export const ReceiverProfile = () => {
                 style={{
                   width: `${completionPercentage}%`,
                   height: '100%',
-                  background: completionPercentage === 100 ? 'linear-gradient(90deg, #10b981, #059669)' : 'linear-gradient(90deg, #2563eb, #1d4ed8)',
+                  background: completionPercentage === 100 ? 'linear-gradient(90deg, #10b981, #059669)' : 'linear-gradient(90deg, var(--brand-primary), var(--brand-primary-dark))',
                   borderRadius: '100px',
                   transition: 'width 0.4s ease'
                 }}
@@ -366,7 +366,7 @@ export const ReceiverProfile = () => {
                       type="button"
                       onClick={() => setIsEditing(true)}
                       style={{
-                        background: '#2563eb',
+                        background: 'var(--brand-primary)',
                         color: '#fff',
                         border: 'none',
                         fontSize: '11px',
@@ -421,10 +421,10 @@ export const ReceiverProfile = () => {
                   background: isEditing ? '#ffffff' : '#fcf9f6',
                   borderRadius: '14px',
                   padding: '12px 16px',
-                  border: isEditing ? '1.5px solid #2563eb' : '1px solid #f0e9e4'
+                  border: isEditing ? '1.5px solid var(--brand-primary)' : '1px solid #f0e9e4'
                 }}
               >
-                <span style={{ fontSize: '16px', color: '#2563eb' }}>👤</span>
+                <span style={{ fontSize: '16px', color: 'var(--brand-primary)' }}>👤</span>
                 {isEditing ? (
                   <input
                     type="text"
@@ -455,10 +455,10 @@ export const ReceiverProfile = () => {
                   background: isEditing ? '#ffffff' : '#fcf9f6',
                   borderRadius: '14px',
                   padding: '12px 16px',
-                  border: isEditing ? '1.5px solid #2563eb' : '1px solid #f0e9e4'
+                  border: isEditing ? '1.5px solid var(--brand-primary)' : '1px solid #f0e9e4'
                 }}
               >
-                <span style={{ fontSize: '16px', color: '#2563eb' }}>📞</span>
+                <span style={{ fontSize: '16px', color: 'var(--brand-primary)' }}>📞</span>
                 {isEditing ? (
                   <input
                     type="text"
@@ -489,10 +489,10 @@ export const ReceiverProfile = () => {
                   background: isEditing ? '#ffffff' : '#fcf9f6',
                   borderRadius: '14px',
                   padding: '12px 16px',
-                  border: isEditing ? '1.5px solid #2563eb' : '1px solid #f0e9e4'
+                  border: isEditing ? '1.5px solid var(--brand-primary)' : '1px solid #f0e9e4'
                 }}
               >
-                <span style={{ fontSize: '16px', color: '#2563eb' }}>✉️</span>
+                <span style={{ fontSize: '16px', color: 'var(--brand-primary)' }}>✉️</span>
                 {isEditing ? (
                   <input
                     type="email"
@@ -523,10 +523,10 @@ export const ReceiverProfile = () => {
                   background: isEditing ? '#ffffff' : '#fcf9f6',
                   borderRadius: '14px',
                   padding: '12px 16px',
-                  border: isEditing ? '1.5px solid #2563eb' : '1px solid #f0e9e4'
+                  border: isEditing ? '1.5px solid var(--brand-primary)' : '1px solid #f0e9e4'
                 }}
               >
-                <span style={{ fontSize: '16px', color: '#2563eb' }}>📍</span>
+                <span style={{ fontSize: '16px', color: 'var(--brand-primary)' }}>📍</span>
                 {isEditing ? (
                   <input
                     type="text"
@@ -557,10 +557,10 @@ export const ReceiverProfile = () => {
                   background: isEditing ? '#ffffff' : '#fcf9f6',
                   borderRadius: '14px',
                   padding: '12px 16px',
-                  border: isEditing ? '1.5px solid #2563eb' : '1px solid #f0e9e4'
+                  border: isEditing ? '1.5px solid var(--brand-primary)' : '1px solid #f0e9e4'
                 }}
               >
-                <span style={{ fontSize: '16px', color: '#2563eb' }}>🪪</span>
+                <span style={{ fontSize: '16px', color: 'var(--brand-primary)' }}>🪪</span>
                 {isEditing ? (
                   <input
                     type="text"
@@ -591,7 +591,7 @@ export const ReceiverProfile = () => {
                   background: isEditing ? '#ffffff' : '#fcf9f6',
                   borderRadius: '14px',
                   padding: '16px',
-                  border: isEditing ? '1.5px solid #2563eb' : '1px solid #f0e9e4'
+                  border: isEditing ? '1.5px solid var(--brand-primary)' : '1px solid #f0e9e4'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -649,7 +649,7 @@ export const ReceiverProfile = () => {
                   disabled={saving}
                   style={{
                     flex: 1,
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '12px',
@@ -657,7 +657,7 @@ export const ReceiverProfile = () => {
                     fontSize: '14px',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
+                    boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.25)'
                   }}
                 >
                   {saving ? 'Saving & Uploading...' : 'Save Profile & Documents →'}
@@ -701,7 +701,7 @@ export const ReceiverProfile = () => {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '18px', color: '#2563eb' }}>👁️</span>
+              <span style={{ fontSize: '18px', color: 'var(--brand-primary)' }}>👁️</span>
               <span style={{ fontSize: '16px', fontWeight: 700, color: '#2c2320' }}>
                 Anonymous Mode
               </span>
@@ -727,7 +727,7 @@ export const ReceiverProfile = () => {
                 width: '48px',
                 height: '26px',
                 borderRadius: '14px',
-                background: isAnonymous ? '#2563eb' : '#d1d5db',
+                background: isAnonymous ? 'var(--brand-primary)' : '#d1d5db',
                 border: 'none',
                 cursor: 'pointer',
                 position: 'relative',

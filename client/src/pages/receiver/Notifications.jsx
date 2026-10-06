@@ -89,7 +89,7 @@ export const ReceiverNotifications = () => {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#2563eb',
+                color: 'var(--brand-primary)',
                 fontSize: '14px',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -185,7 +185,7 @@ export const ReceiverNotifications = () => {
                     style={{
                       background: 'transparent',
                       border: 'none',
-                      color: '#2563eb',
+                      color: 'var(--brand-primary)',
                       fontSize: '13px',
                       fontWeight: 700,
                       cursor: 'pointer'

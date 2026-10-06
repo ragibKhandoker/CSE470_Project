@@ -125,7 +125,7 @@ export const PasswordResetRequestModal = ({ isOpen, onClose, user, token }) => {
             <button
               onClick={handleClose}
               style={{
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#fff',
                 border: 'none',
                 padding: '12px 28px',
@@ -146,8 +146,8 @@ export const PasswordResetRequestModal = ({ isOpen, onClose, user, token }) => {
                   width: '44px',
                   height: '44px',
                   borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #fff1ec, #dbeafe)',
-                  color: '#2563eb',
+                  background: 'linear-gradient(135deg, #fff1ec, var(--brand-soft))',
+                  color: 'var(--brand-primary)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -263,7 +263,7 @@ export const PasswordResetRequestModal = ({ isOpen, onClose, user, token }) => {
                   type="submit"
                   disabled={submitting}
                   style={{
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     border: 'none',
                     borderRadius: '12px',
                     padding: '11px 24px',
@@ -271,7 +271,7 @@ export const PasswordResetRequestModal = ({ isOpen, onClose, user, token }) => {
                     fontWeight: 700,
                     color: '#ffffff',
                     cursor: submitting ? 'not-allowed' : 'pointer',
-                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)'
+                    boxShadow: '0 4px 14px rgba(var(--brand-primary-rgb), 0.35)'
                   }}
                 >
                   {submitting ? 'Submitting...' : 'Send Request to Super Admin →'}

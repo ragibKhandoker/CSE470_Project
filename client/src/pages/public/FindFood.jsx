@@ -17,7 +17,7 @@ L.Icon.Default.mergeOptions({
 // Custom Food Pin Icon
 const createFoodMarkerIcon = (type) => {
   const isVeg = (type || '').toLowerCase().includes('veg') && !(type || '').toLowerCase().includes('non');
-  const color = isVeg ? '#10b981' : '#2563eb';
+  const color = isVeg ? '#10b981' : 'var(--brand-primary)';
   return L.divIcon({
     className: 'custom-map-pin',
     html: `<div style="background: ${color}; color: #fff; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; border: 3px solid #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">${isVeg ? '🥬' : '🍲'}</div>`,
@@ -111,12 +111,12 @@ export const FindFood = () => {
           {/* Top Hero Section */}
           <div style={{ textAlign: 'center', maxWidth: '820px', margin: '0 auto 48px' }}>
             {/* Top Pill */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#dbeafe', color: '#1e40af', padding: '6px 16px', borderRadius: '100px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '20px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--brand-soft)', color: 'var(--brand-primary-deep)', padding: '6px 16px', borderRadius: '100px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: '20px' }}>
               <span>🔍</span> RECEIVER COMMUNITY
             </div>
 
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, color: '#2c2320', margin: '0 0 16px', letterSpacing: '-1px', lineHeight: 1.15 }}>
-              Find fresh meals, <br /><span style={{ color: '#1d4ed8' }}>nourish yourself &amp; family</span>
+              Find fresh meals, <br /><span style={{ color: 'var(--brand-primary-dark)' }}>nourish yourself &amp; family</span>
             </h1>
 
             <p style={{ fontSize: '17px', lineHeight: 1.6, color: '#6b5d56', maxWidth: '620px', margin: '0 auto 40px' }}>
@@ -130,12 +130,12 @@ export const FindFood = () => {
                 borderRadius: '28px',
                 padding: 'clamp(32px, 5vw, 48px)',
                 border: '1.5px solid #fed7aa',
-                boxShadow: '0 20px 50px rgba(29, 78, 216, 0.08)',
+                boxShadow: '0 20px 50px rgba(var(--brand-primary-dark-rgb), 0.08)',
                 marginBottom: '40px',
                 textAlign: 'center'
               }}
             >
-              <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: 'linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', margin: '0 auto 20px', boxShadow: '0 8px 20px rgba(29, 78, 216, 0.15)' }}>
+              <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: 'linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', margin: '0 auto 20px', boxShadow: '0 8px 20px rgba(var(--brand-primary-dark-rgb), 0.15)' }}>
                 🥗
               </div>
 
@@ -153,7 +153,7 @@ export const FindFood = () => {
                   to="/signup?role=receiver&step=2"
                   style={{
                     textDecoration: 'none',
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     padding: '14px 32px',
                     borderRadius: '100px',
@@ -162,7 +162,7 @@ export const FindFood = () => {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
-                    boxShadow: '0 12px 28px rgba(37, 99, 235, 0.35)',
+                    boxShadow: '0 12px 28px rgba(var(--brand-primary-rgb), 0.35)',
                     transition: 'transform 0.2s ease, background 0.2s ease'
                   }}
                 >
@@ -223,7 +223,7 @@ export const FindFood = () => {
 
             <div style={{ fontSize: '14px', color: '#6b5d56' }}>
               Want to donate surplus food instead?{' '}
-              <Link to="/donate" style={{ color: '#1d4ed8', fontWeight: 700, textDecoration: 'none' }}>
+              <Link to="/donate" style={{ color: 'var(--brand-primary-dark)', fontWeight: 700, textDecoration: 'none' }}>
                 Donate food to community →
               </Link>
             </div>
@@ -253,7 +253,7 @@ export const FindFood = () => {
                     padding: '8px 16px',
                     borderRadius: '8px',
                     border: 0,
-                    background: viewMode === 'map' ? '#2563eb' : 'transparent',
+                    background: viewMode === 'map' ? 'var(--brand-primary)' : 'transparent',
                     color: viewMode === 'map' ? '#ffffff' : '#2c2320',
                     fontWeight: 700,
                     fontSize: '13px',
@@ -269,7 +269,7 @@ export const FindFood = () => {
                     padding: '8px 16px',
                     borderRadius: '8px',
                     border: 0,
-                    background: viewMode === 'grid' ? '#2563eb' : 'transparent',
+                    background: viewMode === 'grid' ? 'var(--brand-primary)' : 'transparent',
                     color: viewMode === 'grid' ? '#ffffff' : '#2c2320',
                     fontWeight: 700,
                     fontSize: '13px',
@@ -311,9 +311,9 @@ export const FindFood = () => {
                       padding: '8px 14px',
                       borderRadius: '100px',
                       border: '1px solid',
-                      borderColor: selectedType === type ? '#2563eb' : '#e0d8d3',
-                      background: selectedType === type ? '#dbeafe' : '#ffffff',
-                      color: selectedType === type ? '#1e40af' : '#6b5d56',
+                      borderColor: selectedType === type ? 'var(--brand-primary)' : '#e0d8d3',
+                      background: selectedType === type ? 'var(--brand-soft)' : '#ffffff',
+                      color: selectedType === type ? 'var(--brand-primary-deep)' : '#6b5d56',
                       fontWeight: 600,
                       fontSize: '13px',
                       cursor: 'pointer'
@@ -348,7 +348,7 @@ export const FindFood = () => {
                       >
                         <Popup>
                           <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '4px', maxWidth: '240px' }}>
-                            <span style={{ background: '#dbeafe', color: '#1e40af', padding: '2px 8px', borderRadius: '100px', fontSize: '11px', fontWeight: 700, display: 'inline-block', marginBottom: '4px' }}>
+                            <span style={{ background: 'var(--brand-soft)', color: 'var(--brand-primary-deep)', padding: '2px 8px', borderRadius: '100px', fontSize: '11px', fontWeight: 700, display: 'inline-block', marginBottom: '4px' }}>
                               {post.food_type} • {post.quantity} Meals
                             </span>
                             <h4 style={{ margin: '4px 0', fontSize: '14px', fontWeight: 700, color: '#2c2320' }}>
@@ -357,12 +357,12 @@ export const FindFood = () => {
                             <p style={{ margin: '2px 0 4px', fontSize: '11px', color: '#6b5d56' }}>
                               📍 {post.district}, {post.thana}
                             </p>
-                            <p style={{ margin: '4px 0 8px', fontSize: '11px', color: '#2563eb', fontWeight: 600 }}>
+                            <p style={{ margin: '4px 0 8px', fontSize: '11px', color: 'var(--brand-primary)', fontWeight: 600 }}>
                               ⏰ Expires: {new Date(post.expiry_time).toLocaleString()}
                             </p>
                             <button
                               onClick={() => setSelectedPost(post)}
-                              style={{ width: '100%', background: '#2563eb', color: '#fff', border: 0, padding: '6px 10px', borderRadius: '6px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', marginBottom: '4px' }}
+                              style={{ width: '100%', background: 'var(--brand-primary)', color: '#fff', border: 0, padding: '6px 10px', borderRadius: '6px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', marginBottom: '4px' }}
                             >
                               View Details →
                             </button>
@@ -410,7 +410,7 @@ export const FindFood = () => {
                           <span style={{ background: '#e3f5ea', color: '#227a55', padding: '3px 10px', borderRadius: '100px', fontSize: '12px', fontWeight: 700 }}>
                             {post.food_type}
                           </span>
-                          <span style={{ fontSize: '12px', fontWeight: 700, color: '#2563eb', background: '#fff0ec', padding: '3px 10px', borderRadius: '100px' }}>
+                          <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--brand-primary)', background: '#fff0ec', padding: '3px 10px', borderRadius: '100px' }}>
                             🍲 {post.quantity} Servings
                           </span>
                         </div>
@@ -436,7 +436,7 @@ export const FindFood = () => {
                         </button>
                         <button
                           onClick={() => setShowSignupPromptModal(post)}
-                          style={{ flex: 1, background: '#2563eb', color: '#ffffff', border: 0, padding: '10px', borderRadius: '10px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+                          style={{ flex: 1, background: 'var(--brand-primary)', color: '#ffffff', border: 0, padding: '10px', borderRadius: '10px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
                         >
                           🍱 Claim Meal
                         </button>
@@ -483,7 +483,7 @@ export const FindFood = () => {
                   setSelectedPost(null);
                   setShowSignupPromptModal(target);
                 }}
-                style={{ background: '#2563eb', color: '#ffffff', border: 0, borderRadius: '8px', padding: '10px 18px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+                style={{ background: 'var(--brand-primary)', color: '#ffffff', border: 0, borderRadius: '8px', padding: '10px 18px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
               >
                 🍱 Claim This Meal
               </button>
@@ -496,7 +496,7 @@ export const FindFood = () => {
       {showSignupPromptModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', zIndex: 3200 }}>
           <div style={{ width: '100%', maxWidth: '460px', background: '#ffffff', borderRadius: '24px', padding: '32px', boxShadow: '0 20px 50px rgba(0,0,0,0.3)', color: '#2c2320', textAlign: 'center' }}>
-            <div style={{ width: '60px', height: '60px', borderRadius: '20px', background: '#dbeafe', color: '#1e40af', fontSize: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+            <div style={{ width: '60px', height: '60px', borderRadius: '20px', background: 'var(--brand-soft)', color: 'var(--brand-primary-deep)', fontSize: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
               🎁
             </div>
 
@@ -513,13 +513,13 @@ export const FindFood = () => {
                 to="/signup?role=receiver&step=2"
                 style={{
                   textDecoration: 'none',
-                  background: '#2563eb',
+                  background: 'var(--brand-primary)',
                   color: '#ffffff',
                   padding: '13px 20px',
                   borderRadius: '100px',
                   fontSize: '14px',
                   fontWeight: 700,
-                  boxShadow: '0 8px 20px rgba(37, 99, 235, 0.35)'
+                  boxShadow: '0 8px 20px rgba(var(--brand-primary-rgb), 0.35)'
                 }}
               >
                 ✨ Sign up to Receive Food →

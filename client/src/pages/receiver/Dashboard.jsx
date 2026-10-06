@@ -185,11 +185,11 @@ export const ReceiverDashboard = () => {
         {/* Blue Hero Card matching Figma */}
         <div
           style={{
-            background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+            background: 'linear-gradient(135deg, #3b82f6 0%, var(--brand-primary) 100%)',
             borderRadius: '24px',
             padding: '32px',
             color: '#ffffff',
-            boxShadow: '0 12px 30px rgba(37, 99, 235, 0.25)',
+            boxShadow: '0 12px 30px rgba(var(--brand-primary-rgb), 0.25)',
             position: 'relative',
             overflow: 'hidden'
           }}
@@ -279,7 +279,7 @@ export const ReceiverDashboard = () => {
                     width: '20px',
                     height: '20px',
                     borderRadius: '50%',
-                    background: isAnonymous ? '#2563eb' : '#ffffff',
+                    background: isAnonymous ? 'var(--brand-primary)' : '#ffffff',
                     position: 'absolute',
                     top: 2,
                     left: isAnonymous ? '24px' : '2px',
@@ -324,7 +324,7 @@ export const ReceiverDashboard = () => {
                 type="submit"
                 style={{
                   background: '#ffffff',
-                  color: '#2563eb',
+                  color: 'var(--brand-primary)',
                   border: 'none',
                   borderRadius: '10px',
                   padding: '6px 14px',
@@ -426,11 +426,11 @@ export const ReceiverDashboard = () => {
                     gap: '6px',
                     padding: '4px 14px',
                     borderRadius: '20px',
-                    background: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? '#eff6ff' : '#fffbeb',
-                    color: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? '#2563eb' : '#b45309',
+                    background: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? 'var(--brand-soft)' : '#fffbeb',
+                    color: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? 'var(--brand-primary)' : '#b45309',
                     fontSize: '12px',
                     fontWeight: 700,
-                    border: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? '1px solid #bfdbfe' : '1px solid #fde68a'
+                    border: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? '1px solid var(--brand-soft-border)' : '1px solid #fde68a'
                   }}
                 >
                   <span
@@ -438,7 +438,7 @@ export const ReceiverDashboard = () => {
                       width: '6px',
                       height: '6px',
                       borderRadius: '50%',
-                      background: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? '#2563eb' : '#b45309'
+                      background: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? 'var(--brand-primary)' : '#b45309'
                     }}
                   />
                   <span style={{ textTransform: 'capitalize' }}>{activeRequest.status}</span>
@@ -462,14 +462,14 @@ export const ReceiverDashboard = () => {
                     style={{
                       width: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? '100%' : '50%',
                       height: '100%',
-                      background: '#2563eb'
+                      background: 'var(--brand-primary)'
                     }}
                   />
                 </div>
 
                 {/* Step 1 */}
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', zIndex: 2 }}>
-                  <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#2563eb', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 700 }}>
+                  <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'var(--brand-primary)', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: 700 }}>
                     ✓
                   </div>
                   <span style={{ fontSize: '12px', fontWeight: 600, color: '#2c2320' }}>Requested</span>
@@ -482,7 +482,7 @@ export const ReceiverDashboard = () => {
                       width: '30px',
                       height: '30px',
                       borderRadius: '50%',
-                      background: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? '#2563eb' : '#e2e8f0',
+                      background: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? 'var(--brand-primary)' : '#e2e8f0',
                       color: activeRequest.status === 'approved' || activeRequest.status === 'accepted' ? '#ffffff' : '#64748b',
                       display: 'flex',
                       alignItems: 'center',
@@ -503,7 +503,7 @@ export const ReceiverDashboard = () => {
                       width: '30px',
                       height: '30px',
                       borderRadius: '50%',
-                      background: activeRequest.pickup_code ? '#2563eb' : '#e2e8f0',
+                      background: activeRequest.pickup_code ? 'var(--brand-primary)' : '#e2e8f0',
                       color: activeRequest.pickup_code ? '#ffffff' : '#64748b',
                       display: 'flex',
                       alignItems: 'center',
@@ -534,18 +534,18 @@ export const ReceiverDashboard = () => {
                   }}
                 >
                   <div>
-                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#2563eb', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--brand-primary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                       Your Pickup Code
                     </span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '2px' }}>
-                      <span style={{ fontSize: '24px', fontWeight: 800, color: '#2563eb', fontFamily: 'monospace', letterSpacing: '1px' }}>
+                      <span style={{ fontSize: '24px', fontWeight: 800, color: 'var(--brand-primary)', fontFamily: 'monospace', letterSpacing: '1px' }}>
                         {activeRequest.pickup_code}
                       </span>
                       <button
                         onClick={() => handleCopyCode(activeRequest.pickup_code)}
                         style={{
-                          background: 'rgba(37, 99, 235, 0.1)',
-                          color: '#2563eb',
+                          background: 'rgba(var(--brand-primary-rgb), 0.1)',
+                          color: 'var(--brand-primary)',
                           border: 'none',
                           borderRadius: '8px',
                           padding: '4px 10px',
@@ -563,8 +563,8 @@ export const ReceiverDashboard = () => {
                     onClick={() => setDirectionsModalOpen(true)}
                     style={{
                       background: '#ffffff',
-                      color: '#2563eb',
-                      border: '1.5px solid #2563eb',
+                      color: 'var(--brand-primary)',
+                      border: '1.5px solid var(--brand-primary)',
                       borderRadius: '30px',
                       padding: '10px 22px',
                       fontSize: '13px',
@@ -606,14 +606,14 @@ export const ReceiverDashboard = () => {
                 to="/receiver/find-food"
                 style={{
                   marginTop: '8px',
-                  background: '#2563eb',
+                  background: 'var(--brand-primary)',
                   color: '#ffffff',
                   textDecoration: 'none',
                   padding: '10px 24px',
                   borderRadius: '20px',
                   fontSize: '13px',
                   fontWeight: 700,
-                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+                  boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.3)'
                 }}
               >
                 Find Food
@@ -630,7 +630,7 @@ export const ReceiverDashboard = () => {
             </h3>
             <Link
               to="/receiver/find-food"
-              style={{ fontSize: '13px', fontWeight: 700, color: '#2563eb', textDecoration: 'none' }}
+              style={{ fontSize: '13px', fontWeight: 700, color: 'var(--brand-primary)', textDecoration: 'none' }}
             >
               See all
             </Link>
@@ -741,7 +741,7 @@ export const ReceiverDashboard = () => {
                             ? '#fff7ed'
                             : hasClaimed
                             ? (isFulfilled ? '#ecfdf5' : '#fffbeb')
-                            : '#2563eb',
+                            : 'var(--brand-primary)',
                           color: !isVerified
                             ? '#c2410c'
                             : hasClaimed
@@ -757,14 +757,14 @@ export const ReceiverDashboard = () => {
                           fontSize: '13px',
                           fontWeight: 700,
                           cursor: hasClaimed ? 'not-allowed' : 'pointer',
-                          boxShadow: hasClaimed || !isVerified ? 'none' : '0 4px 12px rgba(37, 99, 235, 0.3)',
+                          boxShadow: hasClaimed || !isVerified ? 'none' : '0 4px 12px rgba(var(--brand-primary-rgb), 0.3)',
                           transition: 'all 0.15s ease'
                         }}
                         onMouseOver={(e) => {
-                          if (!hasClaimed && isVerified) e.currentTarget.style.background = '#1d4ed8';
+                          if (!hasClaimed && isVerified) e.currentTarget.style.background = 'var(--brand-primary-dark)';
                         }}
                         onMouseOut={(e) => {
-                          if (!hasClaimed && isVerified) e.currentTarget.style.background = '#2563eb';
+                          if (!hasClaimed && isVerified) e.currentTarget.style.background = 'var(--brand-primary)';
                         }}
                       >
                         {!isVerified
@@ -828,7 +828,7 @@ export const ReceiverDashboard = () => {
               <div style={{ fontSize: '13px', color: '#6b5d56' }}>
                 📍 {activeRequest.thana || 'Dhaka'}, {activeRequest.district || 'Bangladesh'}
               </div>
-              <div style={{ fontSize: '12px', color: '#2563eb', fontWeight: 600, marginTop: '8px' }}>
+              <div style={{ fontSize: '12px', color: 'var(--brand-primary)', fontWeight: 600, marginTop: '8px' }}>
                 Pickup Code: {activeRequest.pickup_code}
               </div>
             </div>
@@ -845,7 +845,7 @@ export const ReceiverDashboard = () => {
                 display: 'block',
                 width: '100%',
                 textAlign: 'center',
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 textDecoration: 'none',
                 padding: '12px',
@@ -1005,7 +1005,7 @@ export const ReceiverDashboard = () => {
                   disabled={submitting}
                   style={{
                     width: '100%',
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '12px',

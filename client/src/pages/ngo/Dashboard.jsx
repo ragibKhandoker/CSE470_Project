@@ -465,7 +465,7 @@ export const NgoDashboard = () => {
             {[
               { label: 'Requested', count: stageCounts.requested, icon: '⏳', color: '#b45309', bg: '#fffbeb' },
               { label: 'Approved', count: stageCounts.approved, icon: '✅', color: '#047857', bg: '#ecfdf5' },
-              { label: 'Assigned', count: stageCounts.assigned, icon: '🚚', color: '#1d4ed8', bg: '#eff6ff' },
+              { label: 'Assigned', count: stageCounts.assigned, icon: '🚚', color: 'var(--brand-primary-dark)', bg: 'var(--brand-soft)' },
               { label: 'Picked Up', count: stageCounts.picked_up, icon: '📦', color: '#6d28d9', bg: '#f5f3ff' },
               { label: 'At Hub', count: stageCounts.at_hub, icon: '🏢', color: '#92400e', bg: '#fef3c7' },
               { label: 'Distributing', count: stageCounts.distributing, icon: '🍲', color: '#c2410c', bg: '#fff7ed' },
@@ -519,7 +519,7 @@ export const NgoDashboard = () => {
                 {stats.totalCollections}
               </div>
             </div>
-            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: '#2563eb', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'var(--brand-primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>
               🚚
             </div>
           </div>
@@ -551,18 +551,18 @@ export const NgoDashboard = () => {
 
           <div
             style={{
-              background: '#eff6ff',
+              background: 'var(--brand-soft)',
               borderRadius: '20px',
               padding: '22px',
               boxShadow: '0 4px 18px rgba(44, 35, 32, 0.04)',
-              border: '1px solid #bfdbfe',
+              border: '1px solid var(--brand-soft-border)',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-start'
             }}
           >
             <div>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#1e40af', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--brand-primary-deep)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 ACTIVE PICKUP HUBS
               </span>
               <div style={{ fontSize: '30px', fontWeight: 800, color: '#1e3a8a', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>
@@ -628,7 +628,7 @@ export const NgoDashboard = () => {
                 type="button"
                 onClick={() => setShowAddStaffModal(true)}
                 style={{
-                  background: '#2563eb',
+                  background: 'var(--brand-primary)',
                   color: '#fff',
                   border: 'none',
                   padding: '9px 18px',
@@ -636,7 +636,7 @@ export const NgoDashboard = () => {
                   fontSize: '13px',
                   fontWeight: 700,
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+                  boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.3)'
                 }}
               >
                 + Add Staff Member
@@ -702,8 +702,8 @@ export const NgoDashboard = () => {
                               width: '36px',
                               height: '36px',
                               borderRadius: '50%',
-                              background: isReceiver ? '#dbeafe' : '#ffedd5',
-                              color: isReceiver ? '#1e40af' : '#9a3412',
+                              background: isReceiver ? 'var(--brand-soft)' : '#ffedd5',
+                              color: isReceiver ? 'var(--brand-primary-deep)' : '#9a3412',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -733,9 +733,9 @@ export const NgoDashboard = () => {
                             fontSize: '12.5px',
                             fontWeight: 700,
                             whiteSpace: 'nowrap',
-                            background: isReceiver ? '#eff6ff' : '#fff7ed',
-                            color: isReceiver ? '#1e40af' : '#c2410c',
-                            border: `1.5px solid ${isReceiver ? '#bfdbfe' : '#fed7aa'}`
+                            background: isReceiver ? 'var(--brand-soft)' : '#fff7ed',
+                            color: isReceiver ? 'var(--brand-primary-deep)' : '#c2410c',
+                            border: `1.5px solid ${isReceiver ? 'var(--brand-soft-border)' : '#fed7aa'}`
                           }}>
                             {isReceiver ? '🚚 Receiving Staff' : '🍲 Distributor Staff'}
                           </span>
@@ -867,8 +867,8 @@ export const NgoDashboard = () => {
                     width: '54px',
                     height: '54px',
                     borderRadius: '16px',
-                    background: viewStaffModal.ngo_staff_role === 'receiving_staff' ? '#dbeafe' : '#ffedd5',
-                    color: viewStaffModal.ngo_staff_role === 'receiving_staff' ? '#1e40af' : '#9a3412',
+                    background: viewStaffModal.ngo_staff_role === 'receiving_staff' ? 'var(--brand-soft)' : '#ffedd5',
+                    color: viewStaffModal.ngo_staff_role === 'receiving_staff' ? 'var(--brand-primary-deep)' : '#9a3412',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -887,8 +887,8 @@ export const NgoDashboard = () => {
                         borderRadius: '999px',
                         fontSize: '11px',
                         fontWeight: 700,
-                        background: viewStaffModal.ngo_staff_role === 'receiving_staff' ? '#eff6ff' : '#fff7ed',
-                        color: viewStaffModal.ngo_staff_role === 'receiving_staff' ? '#1e40af' : '#c2410c'
+                        background: viewStaffModal.ngo_staff_role === 'receiving_staff' ? 'var(--brand-soft)' : '#fff7ed',
+                        color: viewStaffModal.ngo_staff_role === 'receiving_staff' ? 'var(--brand-primary-deep)' : '#c2410c'
                       }}>
                         {viewStaffModal.ngo_staff_role === 'receiving_staff' ? '🚚 Receiving Staff' : '🍲 Distributor Staff'}
                       </span>
@@ -1096,8 +1096,8 @@ export const NgoDashboard = () => {
                 <div
                   onClick={() => setSelectedNewRole('receiving_staff')}
                   style={{
-                    border: selectedNewRole === 'receiving_staff' ? '2px solid #2563eb' : '1.5px solid #e5e7eb',
-                    background: selectedNewRole === 'receiving_staff' ? '#eff6ff' : '#ffffff',
+                    border: selectedNewRole === 'receiving_staff' ? '2px solid var(--brand-primary)' : '1.5px solid #e5e7eb',
+                    background: selectedNewRole === 'receiving_staff' ? 'var(--brand-soft)' : '#ffffff',
                     borderRadius: '14px',
                     padding: '14px 16px',
                     cursor: 'pointer',
@@ -1115,7 +1115,7 @@ export const NgoDashboard = () => {
                     style={{ marginTop: 3, cursor: 'pointer' }}
                   />
                   <div>
-                    <div style={{ fontSize: '14px', fontWeight: 800, color: '#1e40af' }}>
+                    <div style={{ fontSize: '14px', fontWeight: 800, color: 'var(--brand-primary-deep)' }}>
                       🚚 Receiving Staff
                     </div>
                     <div style={{ fontSize: '12px', color: '#4b5563', marginTop: 4, lineHeight: 1.4 }}>
@@ -1294,7 +1294,7 @@ export const NgoDashboard = () => {
                   <button
                     type="submit"
                     disabled={savingEdit}
-                    style={{ padding: '9px 24px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}
+                    style={{ padding: '9px 24px', background: 'var(--brand-primary)', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}
                   >
                     {savingEdit ? 'Saving...' : 'Save Changes'}
                   </button>
@@ -1433,7 +1433,7 @@ export const NgoDashboard = () => {
                   <button
                     type="submit"
                     disabled={addingStaff}
-                    style={{ padding: '9px 24px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}
+                    style={{ padding: '9px 24px', background: 'var(--brand-primary)', color: '#fff', border: 'none', borderRadius: '12px', fontWeight: 700, cursor: 'pointer' }}
                   >
                     {addingStaff ? 'Saving...' : 'Add Staff Member'}
                   </button>

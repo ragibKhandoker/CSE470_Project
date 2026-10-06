@@ -110,13 +110,13 @@ export const ResetPassword = () => {
             width: '56px',
             height: '56px',
             borderRadius: '16px',
-            background: 'linear-gradient(135deg, #2563eb 0%, #ea580c 100%)',
+            background: 'linear-gradient(135deg, var(--brand-primary) 0%, #ea580c 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '26px',
             margin: '0 auto 16px',
-            boxShadow: '0 8px 24px rgba(37, 99, 235,0.35)'
+            boxShadow: '0 8px 24px rgba(var(--brand-primary-rgb), 0.35)'
           }}>
             🔑
           </div>
@@ -151,7 +151,7 @@ export const ResetPassword = () => {
               to="/login"
               style={{
                 display: 'inline-block',
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 textDecoration: 'none',
                 padding: '12px 24px',
@@ -183,7 +183,7 @@ export const ResetPassword = () => {
               to="/login"
               style={{
                 display: 'inline-block',
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 textDecoration: 'none',
                 padding: '12px 24px',
@@ -211,7 +211,7 @@ export const ResetPassword = () => {
 
             <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#2c2320', marginBottom: '6px' }}>
-                New Password <span style={{ color: '#2563eb' }}>*</span>
+                New Password <span style={{ color: 'var(--brand-primary)' }}>*</span>
               </label>
               <div style={{ position: 'relative' }}>
                 <input
@@ -252,7 +252,7 @@ export const ResetPassword = () => {
 
             <div style={{ marginBottom: '24px' }}>
               <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#2c2320', marginBottom: '6px' }}>
-                Confirm New Password <span style={{ color: '#2563eb' }}>*</span>
+                Confirm New Password <span style={{ color: 'var(--brand-primary)' }}>*</span>
               </label>
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -279,14 +279,14 @@ export const ResetPassword = () => {
               style={{
                 width: '100%',
                 height: '48px',
-                background: 'linear-gradient(135deg, #2563eb 0%, #ea580c 100%)',
+                background: 'linear-gradient(135deg, var(--brand-primary) 0%, #ea580c 100%)',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '12px',
                 fontSize: '15px',
                 fontWeight: 700,
                 cursor: 'pointer',
-                boxShadow: '0 4px 14px rgba(37, 99, 235,0.35)'
+                boxShadow: '0 4px 14px rgba(var(--brand-primary-rgb), 0.35)'
               }}
             >
               {submitting ? 'Updating Password...' : 'Save New Password & Continue →'}

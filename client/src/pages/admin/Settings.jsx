@@ -247,7 +247,7 @@ export const Settings = () => {
                 type="submit"
                 disabled={savingGeneral}
                 style={{
-                  background: '#2563eb',
+                  background: 'var(--brand-primary)',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '20px',
@@ -255,11 +255,11 @@ export const Settings = () => {
                   fontSize: '13px',
                   fontWeight: 700,
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
+                  boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.3)',
                   transition: 'all 0.15s ease'
                 }}
-                onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-                onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
+                onMouseOver={(e) => (e.currentTarget.style.background = 'var(--brand-primary-dark)')}
+                onMouseOut={(e) => (e.currentTarget.style.background = 'var(--brand-primary)')}
               >
                 {savingGeneral ? 'Saving...' : 'Save Changes'}
               </button>
@@ -299,7 +299,7 @@ export const Settings = () => {
                 width: '46px',
                 height: '26px',
                 borderRadius: '13px',
-                background: requireNid ? '#2563eb' : '#d1d5db',
+                background: requireNid ? 'var(--brand-primary)' : '#d1d5db',
                 position: 'relative',
                 border: 'none',
                 cursor: 'pointer',
@@ -369,7 +369,7 @@ export const Settings = () => {
                 type="submit"
                 disabled={savingRate}
                 style={{
-                  background: '#2563eb',
+                  background: 'var(--brand-primary)',
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '20px',
@@ -377,11 +377,11 @@ export const Settings = () => {
                   fontSize: '13px',
                   fontWeight: 700,
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
+                  boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.3)',
                   transition: 'all 0.15s ease'
                 }}
-                onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-                onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
+                onMouseOver={(e) => (e.currentTarget.style.background = 'var(--brand-primary-dark)')}
+                onMouseOut={(e) => (e.currentTarget.style.background = 'var(--brand-primary)')}
               >
                 {savingRate ? 'Saving...' : 'Save'}
               </button>
@@ -407,7 +407,7 @@ export const Settings = () => {
               type="button"
               onClick={() => setInviteModalOpen(true)}
               style={{
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 border: 'none',
                 borderRadius: '20px',
@@ -418,7 +418,7 @@ export const Settings = () => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                boxShadow: '0 3px 10px rgba(37, 99, 235, 0.35)'
+                boxShadow: '0 3px 10px rgba(var(--brand-primary-rgb), 0.35)'
               }}
             >
               <span>+</span> Invite Admin
@@ -443,8 +443,8 @@ export const Settings = () => {
                       width: '36px',
                       height: '36px',
                       borderRadius: '50%',
-                      background: '#dbeafe',
-                      color: '#1e40af',
+                      background: 'var(--brand-soft)',
+                      color: 'var(--brand-primary-deep)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -627,7 +627,7 @@ export const Settings = () => {
                   type="submit"
                   disabled={inviting}
                   style={{
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     border: 'none',
                     borderRadius: '12px',
                     padding: '10px 22px',
@@ -635,7 +635,7 @@ export const Settings = () => {
                     fontWeight: 700,
                     color: '#ffffff',
                     cursor: inviting ? 'not-allowed' : 'pointer',
-                    boxShadow: '0 4px 12px rgba(37, 99, 235, 0.35)'
+                    boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.35)'
                   }}
                 >
                   {inviting ? 'Sending...' : 'Send Invitation →'}

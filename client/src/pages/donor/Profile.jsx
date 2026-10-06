@@ -130,8 +130,8 @@ export const Profile = () => {
                   width: 56,
                   height: 56,
                   borderRadius: '50%',
-                  background: '#dbeafe',
-                  color: '#1e40af',
+                  background: 'var(--brand-soft)',
+                  color: 'var(--brand-primary-deep)',
                   fontSize: 22,
                   fontWeight: 800,
                   display: 'flex',
@@ -155,9 +155,9 @@ export const Profile = () => {
 
             <div
               style={{
-                background: isVerified ? '#ecfdf5' : completionPercentage === 100 ? '#eff6ff' : '#fff7ed',
-                border: isVerified ? '1px solid #a7f3d0' : completionPercentage === 100 ? '1px solid #bfdbfe' : '1px solid #fed7aa',
-                color: isVerified ? '#047857' : completionPercentage === 100 ? '#1d4ed8' : '#c2410c',
+                background: isVerified ? '#ecfdf5' : completionPercentage === 100 ? 'var(--brand-soft)' : '#fff7ed',
+                border: isVerified ? '1px solid #a7f3d0' : completionPercentage === 100 ? '1px solid var(--brand-soft-border)' : '1px solid #fed7aa',
+                color: isVerified ? '#047857' : completionPercentage === 100 ? 'var(--brand-primary-dark)' : '#c2410c',
                 padding: '8px 16px',
                 borderRadius: '100px',
                 fontSize: '13px',
@@ -204,7 +204,7 @@ export const Profile = () => {
                 style={{
                   width: `${completionPercentage}%`,
                   height: '100%',
-                  background: completionPercentage === 100 ? 'linear-gradient(90deg, #10b981, #059669)' : 'linear-gradient(90deg, #2563eb, #1d4ed8)',
+                  background: completionPercentage === 100 ? 'linear-gradient(90deg, #10b981, #059669)' : 'linear-gradient(90deg, var(--brand-primary), var(--brand-primary-dark))',
                   borderRadius: '100px',
                   transition: 'width 0.4s ease'
                 }}
@@ -398,7 +398,7 @@ export const Profile = () => {
               type="submit"
               disabled={saving}
               style={{
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 border: 0,
                 borderRadius: '12px',
@@ -407,7 +407,7 @@ export const Profile = () => {
                 fontWeight: 700,
                 cursor: 'pointer',
                 marginTop: '12px',
-                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+                boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.3)'
               }}
             >
               {saving ? 'Saving Profile...' : 'Save Profile Changes →'}

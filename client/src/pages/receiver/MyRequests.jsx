@@ -148,14 +148,14 @@ export const MyRequests = () => {
           <Link
             to="/receiver/find-food"
             style={{
-              background: '#2563eb',
+              background: 'var(--brand-primary)',
               color: '#ffffff',
               textDecoration: 'none',
               padding: '10px 20px',
               borderRadius: '12px',
               fontSize: '13px',
               fontWeight: 700,
-              boxShadow: '0 4px 12px rgba(37, 99, 235,0.25)'
+              boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.25)'
             }}
           >
             + Request More Food
@@ -228,7 +228,7 @@ export const MyRequests = () => {
                     <Link
                       to="/receiver/find-food"
                       style={{
-                        background: '#2563eb',
+                        background: 'var(--brand-primary)',
                         color: '#ffffff',
                         textDecoration: 'none',
                         padding: '10px 22px',
@@ -290,7 +290,7 @@ export const MyRequests = () => {
                       <div
                         style={{
                           background: '#fff6f3',
-                          border: '2px dashed #2563eb',
+                          border: '2px dashed var(--brand-primary)',
                           borderRadius: '16px',
                           padding: '18px 24px',
                           display: 'flex',
@@ -306,15 +306,15 @@ export const MyRequests = () => {
                             🔑 YOUR PICKUP CODE (TELL THIS TO DISTRIBUTOR MANAGER)
                           </span>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
-                            <span style={{ fontSize: '28px', fontWeight: 900, color: '#2563eb', fontFamily: 'monospace', letterSpacing: '2px' }}>
+                            <span style={{ fontSize: '28px', fontWeight: 900, color: 'var(--brand-primary)', fontFamily: 'monospace', letterSpacing: '2px' }}>
                               {req.pickupCode}
                             </span>
                             <button
                               type="button"
                               onClick={() => handleCopyCode(req.pickupCode)}
                               style={{
-                                background: '#dbeafe',
-                                color: '#1e40af',
+                                background: 'var(--brand-soft)',
+                                color: 'var(--brand-primary-deep)',
                                 border: 'none',
                                 borderRadius: '8px',
                                 padding: '6px 12px',
@@ -344,8 +344,8 @@ export const MyRequests = () => {
                             onClick={() => setDirectionsModalItem(req)}
                             style={{
                               background: '#ffffff',
-                              color: '#2563eb',
-                              border: '1.5px solid #2563eb',
+                              color: 'var(--brand-primary)',
+                              border: '1.5px solid var(--brand-primary)',
                               borderRadius: '12px',
                               padding: '10px 18px',
                               fontSize: '13px',
@@ -409,7 +409,7 @@ export const MyRequests = () => {
                       type="button"
                       onClick={() => setActiveTab('pending')}
                       style={{
-                        background: '#2563eb',
+                        background: 'var(--brand-primary)',
                         color: '#ffffff',
                         border: 'none',
                         padding: '10px 22px',
@@ -454,14 +454,14 @@ export const MyRequests = () => {
                             gap: '6px',
                             padding: '4px 14px',
                             borderRadius: '20px',
-                            background: '#eff6ff',
-                            color: '#2563eb',
+                            background: 'var(--brand-soft)',
+                            color: 'var(--brand-primary)',
                             fontSize: '12px',
                             fontWeight: 700,
-                            border: '1px solid #bfdbfe'
+                            border: '1px solid var(--brand-soft-border)'
                           }}
                         >
-                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#2563eb' }} />
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--brand-primary)' }} />
                           <span>Accepted by Hub</span>
                         </div>
                       </div>
@@ -470,7 +470,7 @@ export const MyRequests = () => {
                       <div
                         style={{
                           background: '#fff6f3',
-                          border: '2px dashed #2563eb',
+                          border: '2px dashed var(--brand-primary)',
                           borderRadius: '16px',
                           padding: '18px 24px',
                           display: 'flex',
@@ -481,19 +481,19 @@ export const MyRequests = () => {
                         }}
                       >
                         <div>
-                          <span style={{ fontSize: '11px', fontWeight: 800, color: '#2563eb', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block' }}>
                             🔑 YOUR PICKUP CODE (TELL THIS TO DISTRIBUTOR)
                           </span>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
-                            <span style={{ fontSize: '28px', fontWeight: 900, color: '#2563eb', fontFamily: 'monospace', letterSpacing: '2px' }}>
+                            <span style={{ fontSize: '28px', fontWeight: 900, color: 'var(--brand-primary)', fontFamily: 'monospace', letterSpacing: '2px' }}>
                               {req.pickupCode}
                             </span>
                             <button
                               type="button"
                               onClick={() => handleCopyCode(req.pickupCode)}
                               style={{
-                                background: '#dbeafe',
-                                color: '#1e40af',
+                                background: 'var(--brand-soft)',
+                                color: 'var(--brand-primary-deep)',
                                 border: 'none',
                                 borderRadius: '8px',
                                 padding: '6px 12px',
@@ -523,8 +523,8 @@ export const MyRequests = () => {
                             onClick={() => setDirectionsModalItem(req)}
                             style={{
                               background: '#ffffff',
-                              color: '#2563eb',
-                              border: '1.5px solid #2563eb',
+                              color: 'var(--brand-primary)',
+                              border: '1.5px solid var(--brand-primary)',
                               borderRadius: '12px',
                               padding: '10px 22px',
                               fontSize: '13px',
@@ -616,8 +616,8 @@ export const MyRequests = () => {
                         to="/receiver/ratings"
                         style={{
                           background: '#fff6f3',
-                          color: '#2563eb',
-                          border: '1.5px solid #2563eb',
+                          color: 'var(--brand-primary)',
+                          border: '1.5px solid var(--brand-primary)',
                           borderRadius: '12px',
                           padding: '10px 20px',
                           fontSize: '13px',
@@ -686,7 +686,7 @@ export const MyRequests = () => {
               <div style={{ fontSize: '13px', color: '#6b5d56' }}>
                 📍 {directionsModalItem.address || directionsModalItem.location}
               </div>
-              <div style={{ fontSize: '14px', color: '#2563eb', fontWeight: 800, marginTop: '10px' }}>
+              <div style={{ fontSize: '14px', color: 'var(--brand-primary)', fontWeight: 800, marginTop: '10px' }}>
                 Pickup Code: <span style={{ fontFamily: 'monospace' }}>{directionsModalItem.pickupCode}</span>
               </div>
             </div>
@@ -703,7 +703,7 @@ export const MyRequests = () => {
                 display: 'block',
                 width: '100%',
                 textAlign: 'center',
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 textDecoration: 'none',
                 padding: '12px',

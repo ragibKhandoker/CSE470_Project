@@ -126,7 +126,7 @@ export const RichTextEditor = ({
           boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
           transition: 'border-color 0.15s ease'
         }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = '#2563eb')}
+        onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--brand-primary)')}
         onBlur={(e) => (e.currentTarget.style.borderColor = '#e0d8d3')}
       >
         {/* Formatting Toolbar */}
@@ -246,7 +246,7 @@ export const RichTextEditor = ({
               type="button"
               title="Insert Link"
               onMouseDown={(e) => { e.preventDefault(); handleLink(); }}
-              style={{ ...toolbarBtnStyle, color: '#2563eb' }}
+              style={{ ...toolbarBtnStyle, color: 'var(--brand-primary)' }}
             >
               🔗 Link
             </button>
@@ -296,7 +296,7 @@ export const RichTextEditor = ({
         [contenteditable] h5 { font-size: 13px; font-weight: 700; margin: 4px 0 2px; color: #2c2320; }
         [contenteditable] h6 { font-size: 12px; font-weight: 700; text-transform: uppercase; margin: 4px 0 2px; color: #6b5d56; }
         [contenteditable] p { margin: 0 0 6px; }
-        [contenteditable] a { color: #2563eb; text-decoration: underline; }
+        [contenteditable] a { color: var(--brand-primary); text-decoration: underline; }
       `}</style>
     </div>
   );

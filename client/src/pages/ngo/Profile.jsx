@@ -79,10 +79,10 @@ export const NgoProfile = () => {
                 height: '64px',
                 borderRadius: '50%',
                 background: isStaff
-                  ? (isReceiver ? '#dbeafe' : '#ffedd5')
-                  : 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                  ? (isReceiver ? 'var(--brand-soft)' : '#ffedd5')
+                  : 'linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%)',
                 color: isStaff
-                  ? (isReceiver ? '#1e40af' : '#9a3412')
+                  ? (isReceiver ? 'var(--brand-primary-deep)' : '#9a3412')
                   : '#ffffff',
                 display: 'flex',
                 alignItems: 'center',
@@ -104,11 +104,11 @@ export const NgoProfile = () => {
                     style={{
                       padding: '4px 12px',
                       borderRadius: '12px',
-                      background: isReceiver ? '#eff6ff' : '#fff7ed',
-                      color: isReceiver ? '#1e40af' : '#c2410c',
+                      background: isReceiver ? 'var(--brand-soft)' : '#fff7ed',
+                      color: isReceiver ? 'var(--brand-primary-deep)' : '#c2410c',
                       fontSize: '12px',
                       fontWeight: 700,
-                      border: `1px solid ${isReceiver ? '#bfdbfe' : '#fed7aa'}`
+                      border: `1px solid ${isReceiver ? 'var(--brand-soft-border)' : '#fed7aa'}`
                     }}
                   >
                     {isReceiver ? '🚚 Receiving Staff' : '🍲 Distributor Staff'}
@@ -206,13 +206,13 @@ export const NgoProfile = () => {
               
               {/* Assigned Role (Strictly Read-Only with explanation) */}
               <div style={{
-                background: isReceiver ? '#eff6ff' : '#fff7ed',
-                border: `1.5px solid ${isReceiver ? '#bfdbfe' : '#fed7aa'}`,
+                background: isReceiver ? 'var(--brand-soft)' : '#fff7ed',
+                border: `1.5px solid ${isReceiver ? 'var(--brand-soft-border)' : '#fed7aa'}`,
                 borderRadius: '16px',
                 padding: '16px 20px'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <div style={{ fontSize: '12px', fontWeight: 800, color: isReceiver ? '#1e40af' : '#c2410c', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+                  <div style={{ fontSize: '12px', fontWeight: 800, color: isReceiver ? 'var(--brand-primary-deep)' : '#c2410c', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                     Assigned Operational Role
                   </div>
                   <span style={{ fontSize: '11px', fontWeight: 700, color: '#475569', background: '#ffffff', padding: '2px 8px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
@@ -318,7 +318,7 @@ export const NgoProfile = () => {
                 <button
                   type="submit"
                   style={{
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '20px',
@@ -326,11 +326,11 @@ export const NgoProfile = () => {
                     fontSize: '14px',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
+                    boxShadow: '0 4px 14px rgba(var(--brand-primary-rgb), 0.35)',
                     transition: 'all 0.15s ease'
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-                  onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
+                  onMouseOver={(e) => (e.currentTarget.style.background = 'var(--brand-primary-dark)')}
+                  onMouseOut={(e) => (e.currentTarget.style.background = 'var(--brand-primary)')}
                 >
                   Save Profile Details
                 </button>
@@ -474,7 +474,7 @@ export const NgoProfile = () => {
                 <button
                   type="submit"
                   style={{
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '20px',
@@ -482,11 +482,11 @@ export const NgoProfile = () => {
                     fontSize: '14px',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
+                    boxShadow: '0 4px 14px rgba(var(--brand-primary-rgb), 0.35)',
                     transition: 'all 0.15s ease'
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-                  onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
+                  onMouseOver={(e) => (e.currentTarget.style.background = 'var(--brand-primary-dark)')}
+                  onMouseOut={(e) => (e.currentTarget.style.background = 'var(--brand-primary)')}
                 >
                   Save Organization Profile
                 </button>

@@ -262,12 +262,12 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
                 width: 36,
                 height: 36,
                 borderRadius: 12,
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
-                boxShadow: '0px 6px 7px rgba(37, 99, 235,0.6)',
+                boxShadow: '0px 6px 7px rgba(var(--brand-primary-rgb), 0.6)',
                 flexShrink: 0
               }}
             >
@@ -301,9 +301,9 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
                     fontWeight: 500,
                     boxSizing: 'border-box',
                     transition: 'all 0.15s ease-in-out',
-                    background: isActive ? '#2563eb' : 'transparent',
+                    background: isActive ? 'var(--brand-primary)' : 'transparent',
                     color: isActive ? '#ffffff' : '#6b5d56',
-                    boxShadow: isActive ? '0px 8px 9px rgba(37, 99, 235,0.55)' : 'none'
+                    boxShadow: isActive ? '0px 8px 9px rgba(var(--brand-primary-rgb), 0.55)' : 'none'
                   }}
                   onMouseOver={(e) => {
                     if (!isActive) e.currentTarget.style.background = '#f7f2ef';
@@ -347,8 +347,8 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
                 width: 36,
                 height: 36,
                 borderRadius: '50%',
-                background: '#dbeafe',
-                color: '#1e40af',
+                background: 'var(--brand-soft)',
+                color: 'var(--brand-primary-deep)',
                 fontWeight: 700,
                 fontSize: 13,
                 display: 'flex',
@@ -460,7 +460,7 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
                     position: 'absolute',
                     top: -2,
                     left: 24,
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     fontSize: '9px',
                     fontWeight: 700,
@@ -516,7 +516,7 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
                           background: 'transparent',
                           border: 'none',
                           fontSize: '11px',
-                          color: '#2563eb',
+                          color: 'var(--brand-primary)',
                           fontWeight: 700,
                           cursor: 'pointer',
                           padding: '2px 6px',
@@ -557,7 +557,7 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
                         <p style={{ margin: '0 0 6px', fontSize: '12px', color: '#6b5d56', lineHeight: '16px' }}>{notif.subtitle || notif.message}</p>
                         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                           {(notif.thread || notif.lifecycle) && (
-                            <span style={{ fontSize: '10px', background: '#dbeafe', color: '#ea580c', padding: '2px 8px', borderRadius: '6px', fontWeight: 700 }}>
+                            <span style={{ fontSize: '10px', background: 'var(--brand-soft)', color: '#ea580c', padding: '2px 8px', borderRadius: '6px', fontWeight: 700 }}>
                               🍲 View Food Thread →
                             </span>
                           )}

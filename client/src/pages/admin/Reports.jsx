@@ -109,7 +109,7 @@ export const Reports = () => {
       case 'pending':
         return { label: '⏳ Pending Review', bg: '#fff7ed', color: '#c2410c', border: '#fdba74' };
       case 'investigating':
-        return { label: '🔍 Under Investigation', bg: '#eff6ff', color: '#1d4ed8', border: '#93c5fd' };
+        return { label: '🔍 Under Investigation', bg: 'var(--brand-soft)', color: 'var(--brand-primary-dark)', border: '#93c5fd' };
       case 'resolved':
         return { label: '✅ Resolved', bg: '#ecfdf5', color: '#047857', border: '#6ee7b7' };
       case 'dismissed':
@@ -182,10 +182,10 @@ export const Reports = () => {
 
           <div style={{ background: '#ffffff', borderRadius: '16px', padding: '20px', border: '1px solid rgba(44,35,32,0.06)', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '13px', fontWeight: 600, color: '#1d4ed8' }}>Under Investigation</span>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--brand-primary-dark)' }}>Under Investigation</span>
               <span style={{ fontSize: '20px' }}>🔍</span>
             </div>
-            <div style={{ fontSize: '28px', fontWeight: 800, color: '#1d4ed8', marginTop: '8px' }}>
+            <div style={{ fontSize: '28px', fontWeight: 800, color: 'var(--brand-primary-dark)', marginTop: '8px' }}>
               {counts.investigating}
             </div>
             <div style={{ fontSize: '12px', color: '#8c7e75', marginTop: '4px' }}>In communication with donor</div>
@@ -225,7 +225,7 @@ export const Reports = () => {
                   fontWeight: 700,
                   border: 'none',
                   cursor: 'pointer',
-                  background: statusFilter === tab.id ? '#2563eb' : '#f5eee9',
+                  background: statusFilter === tab.id ? 'var(--brand-primary)' : '#f5eee9',
                   color: statusFilter === tab.id ? '#ffffff' : '#6b5d56',
                   transition: 'all 0.15s ease'
                 }}
@@ -430,7 +430,7 @@ export const Reports = () => {
                               boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
                               transition: 'background 0.15s'
                             }}
-                            onMouseOver={(e) => (e.currentTarget.style.background = '#2563eb')}
+                            onMouseOver={(e) => (e.currentTarget.style.background = 'var(--brand-primary)')}
                             onMouseOut={(e) => (e.currentTarget.style.background = '#2c2320')}
                           >
                             Review &amp; Action →
@@ -484,7 +484,7 @@ export const Reports = () => {
                 }}
               >
                 <div>
-                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#2563eb', textTransform: 'uppercase' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 800, color: 'var(--brand-primary)', textTransform: 'uppercase' }}>
                     Incident Investigation
                   </span>
                   <h3 style={{ margin: '2px 0 0', fontSize: '19px', fontWeight: 800, color: '#2c2320' }}>
@@ -530,7 +530,7 @@ export const Reports = () => {
 
                   {/* Reporter Box */}
                   <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '14px 16px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: 800, color: '#1d4ed8', textTransform: 'uppercase', marginBottom: '6px' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 800, color: 'var(--brand-primary-dark)', textTransform: 'uppercase', marginBottom: '6px' }}>
                       Filed by Receiver
                     </div>
                     <div style={{ fontSize: '14px', fontWeight: 700, color: '#2c2320' }}>
@@ -574,7 +574,7 @@ export const Reports = () => {
                         rel="noopener noreferrer"
                         style={{
                           fontSize: '12px',
-                          color: '#2563eb',
+                          color: 'var(--brand-primary)',
                           fontWeight: 700,
                           textDecoration: 'none',
                           display: 'inline-flex',
@@ -732,12 +732,12 @@ export const Reports = () => {
                         padding: '10px 22px',
                         borderRadius: '10px',
                         border: 'none',
-                        background: '#2563eb',
+                        background: 'var(--brand-primary)',
                         fontSize: '13px',
                         fontWeight: 700,
                         color: '#ffffff',
                         cursor: savingResolution ? 'not-allowed' : 'pointer',
-                        boxShadow: '0 4px 14px rgba(37, 99, 235,0.35)'
+                        boxShadow: '0 4px 14px rgba(var(--brand-primary-rgb), 0.35)'
                       }}
                     >
                       {savingResolution ? 'Saving Resolution...' : 'Save Resolution'}

@@ -332,7 +332,7 @@ export const AdminUsers = () => {
             <span>🔑 Password Reset Requests</span>
             {pendingRequestsCount > 0 ? (
               <span style={{
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 padding: '2px 8px',
                 borderRadius: '10px',
@@ -417,7 +417,7 @@ export const AdminUsers = () => {
             borderRadius: '16px',
             border: '1px solid rgba(44, 35, 32, 0.05)',
             overflow: 'hidden',
-            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(37, 99, 235,0.18)'
+            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(var(--brand-primary-rgb), 0.18)'
           }}
         >
           <div style={{ overflowX: 'auto', width: '100%' }}>
@@ -476,7 +476,7 @@ export const AdminUsers = () => {
                         <span
                           style={{
                             background: user.role === 'admin' ? '#ffe9e2' : user.role === 'ngo' ? '#e3f5ea' : user.role === 'donor' ? '#ffe9e2' : '#fff2d6',
-                            color: user.role === 'admin' ? '#1e40af' : user.role === 'ngo' ? '#227a55' : user.role === 'donor' ? '#1e40af' : '#a06c00',
+                            color: user.role === 'admin' ? 'var(--brand-primary-deep)' : user.role === 'ngo' ? '#227a55' : user.role === 'donor' ? 'var(--brand-primary-deep)' : '#a06c00',
                             padding: '3px 10px',
                             borderRadius: '100px',
                             fontSize: '12px',
@@ -540,7 +540,7 @@ export const AdminUsers = () => {
                             style={{
                               background: 'transparent',
                               border: 0,
-                              color: '#1d4ed8',
+                              color: 'var(--brand-primary-dark)',
                               fontSize: '13px',
                               fontWeight: 600,
                               cursor: 'pointer',
@@ -634,7 +634,7 @@ export const AdminUsers = () => {
             borderRadius: '16px',
             border: '1px solid rgba(44, 35, 32, 0.05)',
             overflow: 'hidden',
-            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(37, 99, 235,0.18)'
+            boxShadow: '0px 2px 4px rgba(44,35,32,0.03), 0px 12px 28px -12px rgba(var(--brand-primary-rgb), 0.18)'
           }}
         >
           <div style={{ overflowX: 'auto', width: '100%' }}>
@@ -679,7 +679,7 @@ export const AdminUsers = () => {
                         ? { bg: '#fff7ed', color: '#c2410c' }
                         : req.user_role === 'ngo'
                         ? { bg: '#ecfdf5', color: '#047857' }
-                        : { bg: '#eff6ff', color: '#1d4ed8' };
+                        : { bg: 'var(--brand-soft)', color: 'var(--brand-primary-dark)' };
 
                     return (
                       <tr
@@ -730,8 +730,8 @@ export const AdminUsers = () => {
                               borderRadius: '10px',
                               fontSize: '11px',
                               fontWeight: 700,
-                              background: isPending ? '#fff7ed' : isApproved ? '#eff6ff' : isCompleted ? '#ecfdf5' : '#fef2f2',
-                              color: isPending ? '#c2410c' : isApproved ? '#1d4ed8' : isCompleted ? '#047857' : '#991b1b',
+                              background: isPending ? '#fff7ed' : isApproved ? 'var(--brand-soft)' : isCompleted ? '#ecfdf5' : '#fef2f2',
+                              color: isPending ? '#c2410c' : isApproved ? 'var(--brand-primary-dark)' : isCompleted ? '#047857' : '#991b1b',
                               border: '1px solid currentColor'
                             }}
                           >
@@ -788,9 +788,9 @@ export const AdminUsers = () => {
                                 type="button"
                                 onClick={() => handleCopyLink(`/reset-password?token=${req.reset_token}`)}
                                 style={{
-                                  background: '#eff6ff',
-                                  color: '#1d4ed8',
-                                  border: '1px solid #bfdbfe',
+                                  background: 'var(--brand-soft)',
+                                  color: 'var(--brand-primary-dark)',
+                                  border: '1px solid var(--brand-soft-border)',
                                   borderRadius: '8px',
                                   padding: '5px 12px',
                                   fontSize: '12px',
@@ -852,7 +852,7 @@ export const AdminUsers = () => {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#6b5d56' }}>System Role:</span>
-                <strong style={{ textTransform: 'capitalize', color: '#1d4ed8' }}>{selectedUser.role}</strong>
+                <strong style={{ textTransform: 'capitalize', color: 'var(--brand-primary-dark)' }}>{selectedUser.role}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: '#6b5d56' }}>Mobile Number:</span>
@@ -866,7 +866,7 @@ export const AdminUsers = () => {
               {/* Password Display Field */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', padding: '8px 12px', borderRadius: '8px', border: '1px solid #f0e8e4' }}>
                 <span style={{ color: '#9a3412', fontWeight: 700 }}>🔑 Account Password:</span>
-                <span style={{ fontFamily: 'monospace', background: '#dbeafe', color: '#1e40af', padding: '3px 10px', borderRadius: '6px', fontWeight: 700, fontSize: '14px' }}>
+                <span style={{ fontFamily: 'monospace', background: 'var(--brand-soft)', color: 'var(--brand-primary-deep)', padding: '3px 10px', borderRadius: '6px', fontWeight: 700, fontSize: '14px' }}>
                   {selectedUser.password || 'Not available'}
                 </span>
               </div>

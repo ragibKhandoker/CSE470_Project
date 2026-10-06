@@ -217,7 +217,7 @@ export const FoodThreadModal = ({ selectedThread, onClose, allThreads = [], onSe
           <button
             type="button"
             onClick={onClose}
-            style={{ background: '#2563eb', color: '#ffffff', border: 0, borderRadius: '10px', padding: '10px 24px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+            style={{ background: 'var(--brand-primary)', color: '#ffffff', border: 0, borderRadius: '10px', padding: '10px 24px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
           >
             Close Thread
           </button>

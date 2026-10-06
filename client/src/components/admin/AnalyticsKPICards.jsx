@@ -2,9 +2,9 @@ import React from 'react';
 
 export const AnalyticsKPICards = ({ totalMeals = 0, kgDiverted = 0, activeNgos = 0, verifiedDonors = 0 }) => {
   const cards = [
-    { title: 'Total Meals Rescued', value: totalMeals > 0 ? totalMeals.toLocaleString() : '14,280', growth: '+14%', isPositive: true, icon: '🍲', color: '#2563eb', bg: '#dbeafe' },
+    { title: 'Total Meals Rescued', value: totalMeals > 0 ? totalMeals.toLocaleString() : '14,280', growth: '+14%', isPositive: true, icon: '🍲', color: 'var(--brand-primary)', bg: 'var(--brand-soft)' },
     { title: 'Waste Diverted', value: `${kgDiverted > 0 ? kgDiverted.toLocaleString() : '6,420'} kg`, growth: '+22%', isPositive: true, icon: '🌱', color: '#10b981', bg: '#dcfce7' },
-    { title: 'Active Partner NGOs', value: activeNgos > 0 ? activeNgos : '42', growth: '+5', isPositive: true, icon: '🏢', color: '#3b82f6', bg: '#eff6ff' },
+    { title: 'Active Partner NGOs', value: activeNgos > 0 ? activeNgos : '42', growth: '+5', isPositive: true, icon: '🏢', color: '#3b82f6', bg: 'var(--brand-soft)' },
     { title: 'Verified Donors', value: verifiedDonors > 0 ? verifiedDonors : '184', growth: '+18%', isPositive: true, icon: '🤝', color: '#8b5cf6', bg: '#f3e8ff' }
   ];
 

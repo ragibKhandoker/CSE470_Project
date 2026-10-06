@@ -50,13 +50,13 @@ export const DonorDashboard = () => {
         {/* Figma Hero Banner (Gradient) */}
         <div
           style={{
-            background: 'linear-gradient(174deg, #60a5fa 0%, #1d4ed8 100%)',
+            background: 'linear-gradient(174deg, var(--brand-primary-light) 0%, var(--brand-primary-dark) 100%)',
             borderRadius: '16px',
             padding: '28px 32px',
             color: '#ffffff',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0 12px 28px -12px rgba(37, 99, 235, 0.4)'
+            boxShadow: '0 12px 28px -12px rgba(var(--brand-primary-rgb), 0.4)'
           }}
         >
           <div
@@ -107,7 +107,7 @@ export const DonorDashboard = () => {
               }}
               style={{
                 background: '#ffffff',
-                color: '#1d4ed8',
+                color: 'var(--brand-primary-dark)',
                 border: 0,
                 borderRadius: '100px',
                 padding: '10px 20px',
@@ -157,12 +157,12 @@ export const DonorDashboard = () => {
                   width: 44,
                   height: 44,
                   borderRadius: 12,
-                  background: 'linear-gradient(145deg, #2563eb 0%, #1d4ed8 100%)',
+                  background: 'linear-gradient(145deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: 20,
-                  boxShadow: '0 6px 12px rgba(37, 99, 235,0.4)'
+                  boxShadow: '0 6px 12px rgba(var(--brand-primary-rgb), 0.4)'
                 }}
               >
                 📦
@@ -272,7 +272,7 @@ export const DonorDashboard = () => {
               </h3>
               <Link
                 to="/donor/post-food"
-                style={{ color: '#1d4ed8', fontWeight: 700, fontSize: '14px', textDecoration: 'none' }}
+                style={{ color: 'var(--brand-primary-dark)', fontWeight: 700, fontSize: '14px', textDecoration: 'none' }}
               >
                 View all →
               </Link>
@@ -305,7 +305,7 @@ export const DonorDashboard = () => {
                           width: 48,
                           height: 48,
                           borderRadius: 12,
-                          background: '#dbeafe',
+                          background: 'var(--brand-soft)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',

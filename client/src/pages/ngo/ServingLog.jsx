@@ -116,7 +116,7 @@ export const ServingLog = () => {
             </h2>
             <p style={{ margin: 0, fontSize: '13px', color: '#786d66' }}>
               Verified distribution records across Bangladeshi relief hubs. Total recorded:{' '}
-              <strong style={{ color: '#2563eb' }}>{totalMealsServed} meals</strong>
+              <strong style={{ color: 'var(--brand-primary)' }}>{totalMealsServed} meals</strong>
             </p>
           </div>
 
@@ -126,7 +126,7 @@ export const ServingLog = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              background: '#2563eb',
+              background: 'var(--brand-primary)',
               color: '#ffffff',
               border: 'none',
               borderRadius: '24px',
@@ -134,11 +134,11 @@ export const ServingLog = () => {
               fontSize: '14px',
               fontWeight: 700,
               cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
+              boxShadow: '0 4px 14px rgba(var(--brand-primary-rgb), 0.35)',
               transition: 'all 0.15s ease'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = '#1d4ed8')}
-            onMouseOut={(e) => (e.currentTarget.style.background = '#2563eb')}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'var(--brand-primary-dark)')}
+            onMouseOut={(e) => (e.currentTarget.style.background = 'var(--brand-primary)')}
           >
             <span style={{ fontSize: '16px' }}>+</span>
             <span>Add New Entry</span>
@@ -172,7 +172,7 @@ export const ServingLog = () => {
             <button
               onClick={handleOpenAddModal}
               style={{
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 border: 'none',
                 padding: '10px 24px',
@@ -422,7 +422,7 @@ export const ServingLog = () => {
                     padding: '11px',
                     borderRadius: '14px',
                     border: 'none',
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     fontSize: '14px',
                     fontWeight: 700,

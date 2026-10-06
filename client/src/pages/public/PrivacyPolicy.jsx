@@ -30,8 +30,8 @@ export const PrivacyPolicy = () => {
       <main style={{ maxWidth: '880px', margin: '0 auto', padding: '56px 24px 80px', width: '100%', flex: 1, lineHeight: 1.8, fontSize: '15px', color: '#4a3f3a' }}>
         
         {/* Core Principles Callout */}
-        <div style={{ background: '#ffffff', border: '1.5px solid #2563eb', borderRadius: '20px', padding: '28px 32px', marginBottom: '48px', boxShadow: '0 6px 20px rgba(37, 99, 235, 0.06)' }}>
-          <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: '18px', fontWeight: 800, color: '#2563eb', margin: '0 0 12px' }}>
+        <div style={{ background: '#ffffff', border: '1.5px solid var(--brand-primary)', borderRadius: '20px', padding: '28px 32px', marginBottom: '48px', boxShadow: '0 6px 20px rgba(var(--brand-primary-rgb), 0.06)' }}>
+          <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: '18px', fontWeight: 800, color: 'var(--brand-primary)', margin: '0 0 12px' }}>
             Our Core Privacy Commitments
           </h3>
           <ul style={{ margin: 0, paddingLeft: '20px', display: 'grid', gap: '10px', fontSize: '14px', color: '#554944' }}>
@@ -113,7 +113,7 @@ export const PrivacyPolicy = () => {
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
             <a
               href="mailto:privacy@sharemeal.org"
-              style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 700, fontSize: '14px' }}
+              style={{ color: 'var(--brand-primary)', textDecoration: 'none', fontWeight: 700, fontSize: '14px' }}
             >
               privacy@sharemeal.org ➔
             </a>

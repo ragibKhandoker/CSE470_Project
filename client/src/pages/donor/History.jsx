@@ -55,13 +55,13 @@ const FIGMA_HISTORY_RECORDS = [
 const getStatusConfig = (status) => {
   const s = String(status || '').toLowerCase();
   if (s.includes('collected')) {
-    return { bg: '#ebf3fe', color: '#2563eb', label: 'Collected' };
+    return { bg: '#ebf3fe', color: 'var(--brand-primary)', label: 'Collected' };
   }
   if (s.includes('available')) {
     return { bg: '#fef9ee', color: '#d97706', label: 'Available' };
   }
   if (s.includes('at ngo point') || s.includes('ngo point')) {
-    return { bg: '#ebf3fe', color: '#2563eb', label: 'At NGO Point' };
+    return { bg: '#ebf3fe', color: 'var(--brand-primary)', label: 'At NGO Point' };
   }
   if (s.includes('taken') || s.includes('completed')) {
     return { bg: '#eaf7ed', color: '#16a34a', label: 'Taken' };

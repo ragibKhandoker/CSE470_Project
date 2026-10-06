@@ -24,7 +24,7 @@ export const AdminTeamList = ({ adminTeam = [], onOpenInvite }) => {
           type="button"
           onClick={onOpenInvite}
           style={{
-            background: '#2563eb',
+            background: 'var(--brand-primary)',
             color: '#ffffff',
             border: 'none',
             borderRadius: '10px',
@@ -35,7 +35,7 @@ export const AdminTeamList = ({ adminTeam = [], onOpenInvite }) => {
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
-            boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
+            boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.25)'
           }}
         >
           <span>+</span> Invite Admin
@@ -67,7 +67,7 @@ export const AdminTeamList = ({ adminTeam = [], onOpenInvite }) => {
                     width: '38px',
                     height: '38px',
                     borderRadius: '50%',
-                    background: member.role === 'Super Admin' ? 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)' : '#e5e7eb',
+                    background: member.role === 'Super Admin' ? 'linear-gradient(135deg, var(--brand-primary-light) 0%, var(--brand-primary-dark) 100%)' : '#e5e7eb',
                     color: member.role === 'Super Admin' ? '#ffffff' : '#374151',
                     display: 'flex',
                     alignItems: 'center',
@@ -91,8 +91,8 @@ export const AdminTeamList = ({ adminTeam = [], onOpenInvite }) => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span
                   style={{
-                    background: member.role === 'Super Admin' ? '#dbeafe' : '#f3f4f6',
-                    color: member.role === 'Super Admin' ? '#1e40af' : '#4b5563',
+                    background: member.role === 'Super Admin' ? 'var(--brand-soft)' : '#f3f4f6',
+                    color: member.role === 'Super Admin' ? 'var(--brand-primary-deep)' : '#4b5563',
                     fontSize: '11px',
                     fontWeight: 700,
                     padding: '3px 10px',

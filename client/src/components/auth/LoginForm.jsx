@@ -83,18 +83,18 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
         <div style={{
           marginBottom: 16,
           padding: '14px 16px',
-          background: '#eff6ff',
-          border: '1.5px solid #bfdbfe',
+          background: 'var(--brand-soft)',
+          border: '1.5px solid var(--brand-soft-border)',
           borderRadius: '12px',
-          boxShadow: '0 2px 8px rgba(37, 99, 235, 0.08)'
+          boxShadow: '0 2px 8px rgba(var(--brand-primary-rgb), 0.08)'
         }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
             <span style={{ fontSize: '20px', lineHeight: 1 }}>👤</span>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, fontSize: '14px', color: '#1e40af', marginBottom: '4px' }}>
+              <div style={{ fontWeight: 700, fontSize: '14px', color: 'var(--brand-primary-deep)', marginBottom: '4px' }}>
                 No Account Found
               </div>
-              <div style={{ fontSize: '13px', color: '#1d4ed8', lineHeight: 1.4, marginBottom: '10px' }}>
+              <div style={{ fontSize: '13px', color: 'var(--brand-primary-dark)', lineHeight: 1.4, marginBottom: '10px' }}>
                 {errorMessage || 'No account was found with this phone number or email. You can create a new account in under a minute.'}
               </div>
               <Link
@@ -103,14 +103,14 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: '#2563eb',
+                  background: 'var(--brand-primary)',
                   color: '#ffffff',
                   padding: '7px 16px',
                   borderRadius: '8px',
                   fontSize: '13px',
                   fontWeight: 700,
                   textDecoration: 'none',
-                  boxShadow: '0 2px 4px rgba(37, 99, 235, 0.2)'
+                  boxShadow: '0 2px 4px rgba(var(--brand-primary-rgb), 0.2)'
                 }}
               >
                 Sign Up Free →
@@ -216,7 +216,7 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '12px 0', fontSize: 13, color: '#6b5d56' }}>
           <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
-            <input type="checkbox" style={{ accentColor: '#1d4ed8' }} />
+            <input type="checkbox" style={{ accentColor: 'var(--brand-primary-dark)' }} />
             Remember me
           </label>
           <button
@@ -230,7 +230,7 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
               background: 'transparent',
               border: 0,
               padding: 0,
-              color: '#1d4ed8',
+              color: 'var(--brand-primary-dark)',
               fontWeight: 600,
               cursor: 'pointer',
               fontSize: '13px'
@@ -304,7 +304,7 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
                   type="button"
                   onClick={() => setShowForgotModal(false)}
                   style={{
-                    background: '#2563eb',
+                    background: 'var(--brand-primary)',
                     color: '#ffffff',
                     border: 'none',
                     borderRadius: '10px',
@@ -321,7 +321,7 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
               <form onSubmit={handleForgotSubmit}>
                 <div style={{ marginBottom: '14px' }}>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#2c2320', marginBottom: '6px' }}>
-                    Registered Phone or Email <span style={{ color: '#2563eb' }}>*</span>
+                    Registered Phone or Email <span style={{ color: 'var(--brand-primary)' }}>*</span>
                   </label>
                   <input
                     type="text"
@@ -385,7 +385,7 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
                     type="submit"
                     disabled={forgotLoading}
                     style={{
-                      background: 'linear-gradient(135deg, #2563eb 0%, #ea580c 100%)',
+                      background: 'linear-gradient(135deg, var(--brand-primary) 0%, #ea580c 100%)',
                       color: '#ffffff',
                       border: 0,
                       borderRadius: '10px',
@@ -393,7 +393,7 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
                       fontSize: '13px',
                       fontWeight: 700,
                       cursor: 'pointer',
-                      boxShadow: '0 4px 12px rgba(37, 99, 235,0.3)'
+                      boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.3)'
                     }}
                   >
                     {forgotLoading ? 'Submitting...' : 'Submit Request to Admin →'}

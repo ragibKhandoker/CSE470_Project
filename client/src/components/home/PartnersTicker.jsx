@@ -83,8 +83,8 @@ export const PartnersTicker = ({ partners = [] }) => {
         }
         .partners-ticker-pill:hover {
           transform: translateY(-2px);
-          border-color: rgba(37, 99, 235, 0.4);
-          box-shadow: 0 6px 16px rgba(37, 99, 235, 0.12);
+          border-color: rgba(var(--brand-primary-rgb), 0.4);
+          box-shadow: 0 6px 16px rgba(var(--brand-primary-rgb), 0.12);
         }
       `}</style>
 
@@ -102,7 +102,7 @@ export const PartnersTicker = ({ partners = [] }) => {
               key={`${partner}-${idx}`}
               className="partners-ticker-pill"
             >
-              <span style={{ color: '#2563eb', fontSize: '11px' }}>●</span>
+              <span style={{ color: 'var(--brand-primary)', fontSize: '11px' }}>●</span>
               <span style={{ color: '#3e3430', fontWeight: 650 }}>{partner}</span>
             </div>
           ))}

@@ -392,7 +392,7 @@ export const CollectionRequests = () => {
       case 'approved':
         return { bg: '#ecfdf5', color: '#047857', border: '#a7f3d0', label: '✅ Donor Accepted Pickup' };
       case 'assigned':
-        return { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe', label: '🚚 Assigned for Pickup' };
+        return { bg: 'var(--brand-soft)', color: 'var(--brand-primary-dark)', border: 'var(--brand-soft-border)', label: '🚚 Assigned for Pickup' };
       case 'picked_up':
         return { bg: '#f5f3ff', color: '#6d28d9', border: '#ddd6fe', label: '📦 Picked Up by Staff' };
       case 'at_hub':
@@ -465,14 +465,14 @@ export const CollectionRequests = () => {
           <Link
             to="/ngo/incoming"
             style={{
-              background: '#2563eb',
+              background: 'var(--brand-primary)',
               color: '#ffffff',
               textDecoration: 'none',
               padding: '10px 20px',
               borderRadius: '14px',
               fontSize: '13px',
               fontWeight: 700,
-              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+              boxShadow: '0 4px 12px rgba(var(--brand-primary-rgb), 0.3)'
             }}
           >
             + Browse Incoming Donations
@@ -491,8 +491,8 @@ export const CollectionRequests = () => {
                 style={{
                   padding: '8px 16px',
                   borderRadius: '12px',
-                  border: isActive ? '1px solid #2563eb' : '1px solid rgba(44, 35, 32, 0.1)',
-                  background: isActive ? '#2563eb' : '#ffffff',
+                  border: isActive ? '1px solid var(--brand-primary)' : '1px solid rgba(44, 35, 32, 0.1)',
+                  background: isActive ? 'var(--brand-primary)' : '#ffffff',
                   color: isActive ? '#ffffff' : '#6b5d56',
                   fontSize: '13px',
                   fontWeight: 700,
@@ -531,7 +531,7 @@ export const CollectionRequests = () => {
             <Link
               to="/ngo/incoming"
               style={{
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#fff',
                 padding: '10px 22px',
                 borderRadius: '12px',
@@ -573,7 +573,7 @@ export const CollectionRequests = () => {
                         <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800, color: '#2c2320' }}>
                           🍱 {item.food_name || item.food_title || (item.food_type ? `${item.food_type} Meals` : 'Food Donation')}
                         </h3>
-                        <span style={{ fontSize: '14px', fontWeight: 700, color: '#2563eb' }}>
+                        <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                           · {item.post_quantity} portions
                         </span>
                       </div>
@@ -619,7 +619,7 @@ export const CollectionRequests = () => {
                   }}>
                     {/* Assigned Info */}
                     {item.assigned_staff_name && (
-                      <div style={{ fontSize: '13px', color: '#1e40af', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ fontSize: '13px', color: 'var(--brand-primary-deep)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
                         <span>🚚</span>
                         <span><strong>{item.assigned_staff_name}</strong> assigned for pickup {item.assigned_staff_phone ? `(${item.assigned_staff_phone})` : ''}</span>
                       </div>
@@ -649,7 +649,7 @@ export const CollectionRequests = () => {
                           <span>{total - remaining} of {total} packets given ({remaining} remaining)</span>
                         </div>
                         <div style={{ height: 8, background: '#e5e7eb', borderRadius: 4, overflow: 'hidden' }}>
-                          <div style={{ width: `${percentDone}%`, height: '100%', background: percentDone === 100 ? '#10b981' : '#2563eb', transition: 'width 0.3s' }} />
+                          <div style={{ width: `${percentDone}%`, height: '100%', background: percentDone === 100 ? '#10b981' : 'var(--brand-primary)', transition: 'width 0.3s' }} />
                         </div>
 
                         {/* Recent Handover History */}
@@ -684,7 +684,7 @@ export const CollectionRequests = () => {
                           setSelectedStaffId(item.assigned_staff_id || '');
                         }}
                         style={{
-                          background: '#2563eb',
+                          background: 'var(--brand-primary)',
                           color: '#fff',
                           border: 'none',
                           padding: '9px 18px',
@@ -895,7 +895,7 @@ export const CollectionRequests = () => {
                     disabled={actionLoading}
                     style={{
                       padding: '9px 22px',
-                      background: '#2563eb',
+                      background: 'var(--brand-primary)',
                       color: '#fff',
                       border: 'none',
                       borderRadius: '12px',
@@ -967,7 +967,7 @@ export const CollectionRequests = () => {
                 <div><strong>Donation:</strong> {pickupModalItem.food_name || pickupModalItem.food_title || pickupModalItem.food_type || 'Cooked Meals'} ({pickupModalItem.post_quantity || 50} portions)</div>
                 <div><strong>Donor:</strong> {pickupModalItem.donor_name} (+880 {pickupModalItem.donor_phone})</div>
                 <div><strong>Location:</strong> {pickupModalItem.thana || 'Turag'}, {pickupModalItem.district || 'Dhaka'}</div>
-                <div><strong>Pickup Code:</strong> <span style={{ fontFamily: 'monospace', fontWeight: 700, color: '#2563eb' }}>{pickupModalItem.pickup_code}</span></div>
+                <div><strong>Pickup Code:</strong> <span style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--brand-primary)' }}>{pickupModalItem.pickup_code}</span></div>
                 <div><strong>Collecting Staff:</strong> {pickupModalItem.assigned_staff_name || user?.name || 'Assigned Staff'}</div>
               </div>
 
@@ -1037,8 +1037,8 @@ export const CollectionRequests = () => {
                   width: '44px',
                   height: '44px',
                   borderRadius: '50%',
-                  background: '#eff6ff',
-                  color: '#2563eb',
+                  background: 'var(--brand-soft)',
+                  color: 'var(--brand-primary)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1233,8 +1233,8 @@ export const CollectionRequests = () => {
                           style={{
                             padding: '6px 12px',
                             borderRadius: '999px',
-                            border: isSelected ? '1px solid #2563eb' : '1px solid #d1d5db',
-                            background: isSelected ? '#2563eb' : '#f9fafb',
+                            border: isSelected ? '1px solid var(--brand-primary)' : '1px solid #d1d5db',
+                            background: isSelected ? 'var(--brand-primary)' : '#f9fafb',
                             color: isSelected ? '#fff' : '#4b5563',
                             fontSize: '12px',
                             fontWeight: 700,
@@ -1268,7 +1268,7 @@ export const CollectionRequests = () => {
                     disabled={actionLoading}
                     style={{
                       padding: '9px 24px',
-                      background: '#2563eb',
+                      background: 'var(--brand-primary)',
                       color: '#fff',
                       border: 'none',
                       borderRadius: '12px',

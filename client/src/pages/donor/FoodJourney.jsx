@@ -107,7 +107,7 @@ const getStatusConfig = (status) => {
     return { bg: '#ecfdf5', color: '#047857', label: 'Pickup Approved' };
   }
   if (s.includes('assigned')) {
-    return { bg: '#eff6ff', color: '#1d4ed8', label: 'Staff Assigned' };
+    return { bg: 'var(--brand-soft)', color: 'var(--brand-primary-dark)', label: 'Staff Assigned' };
   }
   if (s.includes('collected by ngo') || s.includes('picked up') || s === 'collected' || s === 'picked_up') {
     return { bg: '#f5f3ff', color: '#6d28d9', label: 'Picked Up by NGO' };
@@ -434,7 +434,7 @@ export const FoodJourney = () => {
                               ? '66%'
                               : 'calc(100% - 80px)',
                           height: '2px',
-                          background: '#2563eb',
+                          background: 'var(--brand-primary)',
                           zIndex: 2,
                           transition: 'width 0.3s ease'
                         }}
@@ -461,7 +461,7 @@ export const FoodJourney = () => {
                                 width: '32px',
                                 height: '32px',
                                 borderRadius: '50%',
-                                background: isDone ? '#2563eb' : '#f4eee9',
+                                background: isDone ? 'var(--brand-primary)' : '#f4eee9',
                                 color: isDone ? '#ffffff' : '#8c7e77',
                                 border: isDone ? 'none' : '1.5px solid #d8cfc9',
                                 display: 'flex',
@@ -469,7 +469,7 @@ export const FoodJourney = () => {
                                 justifyContent: 'center',
                                 fontSize: '13px',
                                 fontWeight: 700,
-                                boxShadow: isDone ? '0 4px 12px rgba(37, 99, 235, 0.35)' : 'none',
+                                boxShadow: isDone ? '0 4px 12px rgba(var(--brand-primary-rgb), 0.35)' : 'none',
                                 marginBottom: '10px'
                               }}
                             >

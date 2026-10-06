@@ -307,10 +307,10 @@ export const SignupForm = ({ role, onSubmit, onGoogleSuccess, loading, error }) 
             id="agreeTerms"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
-            style={{ accentColor: '#2563eb' }}
+            style={{ accentColor: 'var(--brand-primary)' }}
           />
           <label htmlFor="agreeTerms" style={{ textTransform: 'none', fontWeight: 400, margin: 0, cursor: 'pointer' }}>
-            I agree to ShareMeal's <span style={{ color: '#1d4ed8', fontWeight: 600 }}>Terms of Service</span> and <span style={{ color: '#1d4ed8', fontWeight: 600 }}>Privacy Policy</span>
+            I agree to ShareMeal's <span style={{ color: 'var(--brand-primary-dark)', fontWeight: 600 }}>Terms of Service</span> and <span style={{ color: 'var(--brand-primary-dark)', fontWeight: 600 }}>Privacy Policy</span>
           </label>
         </div>
 

@@ -326,7 +326,7 @@ export const FoodPostThreads = () => {
             <div style={{ fontSize: '28px', fontWeight: 800, color: '#2c2320', marginTop: '6px' }}>
               {totalPosts}
             </div>
-            <div style={{ fontSize: '12px', color: '#2563eb', fontWeight: 600, marginTop: '2px' }}>
+            <div style={{ fontSize: '12px', color: 'var(--brand-primary)', fontWeight: 600, marginTop: '2px' }}>
               All tracked platform donations
             </div>
           </div>
@@ -537,9 +537,9 @@ export const FoodPostThreads = () => {
                   borderRadius: '10px',
                   fontSize: '12px',
                   fontWeight: 700,
-                  border: statusFilter === btn.id ? '1.5px solid #2563eb' : '1px solid #e0d8d3',
+                  border: statusFilter === btn.id ? '1.5px solid var(--brand-primary)' : '1px solid #e0d8d3',
                   background: statusFilter === btn.id ? '#fff3ef' : '#ffffff',
-                  color: statusFilter === btn.id ? '#2563eb' : '#6b5d56',
+                  color: statusFilter === btn.id ? 'var(--brand-primary)' : '#6b5d56',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease'
                 }}
@@ -597,7 +597,7 @@ export const FoodPostThreads = () => {
               onClick={() => { setDateFilter('all'); setCustomDate(''); setSearchTerm(''); setStatusFilter('all'); }}
               style={{
                 marginTop: '16px',
-                background: '#2563eb',
+                background: 'var(--brand-primary)',
                 color: '#ffffff',
                 border: 'none',
                 padding: '10px 20px',
@@ -635,8 +635,8 @@ export const FoodPostThreads = () => {
                       background: '#ffffff',
                       borderRadius: '16px',
                       padding: '18px 20px',
-                      border: isSelected ? '2px solid #2563eb' : '1px solid rgba(44,35,32,0.08)',
-                      boxShadow: isSelected ? '0 6px 20px rgba(37, 99, 235, 0.12)' : '0 2px 8px rgba(44,35,32,0.03)',
+                      border: isSelected ? '2px solid var(--brand-primary)' : '1px solid rgba(44,35,32,0.08)',
+                      boxShadow: isSelected ? '0 6px 20px rgba(var(--brand-primary-rgb), 0.12)' : '0 2px 8px rgba(44,35,32,0.03)',
                       cursor: 'pointer',
                       transition: 'all 0.15s ease',
                       display: 'flex',
@@ -647,7 +647,7 @@ export const FoodPostThreads = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#2563eb', background: '#fff3ef', padding: '2px 8px', borderRadius: '6px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--brand-primary)', background: '#fff3ef', padding: '2px 8px', borderRadius: '6px' }}>
                             📅 {getPostDateStr(thread) || 'Date N/A'}
                           </span>
                           <span style={{ fontSize: '11px', color: '#9c8e85' }}>
@@ -722,7 +722,7 @@ export const FoodPostThreads = () => {
                           style={{
                             width: `${pct}%`,
                             height: '100%',
-                            background: pct === 100 ? '#10b981' : '#2563eb',
+                            background: pct === 100 ? '#10b981' : 'var(--brand-primary)',
                             borderRadius: '100px'
                           }}
                         />
@@ -774,7 +774,7 @@ export const FoodPostThreads = () => {
                       <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 800, color: '#2c2320' }}>
                         {selectedThread.food_name}
                       </h2>
-                      <span style={{ fontSize: '12px', background: '#dbeafe', color: '#1e40af', padding: '3px 10px', borderRadius: '100px', fontWeight: 700 }}>
+                      <span style={{ fontSize: '12px', background: 'var(--brand-soft)', color: 'var(--brand-primary-deep)', padding: '3px 10px', borderRadius: '100px', fontWeight: 700 }}>
                         Post #{selectedThread.post_id}
                       </span>
                     </div>
@@ -786,7 +786,7 @@ export const FoodPostThreads = () => {
                   <div style={{ display: 'flex', gap: '12px' }}>
                     <div style={{ background: '#fcf9f6', border: '1px solid #f0e9e4', padding: '8px 16px', borderRadius: '12px', textAlign: 'right' }}>
                       <div style={{ fontSize: '11px', color: '#786d66', fontWeight: 700 }}>REMAINING PACKETS</div>
-                      <div style={{ fontSize: '18px', fontWeight: 800, color: selectedThread.remaining_packets === 0 ? '#10b981' : '#2563eb' }}>
+                      <div style={{ fontSize: '18px', fontWeight: 800, color: selectedThread.remaining_packets === 0 ? '#10b981' : 'var(--brand-primary)' }}>
                         {selectedThread.remaining_packets ?? 0} / {selectedThread.total_packets || selectedThread.initial_quantity}
                       </div>
                     </div>
@@ -991,7 +991,7 @@ export const FoodPostThreads = () => {
                                   {item.pickup_code || 'PK-8921'}
                                 </span>
                               </td>
-                              <td style={{ padding: '12px 16px', fontWeight: 700, color: '#2563eb' }}>
+                              <td style={{ padding: '12px 16px', fontWeight: 700, color: 'var(--brand-primary)' }}>
                                 {item.quantity || 1} Meal Packet(s)
                               </td>
                               <td style={{ padding: '12px 16px', color: '#2c2320', fontWeight: 600 }}>

@@ -115,7 +115,7 @@ export const DonorNotifications = () => {
             height: '42px',
             borderRadius: '50%',
             background: '#ebf3fe',
-            color: '#2563eb',
+            color: 'var(--brand-primary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -212,7 +212,7 @@ export const DonorNotifications = () => {
               style={{
                 background: 'transparent',
                 border: 0,
-                color: '#2563eb',
+                color: 'var(--brand-primary)',
                 fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -290,7 +290,7 @@ export const DonorNotifications = () => {
                         style={{
                           background: 'transparent',
                           border: 0,
-                          color: '#2563eb',
+                          color: 'var(--brand-primary)',
                           fontSize: '13px',
                           fontWeight: 600,
                           cursor: 'pointer',
@@ -367,7 +367,7 @@ export const DonorNotifications = () => {
                           style={{
                             background: 'transparent',
                             border: 0,
-                            color: '#2563eb',
+                            color: 'var(--brand-primary)',
                             fontSize: '13px',
                             fontWeight: 600,
                             cursor: 'pointer',
