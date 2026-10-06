@@ -70,6 +70,13 @@ export const RoleSelector = ({ role, setRole, onContinue }) => {
           Log in
         </Link>
       </p>
+
+      <p className="auth-switch-text">
+        Administrator?{' '}
+        <Link to="/admin/login" className="auth-switch-link">
+          Admin panel login
+        </Link>
+      </p>
     </div>
   );
 };
