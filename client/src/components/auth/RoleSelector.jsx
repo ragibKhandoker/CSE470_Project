@@ -39,6 +39,21 @@ export const RoleSelector = ({ role, setRole, onContinue }) => {
           </div>
           <div className={`auth-role-radio ${role === 'receiver' ? 'checked' : ''}`} />
         </div>
+
+        {/* Option 3: NGO / Organization */}
+        <div
+          className={`auth-role-card ${role === 'ngo' ? 'selected-ngo' : ''}`}
+          onClick={() => setRole('ngo')}
+        >
+          <div className="auth-role-left">
+            <div className="auth-role-icon ngo">🏢</div>
+            <div className="auth-role-info">
+              <h3>I am an NGO / Organization</h3>
+              <p>Collect and distribute food to communities in need</p>
+            </div>
+          </div>
+          <div className={`auth-role-radio ${role === 'ngo' ? 'checked' : ''}`} />
+        </div>
       </div>
 
       <button

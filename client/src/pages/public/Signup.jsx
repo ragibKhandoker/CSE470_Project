@@ -33,6 +33,8 @@ export const Signup = () => {
         navigate('/donor/profile');
       } else if (userRole === 'receiver') {
         navigate('/receiver/dashboard');
+      } else if (userRole === 'ngo') {
+        navigate('/ngo/dashboard');
       } else {
         navigate('/');
       }
@@ -71,6 +73,8 @@ export const Signup = () => {
         navigate('/donor/profile');
       } else if (userRole === 'receiver') {
         navigate('/receiver/dashboard');
+      } else if (userRole === 'ngo') {
+        navigate('/ngo/dashboard');
       } else {
         navigate('/');
       }

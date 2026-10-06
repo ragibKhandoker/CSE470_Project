@@ -261,17 +261,24 @@ const googleAuth = async (req, res, next) => {
     if (!user) {
       const dummyPhone = `g_${googleId.slice(0, 10)}`;
       const randomPasswordHash = await bcrypt.hash(googleId + (process.env.JWT_SECRET || 'secret'), 10);
-      const googleDefaultPass = `GoogleAuth_${googleId.slice(0, 6)}`;
+      const normalizedRole = role.toLowerCase();
 
       user = await userModel.createUser({
         name: name || 'Google User',
         phone: dummyPhone,
         email,
         password_hash: randomPasswordHash,
-        // plain_password: googleDefaultPass,
-        role: role.toLowerCase(),
+        role: normalizedRole,
         address: 'Registered via Google OAuth'
       });
+
+      if (normalizedRole === 'ngo') {
+        const ngoModel = require('../models/ngoModel');
+        await ngoModel.createNgo({
+          user_id: user.id,
+          organization_name: name || 'NGO Organization'
+        });
+      }
     }
 
     const jwtToken = jwt.sign(
