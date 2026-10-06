@@ -12,7 +12,7 @@ const createUser = async ({
   role
 }) => {
   const encryptedNid = encrypt(nid);
-  const pdfValue = typeof nid_pdf === 'string' ? nid_pdf : null;
+  const pdfValue = Buffer.isBuffer(nid_pdf) ? nid_pdf : null;
   const query = `
     INSERT INTO users (
       name, phone, nid, nid_pdf, email, address, password_hash, role
@@ -95,7 +95,7 @@ const updateUserProfile = async (
   { name, phone, email, address, nid, nid_pdf }
 ) => {
   const encryptedNid = nid !== undefined ? encrypt(nid) : undefined;
-  const pdfValue = typeof nid_pdf === 'string' ? nid_pdf : null;
+  const pdfValue = Buffer.isBuffer(nid_pdf) ? nid_pdf : null;
   const result = await db.query(
     `UPDATE users
     SET
