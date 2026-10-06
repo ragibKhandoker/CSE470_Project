@@ -142,7 +142,7 @@ const getAllUsers = async (req, res, next) => {
         last_login,
         COALESCE(last_active_at, last_login, created_at) AS last_active_at,
         FLOOR(EXTRACT(EPOCH FROM (NOW() - COALESCE(last_active_at, last_login, created_at))) / 86400)::INT AS inactive_days,
-        (COALESCE(last_active_at, last_login, created_at) <= NOW() - INTERVAL '90 days' AND role NOT IN ('admin', 'super_admin')) AS is_inactive_eligible
+        (COALESCE(last_active_at, last_login, created_at) <= NOW() - INTERVAL '90 days' AND role::text NOT IN ('admin', 'super_admin')) AS is_inactive_eligible
       FROM users 
       ORDER BY id DESC
     `);
@@ -686,7 +686,7 @@ const getSettings = async (req, res, next) => {
     const adminRes = await db.query(
       `SELECT id, name, email, role, created_at 
        FROM users 
-       WHERE role IN ('admin', 'super_admin') 
+       WHERE role::text IN ('admin', 'super_admin')
        ORDER BY id ASC;`
     );
 
@@ -1539,7 +1539,7 @@ const deleteInactiveUsersBatch = async (req, res, next) => {
       `SELECT id, name, email, role,
               FLOOR(EXTRACT(EPOCH FROM (NOW() - COALESCE(last_active_at, last_login, created_at))) / 86400)::INT AS inactive_days
        FROM users 
-       WHERE role NOT IN ('admin', 'super_admin')
+       WHERE role::text NOT IN ('admin', 'super_admin')
          AND COALESCE(last_active_at, last_login, created_at) <= NOW() - INTERVAL '90 days'`
     );
 
@@ -1587,7 +1587,7 @@ const simulateUserInactivity = async (req, res, next) => {
        SET last_active_at = $1::timestamptz,
            last_login = $1::timestamptz,
            created_at = LEAST(created_at, $1::timestamp)
-       WHERE id = $2 AND role NOT IN ('admin', 'super_admin')
+       WHERE id = $2 AND role::text NOT IN ('admin', 'super_admin')
        RETURNING id, name, email, role, last_active_at`,
       [pastDate, id]
     );
@@ -1749,4 +1749,3 @@ module.exports = {
   updateSettings,
   inviteAdmin
 };
-

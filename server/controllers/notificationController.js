@@ -13,23 +13,7 @@ const getMyNotifications = async (req, res, next) => {
     const userRole = (req.user.role || '').toLowerCase();
     const staffRole = (req.user.ngo_staff_role || '').toLowerCase();
 
-    // 1. Fetch persistent / stored notifications from DB (e.g. password resets, system alerts)
-    const storedRows = await notificationModel.findByUserId(userId);
-    const notifications = storedRows.map((n) => ({
-      id: `db_${n.id}`,
-      db_id: n.id,
-      type: n.type || 'system_notification',
-      title: n.title || 'System Notification',
-      subtitle: n.message,
-      message: n.message,
-      link: n.link || null,
-      metadata: n.metadata || null,
-      is_read: n.is_read,
-      unread: !n.is_read,
-      time: formatTimeAgo(n.created_at),
-      timestamp: new Date(n.created_at).getTime(),
-      created_at: n.created_at
-    }));
+    const notifications = [];
 
     // Helper for staff 5-stage progress bar
     const buildStaffProgressBar = (r) => {

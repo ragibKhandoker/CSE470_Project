@@ -457,8 +457,50 @@ const respondToPickupRequest = async (req, res, next) => {
       return res.status(400).json({ message: `Cannot respond: request status is "${existingRequest.status}"` });
     }
 
-    const newStatus = action === 'accept' ? 'approved' : 'rejected';
-    const updatedRequest = await foodRequestModel.updateStatus(id, newStatus);
+    let updatedRequest;
+    if (action === 'accept') {
+      const client = await db.pool.connect();
+      try {
+        await client.query('BEGIN');
+        const updateResult = await client.query(
+          `UPDATE food_requests
+           SET status = 'approved', updated_at = CURRENT_TIMESTAMP
+           WHERE id = $1 AND status = 'pickup_requested'
+           RETURNING *;`,
+          [id]
+        );
+
+        if (updateResult.rows.length === 0) {
+          await client.query('ROLLBACK');
+          return res.status(409).json({
+            message: 'This pickup request has already been responded to.'
+          });
+        }
+
+        updatedRequest = updateResult.rows[0];
+        const foodName = existingRequest.food_name || existingRequest.food_title || 'your requested food';
+        await client.query(
+          `INSERT INTO notifications (user_id, title, message, type, link, metadata)
+           VALUES ($1, $2, $3, $4, $5, $6::jsonb);`,
+          [
+            existingRequest.receiver_id,
+            '✅ Donor Accepted Your Pickup Request',
+            `The donor approved your pickup request for ${foodName}. You can now arrange collection.`,
+            'ngo_pickup_approved',
+            '/ngo/incoming',
+            JSON.stringify({ food_request_id: Number(id), food_post_id: existingRequest.food_post_id })
+          ]
+        );
+        await client.query('COMMIT');
+      } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+      } finally {
+        client.release();
+      }
+    } else {
+      updatedRequest = await foodRequestModel.updateStatus(id, 'rejected');
+    }
 
     return res.status(200).json({
       message: action === 'accept'
@@ -792,4 +834,3 @@ module.exports = {
   postDistributing,
   handoverPackets
 };
-

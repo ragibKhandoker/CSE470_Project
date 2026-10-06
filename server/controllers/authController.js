@@ -432,7 +432,7 @@ const requestPasswordReset = async (req, res, next) => {
       await db.query(
         `INSERT INTO notifications (user_id, title, message, type, link)
          SELECT id, '🔑 Password Reset Request', 'User ' || $1 || ' has submitted a password reset request.', 'password_reset_request', '/admin/users?tab=password-requests'
-         FROM users WHERE role IN ('admin', 'super_admin');`,
+         FROM users WHERE role::text IN ('admin', 'super_admin');`,
         [targetUser.name]
       );
     } catch (notifErr) {

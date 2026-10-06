@@ -31,6 +31,12 @@ const createFoodPost = async (req, res) => {
       });
     }
 
+    if (!district?.trim() || !thana?.trim()) {
+      return res.status(400).json({
+        message: 'District and Thana/Upazila are required to create a food post.'
+      });
+    }
+
     // Enforce Super Admin verification check for donors
     const userModel = require('../models/userModel');
     const donorUser = await userModel.findById(donor_id);

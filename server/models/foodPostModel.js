@@ -25,12 +25,17 @@ const createFoodPost = async ({
 }) => {
   const finalFoodName = food_name || title || null;
   const finalTitle = title || food_name || null;
+  const pickupAddress = [floor_flat, house_no, road_no, area_ward, thana, district]
+    .filter((part) => typeof part === 'string' && part.trim())
+    .map((part) => part.trim())
+    .join(', ');
   const query = `
     INSERT INTO food_posts
     (
       donor_id,
       food_name,
       title,
+      pickup_address,
       food_type,
       quantity,
       expiry_time,
@@ -46,13 +51,14 @@ const createFoodPost = async ({
       notes,
       status
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
     RETURNING *;
   `;
   const values = [
     donor_id,
     finalFoodName,
     finalTitle,
+    pickupAddress,
     food_type,
     quantity,
     expiry_time,
