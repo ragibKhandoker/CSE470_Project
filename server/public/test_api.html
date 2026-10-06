@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ShareMeal API Tester</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .section {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .post-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+
+        img {
+            max-width: 200px;
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>ShareMeal Food Post API Tester</h1>
+
+    <div class="section">
+        <h2>1. Create Food Post (POST /api/food-posts)</h2>
+        <form id="createForm">
+            <label>Donor ID:</label>
+            <input type="number" id="createDonorId" value="1" required>
+
+            <label>Food Type:</label>
+            <input type="text" id="createFoodType" value="Cooked Meals" required>
+
+            <label>Quantity:</label>
+            <input type="text" id="createQuantity" value="20 boxes" required>
+
+            <label>Expiry Time:</label>
+            <input type="datetime-local" id="createExpiryTime" required>
+
+            <label>Latitude:</label>
+            <input type="text" id="createLatitude" value="23.8103" required>
+
+            <label>Longitude:</label>
+            <input type="text" id="createLongitude" value="90.4125" required>
+
+            <label>Food Image:</label>
+            <input type="file" id="createImage" accept="image/*">
+
+            <button type="submit">Create Food Post</button>
+        </form>
+        <h3>Response:</h3>
+        <pre id="createResponse">No response yet</pre>
+    </div>
+
+    <div class="section">
+        <h2>2. Get All Food Posts (GET /api/food-posts)</h2>
+        <button id="getAllBtn">Fetch All Food Posts</button>
+        <h3>All Food Posts:</h3>
+        <div id="allPostsContainer">No posts loaded yet</div>
+    </div>
+
+    <div class="section">
+        <h2>3. Get Single Food Post By ID (GET /api/food-posts/:id)</h2>
+        <label>Food Post ID:</label>
+        <input type="number" id="getSingleId" placeholder="Enter post ID">
+        <button id="getSingleBtn">Fetch Single Post</button>
+        <h3>Response:</h3>
+        <pre id="getSingleResponse">No response yet</pre>
+    </div>
+
+    <div class="section">
+        <h2>4. Update Food Post (PUT /api/food-posts/:id)</h2>
+        <form id="updateForm">
+            <label>Food Post ID to Update:</label>
+            <input type="number" id="updateId" required>
+
+            <label>Food Type:</label>
+            <input type="text" id="updateFoodType" required>
+
+            <label>Quantity:</label>
+            <input type="text" id="updateQuantity" required>
+
+            <label>Expiry Time:</label>
+            <input type="datetime-local" id="updateExpiryTime" required>
+
+            <label>Latitude:</label>
+            <input type="text" id="updateLatitude" required>
+
+            <label>Longitude:</label>
+            <input type="text" id="updateLongitude" required>
+
+            <label>Status:</label>
+            <input type="text" id="updateStatus" value="available">
+
+            <label>New Food Image (Optional):</label>
+            <input type="file" id="updateImage" accept="image/*">
+
+            <button type="submit">Update Food Post</button>
+        </form>
+        <h3>Response:</h3>
+        <pre id="updateResponse">No response yet</pre>
+    </div>
+
+    <div class="section">
+        <h2>5. Delete Food Post (DELETE /api/food-posts/:id)</h2>
+        <label>Food Post ID to Delete:</label>
+        <input type="number" id="deleteId" placeholder="Enter post ID">
+        <button id="deleteBtn" class="delete-btn">Delete Food Post</button>
+        <h3>Response:</h3>
+        <pre id="deleteResponse">No response yet</pre>
+    </div>
+
+    <script>
+        const baseUrl = 'http://localhost:5000/api/food-posts';
+
+        document.getElementById('createForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('donor_id', document.getElementById('createDonorId').value);
+            formData.append('food_type', document.getElementById('createFoodType').value);
+            formData.append('quantity', document.getElementById('createQuantity').value);
+            formData.append('expiry_time', document.getElementById('createExpiryTime').value);
+            formData.append('latitude', document.getElementById('createLatitude').value);
+            formData.append('longitude', document.getElementById('createLongitude').value);
+
+            const imageFile = document.getElementById('createImage').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            try {
+                const res = await fetch(baseUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                document.getElementById('createResponse').textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                document.getElementById('createResponse').textContent = err.message;
+            }
+        });
+
+        document.getElementById('getAllBtn').addEventListener('click', async () => {
+            try {
+                const res = await fetch(baseUrl);
+                const data = await res.json();
+
+                const container = document.getElementById('allPostsContainer');
+                container.innerHTML = '';
+
+                if (data.foodPosts && data.foodPosts.length > 0) {
+                    data.foodPosts.forEach(post => {
+                        const div = document.createElement('div');
+                        div.className = 'post-card';
+                        div.innerHTML = `
+                            <p><strong>ID:</strong> ${post.id}</p>
+                            <p><strong>Donor ID:</strong> ${post.donor_id}</p>
+                            <p><strong>Food Type:</strong> ${post.food_type}</p>
+                            <p><strong>Quantity:</strong> ${post.quantity}</p>
+                            <p><strong>Expiry Time:</strong> ${post.expiry_time}</p>
+                            <p><strong>Location:</strong> ${post.latitude}, ${post.longitude}</p>
+                            <p><strong>Status:</strong> ${post.status}</p>
+                            ${post.image_url ? `<img src="http://localhost:5000${post.image_url}" alt="Food Image">` : '<p><em>No image</em></p>'}
+                        `;
+                        container.appendChild(div);
+                    });
+                } else {
+                    container.textContent = 'No food posts found.';
+                }
+            } catch (err) {
+                document.getElementById('allPostsContainer').textContent = err.message;
+            }
+        });
+
+        document.getElementById('getSingleBtn').addEventListener('click', async () => {
+            const id = document.getElementById('getSingleId').value;
+            if (!id) return alert('Please enter ID');
+
+            try {
+                const res = await fetch(`${baseUrl}/${id}`);
+                const data = await res.json();
+                document.getElementById('getSingleResponse').textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                document.getElementById('getSingleResponse').textContent = err.message;
+            }
+        });
+
+        document.getElementById('updateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('updateId').value;
+            if (!id) return alert('Please enter ID');
+
+            const formData = new FormData();
+            formData.append('food_type', document.getElementById('updateFoodType').value);
+            formData.append('quantity', document.getElementById('updateQuantity').value);
+            formData.append('expiry_time', document.getElementById('updateExpiryTime').value);
+            formData.append('latitude', document.getElementById('updateLatitude').value);
+            formData.append('longitude', document.getElementById('updateLongitude').value);
+            formData.append('status', document.getElementById('updateStatus').value);
+
+            const imageFile = document.getElementById('updateImage').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            try {
+                const res = await fetch(`${baseUrl}/${id}`, {
+                    method: 'PUT',
+                    body: formData
+                });
+                const data = await res.json();
+                document.getElementById('updateResponse').textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                document.getElementById('updateResponse').textContent = err.message;
+            }
+        });
+
+        document.getElementById('deleteBtn').addEventListener('click', async () => {
+            const id = document.getElementById('deleteId').value;
+            if (!id) return alert('Please enter ID');
+
+            try {
+                const res = await fetch(`${baseUrl}/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await res.json();
+                document.getElementById('deleteResponse').textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                document.getElementById('deleteResponse').textContent = err.message;
+            }
+        });
+    </script>
+</body>
+
+</html>
