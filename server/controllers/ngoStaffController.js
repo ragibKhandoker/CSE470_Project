@@ -81,7 +81,6 @@ const createStaff = async (req, res, next) => {
       address,
       nid,
       password_hash,
-      plain_password: password,
       ngo_staff_role,
       parent_ngo_id: ngoAdminId
     });

@@ -7,6 +7,7 @@ try {
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const userModel = require('../models/userModel');
+
 const db = require('../config/db');
 const { sendOtpEmail } = require('../services/emailService');
 const captchaService = require('../utils/captchaService');
@@ -127,7 +128,6 @@ const register = async (req, res, next) => {
       email: email ? email.trim() : null,
       address,
       password_hash,
-      plain_password: password,
       role: userRole
     });
 
@@ -268,7 +268,7 @@ const googleAuth = async (req, res, next) => {
         phone: dummyPhone,
         email,
         password_hash: randomPasswordHash,
-        plain_password: googleDefaultPass,
+        // plain_password: googleDefaultPass,
         role: role.toLowerCase(),
         address: 'Registered via Google OAuth'
       });
@@ -515,7 +515,7 @@ const resetPasswordWithToken = async (req, res, next) => {
     // Update user password
     await db.query(
       `UPDATE users 
-       SET password_hash = $1, plain_password = $2, last_active_at = NOW() 
+       SET password_hash = $1,last_active_at = NOW() 
        WHERE id = $3;`,
       [password_hash, newPassword, resetReq.user_id]
     );

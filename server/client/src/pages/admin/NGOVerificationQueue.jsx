@@ -78,7 +78,7 @@ export const NGOVerificationQueue = () => {
       if (!res.ok) throw new Error(data.message || 'Password reset failed');
 
       setPasswordResetStatus(`✅ Password updated to "${adminNewPassword}"!`);
-      setSelectedUser({ ...selectedUser, plain_password: adminNewPassword });
+      setSelectedUser({ ...selectedUser: adminNewPassword });
       setAdminNewPassword('');
       await fetchUsers();
     } catch (err) {
@@ -387,7 +387,7 @@ export const NGOVerificationQueue = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ffffff', padding: '8px 12px', borderRadius: '8px', border: '1px solid #f0e8e4' }}>
                 <span style={{ color: '#9a3412', fontWeight: 700 }}>🔑 Account Password:</span>
                 <span style={{ fontFamily: 'monospace', background: '#ffe4db', color: '#c8391b', padding: '3px 10px', borderRadius: '6px', fontWeight: 700, fontSize: '14px' }}>
-                  {selectedUser.plain_password || 'Secret123!'}
+                  {selectedUser.password || 'Not available'}
                 </span>
               </div>
 

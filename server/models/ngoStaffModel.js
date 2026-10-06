@@ -57,7 +57,6 @@ const createStaffMember = async ({
   address,
   nid,
   password_hash,
-  plain_password,
   ngo_staff_role,
   parent_ngo_id
 }) => {
@@ -69,7 +68,6 @@ const createStaffMember = async ({
       address,
       nid,
       password_hash, 
-      plain_password, 
       role, 
       ngo_staff_role, 
       parent_ngo_id,
@@ -85,7 +83,6 @@ const createStaffMember = async ({
     address || null,
     nid || null,
     password_hash,
-    plain_password,
     ngo_staff_role,
     parent_ngo_id
   ];
