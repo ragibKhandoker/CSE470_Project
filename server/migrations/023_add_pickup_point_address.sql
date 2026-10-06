@@ -1,0 +1,3 @@
+ALTER TABLE public.pickup_points
+  ADD COLUMN IF NOT EXISTS address TEXT,
+  ADD COLUMN IF NOT EXISTS operating_hours TEXT NOT NULL DEFAULT '8 AM - 9 PM';
