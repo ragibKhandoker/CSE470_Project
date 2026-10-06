@@ -30,7 +30,7 @@ export const PartnersTicker = ({ partners = [] }) => {
   const marqueeList = [...baseList, ...baseList];
 
   return (
-    <section style={{ 
+    <section style={{
       padding: '28px 0 36px', 
       borderTop: '1px solid rgba(44, 35, 32, 0.06)', 
       borderBottom: '1px solid rgba(44, 35, 32, 0.06)', 

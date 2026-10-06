@@ -13,9 +13,6 @@ export const Home = () => {
   const { user, logout } = useAuth();
   const { colorScheme, toggleColorScheme } = useDisplayMode();
   const navigate = useNavigate();
-  const animatedHeadline = "someone's meal";
-  const [headlineLength, setHeadlineLength] = useState(0);
-  const [typingForward, setTypingForward] = useState(true);
 
   // FAQ Accordion state
   const [openFaq, setOpenFaq] = useState(0);
@@ -35,32 +32,6 @@ export const Home = () => {
     'navy-green': 'Navy green & white'
   };
   const colorSchemeLabel = colorSchemeLabels[colorScheme];
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setHeadlineLength(animatedHeadline.length);
-      return undefined;
-    }
-
-    const atEnd = headlineLength === animatedHeadline.length;
-    const atStart = headlineLength === 0;
-    const delay = atEnd ? 1400 : atStart ? 500 : typingForward ? 90 : 45;
-    const timeoutId = window.setTimeout(() => {
-      if (typingForward) {
-        if (atEnd) {
-          setTypingForward(false);
-        } else {
-          setHeadlineLength((length) => length + 1);
-        }
-      } else if (atStart) {
-        setTypingForward(true);
-      } else {
-        setHeadlineLength((length) => length - 1);
-      }
-    }, delay);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [animatedHeadline.length, headlineLength, typingForward]);
 
   // FAQ Data from Figma
   const faqs = [
@@ -403,12 +374,7 @@ export const Home = () => {
             <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(40px, 5vw, 62px)', fontWeight: 800, lineHeight: 1.08, letterSpacing: '-1.5px', margin: '0 0 24px', color: '#2c2320' }}>
               Turn today's surplus into{' '}
               <span style={{ position: 'relative', display: 'inline-block', color: 'var(--brand-primary-dark)' }}>
-                <span className="hero-typewriter" aria-hidden="true">
-                  {animatedHeadline.slice(0, headlineLength)}
-                </span>
-                <span className="hero-typewriter-accessible">
-                  {animatedHeadline}
-                </span>
+                someone's meal
               </span>
             </h1>
 
