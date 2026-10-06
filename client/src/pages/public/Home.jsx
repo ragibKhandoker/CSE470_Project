@@ -457,7 +457,7 @@ export const Home = () => {
           </div>
 
           {/* Right Column: Hero Image with Floating Glassmorphic Badges */}
-          <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+          <div className="hero-visual" style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
             
             {/* Main Picture Frame */}
             <div

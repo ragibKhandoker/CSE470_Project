@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
 import { API_BASE_URL } from '../../utils/constants';
+import { GoogleSignInButton } from './GoogleSignInButton';
 
 export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "Log in", subtitle = "Good to see you again." }) => {
   const [searchParams] = useSearchParams();
@@ -60,22 +60,7 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
         <p>{subtitle}</p>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            if (onGoogleSuccess && credentialResponse.credential) {
-              onGoogleSuccess(credentialResponse.credential);
-            }
-          }}
-          onError={() => {
-            console.error('Google Sign-In failed');
-          }}
-          text="continue_with"
-          theme="outline"
-          shape="pill"
-          width="320"
-        />
-      </div>
+      <GoogleSignInButton onSuccess={onGoogleSuccess} text="continue_with" />
 
       <div className="auth-divider">or</div>
 

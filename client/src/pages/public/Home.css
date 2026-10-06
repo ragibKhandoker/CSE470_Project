@@ -84,6 +84,37 @@
   box-shadow: 0 18px 40px rgba(44, 35, 32, 0.14) !important;
 }
 
+@media (max-width: 1100px) {
+  .hero-visual {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hero-visual .hero-image-frame {
+    grid-row: 1;
+    width: 100% !important;
+    max-width: 460px !important;
+    height: auto !important;
+    aspect-ratio: 1 / 0.92;
+    min-height: 0;
+  }
+
+  .hero-visual .floating-badge {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 360px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+  }
+}
+
 /* Button Animations */
 .btn-primary-hover {
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 

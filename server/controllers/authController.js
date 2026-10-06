@@ -12,8 +12,9 @@ const db = require('../config/db');
 const { sendOtpEmail } = require('../services/emailService');
 const captchaService = require('../utils/captchaService');
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
+const GOOGLE_CLIENT_ID = (process.env.GOOGLE_CLIENT_ID || '').trim();
+const GOOGLE_SIGN_IN_ENABLED = /^[A-Za-z0-9-]+\.apps\.googleusercontent\.com$/.test(GOOGLE_CLIENT_ID);
+const googleClient = GOOGLE_SIGN_IN_ENABLED ? new OAuth2Client(GOOGLE_CLIENT_ID) : null;
 
 // In-memory OTP Store for password recovery
 const otpStore = new Map();
@@ -243,6 +244,12 @@ const login = async (req, res, next) => {
 
 const googleAuth = async (req, res, next) => {
   try {
+    if (!GOOGLE_SIGN_IN_ENABLED) {
+      return res.status(503).json({
+        message: 'Google sign-in is not configured. Set a valid GOOGLE_CLIENT_ID in server/.env.'
+      });
+    }
+
     const { token: idToken, role = 'donor' } = req.body;
     if (!idToken) {
       return res.status(400).json({ message: 'Google ID token is required' });

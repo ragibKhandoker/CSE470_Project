@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
 import authService from '../../services/authService';
+import { GoogleSignInButton } from './GoogleSignInButton';
 
 export const SignupForm = ({ role, onSubmit, onGoogleSuccess, loading, error }) => {
   const [name, setName] = useState('');
@@ -96,22 +96,7 @@ export const SignupForm = ({ role, onSubmit, onGoogleSuccess, loading, error }) 
         </div>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14, marginBottom: 14 }}>
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            if (onGoogleSuccess && credentialResponse.credential) {
-              onGoogleSuccess(credentialResponse.credential);
-            }
-          }}
-          onError={() => {
-            console.error('Google Sign-Up failed');
-          }}
-          text="signup_with"
-          theme="outline"
-          shape="pill"
-          width="320"
-        />
-      </div>
+      <GoogleSignInButton onSuccess={onGoogleSuccess} text="signup_with" style={{ marginTop: 14 }} />
 
       <div className="auth-divider">or</div>
 
