@@ -1,0 +1,19 @@
+{
+  "name": "sharemeal",
+  "version": "1.0.0",
+  "description": "ShareMeal - Food Donation Platform connecting donors, NGOs, receivers, and admins",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -n \"SERVER,WATCH\" -c \"blue,cyan\" \"npm run dev --workspace=server\" \"npm run build:watch --workspace=client\"",
+    "start": "npm run start --workspace=server",
+    "build": "npm run build --workspace=client",
+    "install:all": "npm install && npm install --workspace=client && npm install --workspace=server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
