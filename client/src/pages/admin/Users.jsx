@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../utils/constants';
 import messageService from '../../services/messageService';
@@ -9,6 +9,7 @@ import '../../App.css';
 export const AdminUsers = () => {
   const { token } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Tab state: 'users' | 'password-requests'
   const [activeTab, setActiveTab] = useState('users');
@@ -30,10 +31,29 @@ export const AdminUsers = () => {
   const [userMessageText, setUserMessageText] = useState('');
   const [userMessageStatus, setUserMessageStatus] = useState('');
   const [userMessageLoading, setUserMessageLoading] = useState(false);
+  const [userConversation, setUserConversation] = useState([]);
+  const [userConversationLoading, setUserConversationLoading] = useState(false);
+  const [userConversationError, setUserConversationError] = useState('');
 
   // Deletion & batch cleanup state
   const [deletingId, setDeletingId] = useState(null);
   const [batchDeleting, setBatchDeleting] = useState(false);
+
+  const closeUserProfile = () => {
+    setSelectedUser(null);
+    setUserMessageText('');
+    setUserMessageStatus('');
+
+    const params = new URLSearchParams(location.search);
+    if (params.has('userId')) {
+      params.delete('userId');
+      const searchString = params.toString();
+      navigate(
+        { pathname: location.pathname, search: searchString ? `?${searchString}` : '' },
+        { replace: true }
+      );
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -66,6 +86,32 @@ export const AdminUsers = () => {
   };
 
   useEffect(() => {
+    if (!selectedUser || !['donor', 'receiver'].includes(selectedUser.role)) {
+      setUserConversation([]);
+      setUserConversationError('');
+      return undefined;
+    }
+
+    let active = true;
+    setUserConversationLoading(true);
+    setUserConversationError('');
+    messageService.getAdminConversation(selectedUser.id)
+      .then((response) => {
+        if (active) setUserConversation(response.data || []);
+      })
+      .catch((err) => {
+        if (active) setUserConversationError(err.response?.data?.message || 'Could not load this conversation.');
+      })
+      .finally(() => {
+        if (active) setUserConversationLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [selectedUser?.id, selectedUser?.role]);
+
+  useEffect(() => {
     fetchUsers();
     fetchPasswordRequests();
     const params = new URLSearchParams(location.search);
@@ -73,6 +119,15 @@ export const AdminUsers = () => {
       setActiveTab('password-requests');
     }
   }, [location.search]);
+
+  useEffect(() => {
+    const userId = Number(new URLSearchParams(location.search).get('userId'));
+    if (!Number.isInteger(userId) || userId <= 0) return;
+    const matchingUser = users.find((user) => Number(user.id) === userId);
+    if (matchingUser && selectedUser?.id !== matchingUser.id) {
+      setSelectedUser(matchingUser);
+    }
+  }, [location.search, users, selectedUser?.id]);
 
   const handleApprovePasswordRequest = async (requestId) => {
     setPwActionLoading(requestId);
@@ -173,7 +228,7 @@ export const AdminUsers = () => {
 
       setStatusMsg(data.message);
       if (selectedUser?.id === userToDelete.id) {
-        setSelectedUser(null);
+        closeUserProfile();
       }
       await fetchUsers();
     } catch (err) {
@@ -273,6 +328,8 @@ export const AdminUsers = () => {
       });
       setUserMessageStatus(`Message sent to ${selectedUser.name}.`);
       setUserMessageText('');
+      const response = await messageService.getAdminConversation(selectedUser.id);
+      setUserConversation(response.data || []);
     } catch (err) {
       setUserMessageStatus(err.response?.data?.message || 'Could not send the message. Please try again.');
     } finally {
@@ -861,7 +918,7 @@ export const AdminUsers = () => {
                 <span style={{ fontSize: '20px' }}>👤</span>
                 <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700 }}>User Profile &amp; Security Credentials</h3>
               </div>
-              <button onClick={() => setSelectedUser(null)} style={{ background: 'transparent', border: 0, fontSize: '20px', cursor: 'pointer', color: '#888' }}>✕</button>
+              <button onClick={closeUserProfile} style={{ background: 'transparent', border: 0, fontSize: '20px', cursor: 'pointer', color: '#888' }}>✕</button>
             </div>
 
             {/* Profile Details Card */}
@@ -983,8 +1040,29 @@ export const AdminUsers = () => {
             {(selectedUser.role === 'donor' || selectedUser.role === 'receiver') && (
               <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '14px', padding: '16px', marginTop: '14px' }}>
                 <div style={{ fontSize: '13px', fontWeight: 700, color: '#1e40af', marginBottom: '8px' }}>
-                  Message {selectedUser.name} about their profile
+                  Conversation with {selectedUser.name}
                 </div>
+                {userConversationLoading ? (
+                  <p style={{ margin: '0 0 10px', color: '#64748b', fontSize: '12px' }}>Loading conversation...</p>
+                ) : userConversationError ? (
+                  <p role="alert" style={{ margin: '0 0 10px', color: '#b91c1c', fontSize: '12px' }}>{userConversationError}</p>
+                ) : (
+                  <div style={{ display: 'grid', gap: '8px', maxHeight: '220px', overflowY: 'auto', marginBottom: '12px' }}>
+                    {userConversation.length === 0 ? (
+                      <p style={{ margin: '0 0 4px', color: '#64748b', fontSize: '12px' }}>No messages in this conversation yet.</p>
+                    ) : userConversation.map((message) => {
+                      const fromAdmin = ['admin', 'super_admin'].includes((message.sender_role || '').toLowerCase());
+                      return (
+                        <article key={message.id} style={{ justifySelf: fromAdmin ? 'start' : 'end', maxWidth: '90%', background: fromAdmin ? '#ffffff' : '#dbeafe', border: `1px solid ${fromAdmin ? '#d1d5db' : '#bfdbfe'}`, borderRadius: '10px', padding: '9px 11px' }}>
+                          <div style={{ fontSize: '11px', fontWeight: 700, color: fromAdmin ? '#047857' : '#1d4ed8', marginBottom: '4px' }}>
+                            {fromAdmin ? (message.sender_name || 'Admin') : 'User'} · {new Date(message.sent_at).toLocaleString()}
+                          </div>
+                          <p style={{ margin: 0, color: '#2c2320', fontSize: '12px', lineHeight: 1.45, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{message.message_text}</p>
+                        </article>
+                      );
+                    })}
+                  </div>
+                )}
                 {userMessageStatus && (
                   <p role="status" style={{ margin: '0 0 8px', color: userMessageStatus.startsWith('Message sent') ? '#047857' : '#b91c1c', fontSize: '12px' }}>
                     {userMessageStatus}
@@ -1049,7 +1127,7 @@ export const AdminUsers = () => {
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '20px' }}>
               <button
                 type="button"
-                onClick={() => setSelectedUser(null)}
+                onClick={closeUserProfile}
                 style={{ background: '#f3f4f6', color: '#374151', border: 0, borderRadius: '10px', padding: '10px 16px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}
               >
                 Close Pop-up
@@ -1060,7 +1138,7 @@ export const AdminUsers = () => {
                   type="button"
                   onClick={() => {
                     handleVerify(selectedUser.id, 'verified');
-                    setSelectedUser(null);
+                    closeUserProfile();
                   }}
                   style={{ background: '#10b981', color: '#ffffff', border: 0, borderRadius: '10px', padding: '10px 18px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
                 >

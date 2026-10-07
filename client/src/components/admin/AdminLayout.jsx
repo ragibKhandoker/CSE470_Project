@@ -1048,12 +1048,14 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
             </div>
 
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
-              {(selectedNotification.type === 'new_donor' || selectedNotification.type === 'new_receiver' || selectedNotification.type === 'nid_submitted') && (
+              {(selectedNotification.type === 'new_donor' || selectedNotification.type === 'new_receiver' || selectedNotification.type === 'nid_submitted' || selectedNotification.type === 'user_message') && (
                 <button
                   type="button"
                   onClick={() => {
                     setSelectedNotification(null);
-                    navigate('/admin/users');
+                    navigate(selectedNotification.type === 'user_message'
+                      ? `/admin/users?userId=${selectedNotification.user_id}`
+                      : '/admin/users');
                   }}
                   style={{
                     background: '#10b981',
@@ -1067,7 +1069,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                     boxShadow: '0 4px 10px rgba(16,185,129,0.3)'
                   }}
                 >
-                  👤 Inspect Profile &amp; Verify User →
+                  {selectedNotification.type === 'user_message' ? '💬 Open User Conversation →' : '👤 Inspect Profile &amp; Verify User →'}
                 </button>
               )}
 

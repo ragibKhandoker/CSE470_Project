@@ -11,6 +11,16 @@ export const messageService = {
     return response.data;
   },
 
+  replyToAdmin: async ({ receiver_id, message_text }) => {
+    const response = await api.post('/messages/admin-reply', { receiver_id, message_text });
+    return response.data;
+  },
+
+  getAdminConversation: async (userId) => {
+    const response = await api.get(`/messages/admin/user/${userId}`);
+    return response.data;
+  },
+
   sendMessage: async ({ receiver_id, food_post_id = null, message_text }) => {
     const response = await api.post('/messages', {
       receiver_id,

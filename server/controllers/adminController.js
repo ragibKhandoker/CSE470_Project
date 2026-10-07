@@ -1264,6 +1264,18 @@ const getAdminNotifications = async (req, res, next) => {
       ORDER BY id DESC LIMIT 15;
     `);
 
+    const userMessagesRes = await db.query(`
+      SELECT m.id, m.sender_id AS user_id, u.name AS user_name,
+             u.role::text AS user_role, m.message_text, m.sent_at
+      FROM messages m
+      JOIN users u ON u.id = m.sender_id
+      JOIN users admin_user ON admin_user.id = m.receiver_id
+      WHERE u.role::text IN ('donor', 'receiver')
+        AND admin_user.role::text IN ('admin', 'super_admin')
+      ORDER BY m.sent_at DESC, m.id DESC
+      LIMIT 15;
+    `);
+
     const notifications = [];
 
     // Synthesize food post events
@@ -1447,6 +1459,28 @@ const getAdminNotifications = async (req, res, next) => {
           ]
         });
       }
+    }
+
+    for (const message of userMessagesRes.rows) {
+      notifications.push({
+        id: `user_message_${message.id}`,
+        user_id: message.user_id,
+        type: 'user_message',
+        title: `💬 Reply from ${message.user_name}`,
+        subtitle: `${message.user_role}: ${message.message_text.slice(0, 140)}`,
+        time: formatTimeAgo(message.sent_at),
+        timestamp: new Date(message.sent_at).getTime(),
+        unread: Date.now() - new Date(message.sent_at).getTime() < 24 * 60 * 60 * 1000,
+        thread: [
+          {
+            step: 1,
+            label: 'User replied',
+            detail: message.message_text,
+            status: 'completed',
+            time: formatTimeAgo(message.sent_at)
+          }
+        ]
+      });
     }
 
     // Synthesize Password Reset Requests
