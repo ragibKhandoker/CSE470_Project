@@ -33,7 +33,7 @@ const getDashboardStats = async (req, res, next) => {
         (SELECT COUNT(*) FROM food_posts)::int as total_food_posts,
         (SELECT COUNT(*) FROM food_posts WHERE status = 'available')::int as available_food_posts,
         (SELECT COUNT(*) FROM food_posts WHERE status IN ('collected', 'at_ngo_point', 'completed', 'distributed'))::int as rescued_food_posts,
-        (SELECT COALESCE(SUM(quantity), 0) FROM food_posts)::int as total_portions,
+        (SELECT COALESCE(SUM(quantity::numeric), 0) FROM food_posts)::int as total_portions,
         (SELECT COUNT(*) FROM food_requests)::int as total_requests,
         (SELECT COUNT(*) FROM food_requests WHERE is_anonymous = true)::int as anon_requests,
         (SELECT COUNT(*) FROM food_requests WHERE status IN ('fulfilled', 'distributed'))::int as completed_requests,
@@ -59,7 +59,7 @@ const getDashboardStats = async (req, res, next) => {
         ORDER BY id DESC LIMIT 6;
       `),
       db.query(`
-        SELECT COALESCE(food_type, 'Cooked') as food_type, COUNT(*) as count, COALESCE(SUM(quantity), 0) as portions
+        SELECT COALESCE(food_type, 'Cooked') as food_type, COUNT(*) as count, COALESCE(SUM(quantity::numeric), 0) as portions
         FROM food_posts
         GROUP BY food_type;
       `)
@@ -208,16 +208,62 @@ const getNidDocument = async (req, res, next) => {
 };
 
 const verifyNgo = async (req, res, next) => {
+  let client;
   try {
     const { id } = req.params;
     const { status = 'verified' } = req.body;
-    const result = await db.query(
+    if (!['verified', 'pending'].includes(status)) {
+      return res.status(400).json({ message: 'Verification status must be verified or pending' });
+    }
+
+    client = await db.pool.connect();
+    await client.query('BEGIN');
+    const previous = await client.query(
+      'SELECT id, name, role, verification_status FROM users WHERE id = $1 FOR UPDATE',
+      [id]
+    );
+    if (previous.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const user = previous.rows[0];
+    const result = await client.query(
       'UPDATE users SET verification_status = $1 WHERE id = $2 RETURNING id, name, role, verification_status',
       [status, id]
     );
+
+    if (status === 'verified' && user.verification_status !== 'verified') {
+      const role = String(user.role || '').toLowerCase();
+      const link = role === 'donor'
+        ? '/donor/dashboard'
+        : role === 'receiver'
+          ? '/receiver/dashboard'
+          : '/ngo/dashboard';
+      await client.query(
+        `INSERT INTO notifications (user_id, title, message, type, link)
+         VALUES ($1, $2, $3, $4, $5);`,
+        [
+          user.id,
+          'Profile verified',
+          'A Super Admin verified your profile. You can now use the verified features on ShareMeal.',
+          'profile_verified',
+          link
+        ]
+      );
+    }
+
+    await client.query('COMMIT');
     return res.status(200).json({ message: `User status updated to ${status}`, user: result.rows[0] });
   } catch (error) {
+    if (client) {
+      await client.query('ROLLBACK').catch((rollbackError) => {
+        console.error('Could not roll back user verification:', rollbackError.message);
+      });
+    }
     next(error);
+  } finally {
+    if (client) client.release();
   }
 };
 
@@ -400,7 +446,7 @@ const getBotAlerts = async (req, res, next) => {
          b.id, 
          b.account_id, 
          COALESCE(u.name, b.title) AS title, 
-         COALESCE(u.role, b.user_type) AS user_type, 
+         COALESCE(u.role::text, b.user_type::text) AS user_type,
          u.email AS user_email,
          u.phone AS user_phone,
          u.verification_status AS user_status,
@@ -510,7 +556,7 @@ const getAnalytics = async (req, res, next) => {
 
     // 1. Food Type breakdown from database
     const foodTypeRes = await db.query(
-      `SELECT COALESCE(food_type, 'Cooked') as food_type, COUNT(*) as count, COALESCE(SUM(quantity), 0) as total_qty
+      `SELECT COALESCE(food_type, 'Cooked') as food_type, COUNT(*) as count, COALESCE(SUM(quantity::numeric), 0) as total_qty
        FROM food_posts
        GROUP BY food_type;`
     );
@@ -568,7 +614,7 @@ const getAnalytics = async (req, res, next) => {
          u.id, 
          u.name, 
          COUNT(fp.id) as donation_count,
-         COALESCE(SUM(fp.quantity), 0) as meals
+         COALESCE(SUM(fp.quantity::numeric), 0) as meals
        FROM users u
        LEFT JOIN food_posts fp ON fp.donor_id = u.id
        WHERE u.role = 'donor'
@@ -643,7 +689,7 @@ const getAnalytics = async (req, res, next) => {
          TO_CHAR(created_at, 'Dy') as label,
          DATE_TRUNC('day', created_at) as day,
          COUNT(*) as count,
-         COALESCE(SUM(quantity), 0) as volume
+         COALESCE(SUM(quantity::numeric), 0) as volume
        FROM food_posts
        WHERE created_at >= NOW() - INTERVAL '30 days'
        GROUP BY DATE_TRUNC('day', created_at), TO_CHAR(created_at, 'Dy')

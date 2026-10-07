@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../utils/constants';
 import FoodThreadModal from '../common/FoodThreadModal';
+import ShareMealHelpChatbot from '../common/ShareMealHelpChatbot';
 import '../../App.css';
 
 // Figma Donor Vector SVG Icons
@@ -597,6 +598,7 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
           onClose={() => setSelectedThread(null)}
         />
       )}
+      <ShareMealHelpChatbot role="donor" />
     </div>
   );
 };

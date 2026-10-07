@@ -38,10 +38,22 @@ const foodPostLimiter = rateLimit({
   }
 });
 
+const assistantLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    status: 429,
+    message: 'Too many assistant questions. Please try again in a few minutes.'
+  }
+});
+
 module.exports = {
   apiLimiter,
   authLimiter,
   signupLimiter: authLimiter,
   loginLimiter: authLimiter,
-  foodPostLimiter
+  foodPostLimiter,
+  assistantLimiter
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../utils/constants';
+import ShareMealHelpChatbot from '../common/ShareMealHelpChatbot';
 import '../../App.css';
 
 // Figma Vector SVG Icons
@@ -1261,6 +1262,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
           </div>
         </div>
       )}
+      <ShareMealHelpChatbot role="admin" />
     </div>
   );
 };
