@@ -7,7 +7,6 @@ export const TrendingFoodSection = ({ posts = [], loading = false }) => {
   return (
     <section style={{ padding: '40px 24px 90px', background: '#fdf9f6' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px', flexWrap: 'wrap', gap: '16px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-primary-dark)', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '8px' }}>
@@ -28,6 +27,12 @@ export const TrendingFoodSection = ({ posts = [], loading = false }) => {
               Fetching live food donations from database...
             </div>
           </div>
+        ) : posts.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '60px 20px', background: '#ffffff', borderRadius: '20px' }}>
+            <div style={{ fontSize: '15px', color: '#6b5d56', fontWeight: 600 }}>
+              No active food posts are available right now.
+            </div>
+          </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '22px' }}>
             {posts.map((post) => (
@@ -46,15 +51,14 @@ export const TrendingFoodSection = ({ posts = [], loading = false }) => {
                 }}
               >
                 <div>
-                  {/* Photo with pill badges */}
                   <div className="food-img-wrapper" style={{ position: 'relative', height: '175px', width: '100%', overflow: 'hidden' }}>
                     <img
-                      src={post.image?.startsWith('/') ? post.image : post.image}
+                      src={post.image}
                       alt={post.title}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80';
+                      onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80';
                       }}
                     />
                     <span style={{ position: 'absolute', top: '12px', left: '12px', background: post.tagBg || '#e3f5ea', color: post.tagColor || '#10b981', padding: '4px 10px', borderRadius: '100px', fontSize: '11px', fontWeight: 800 }}>
@@ -65,7 +69,6 @@ export const TrendingFoodSection = ({ posts = [], loading = false }) => {
                     </span>
                   </div>
 
-                  {/* Body Details */}
                   <div style={{ padding: '18px 18px 12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                       <span style={{ background: post.statusBg || '#fff0ec', color: post.statusColor || 'var(--brand-primary-deep)', padding: '3px 10px', borderRadius: '100px', fontSize: '11px', fontWeight: 800 }}>
@@ -109,7 +112,6 @@ export const TrendingFoodSection = ({ posts = [], loading = false }) => {
             ))}
           </div>
         )}
-
       </div>
     </section>
   );

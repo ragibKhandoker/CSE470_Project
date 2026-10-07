@@ -22,69 +22,13 @@ const getHomeData = async (req, res, next) => {
         fp.thana,
         u.name AS donor_name
       FROM food_posts fp
-      LEFT JOIN users u ON fp.donor_id = u.id
+      JOIN users u ON fp.donor_id = u.id
+      WHERE fp.status::text = 'available'
+        AND fp.expiry_time > NOW()
+        AND u.role = 'donor'
       ORDER BY fp.id DESC
-      LIMIT 6;
+      LIMIT 100;
     `);
-
-    const fallbackPosts = [
-      {
-        id: 991,
-        title: 'Garden salad trays',
-        tag: 'Veg',
-        tagColor: '#10b981',
-        tagBg: '#e3f5ea',
-        distance: '0.8 km',
-        status: 'Collected',
-        statusBg: 'rgba(63, 185, 132, 0.15)',
-        statusColor: '#15803d',
-        timeLeft: '95m left',
-        details: '12 meals · Olive Bistro',
-        image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80'
-      },
-      {
-        id: 992,
-        title: 'Fresh dinner platters',
-        tag: 'Cooked',
-        tagColor: '#d97706',
-        tagBg: '#fef3c7',
-        distance: '1.4 km',
-        status: 'Available',
-        statusBg: '#fff0ec',
-        statusColor: '#d9381e',
-        timeLeft: '40m left',
-        details: '25 meals · The Spice Room',
-        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'
-      },
-      {
-        id: 993,
-        title: 'Grain bowls & greens',
-        tag: 'Veg',
-        tagColor: '#10b981',
-        tagBg: '#e3f5ea',
-        distance: '2.1 km',
-        status: 'At NGO point',
-        statusBg: '#eff6ff',
-        statusColor: '#1d4ed8',
-        timeLeft: '180m left',
-        details: '8 meals · Green Fork',
-        image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=800&q=80'
-      },
-      {
-        id: 994,
-        title: 'Surplus produce crate',
-        tag: 'Produce',
-        tagColor: '#059669',
-        tagBg: '#d1fae5',
-        distance: '3.0 km',
-        status: 'Taken',
-        statusBg: '#f3f4f6',
-        statusColor: '#4b5563',
-        timeLeft: 'Completed',
-        details: '30 kg · Sunday Market',
-        image: 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?auto=format&fit=crop&w=800&q=80'
-      }
-    ];
 
     const dbPosts = postsRes.rows.map(r => {
       const tagLower = (r.tag || '').toLowerCase();
@@ -142,15 +86,6 @@ const getHomeData = async (req, res, next) => {
         image: r.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'
       };
     });
-
-    // Merge DB posts with fallbacks to ensure full grid
-    const mergedPosts = [...dbPosts];
-    for (const fb of fallbackPosts) {
-      if (mergedPosts.length >= 4) break;
-      if (!mergedPosts.some(p => p.title.toLowerCase() === fb.title.toLowerCase())) {
-        mergedPosts.push(fb);
-      }
-    }
 
     // 2. Impact Statistics from DB
     const statsRes = await db.query(`
@@ -214,7 +149,7 @@ const getHomeData = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Home page data retrieved successfully',
-      trendingPosts: mergedPosts.slice(0, 4),
+      trendingPosts: dbPosts.slice(0, 4),
       impactStats,
       heroMealsCount: formattedMeals,
       partners: combinedPartners
@@ -224,6 +159,132 @@ const getHomeData = async (req, res, next) => {
   }
 };
 
+const getNearbyFood = async (req, res, next) => {
+  try {
+    const { lat, lng, district, thana } = req.query;
+    const hasCoordinates = lat !== undefined || lng !== undefined;
+
+    if (hasCoordinates) {
+      const latitude = Number(lat);
+      const longitude = Number(lng);
+      if (
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude) ||
+        latitude < -90 ||
+        latitude > 90 ||
+        longitude < -180 ||
+        longitude > 180
+      ) {
+        return res.status(400).json({ message: 'Provide valid latitude and longitude.' });
+      }
+
+      const result = await db.query(
+        `WITH active_posts AS (
+           SELECT
+             fp.id,
+             COALESCE(fp.food_name, fp.title, 'Community Meal') AS title,
+             COALESCE(fp.food_type, 'Cooked') AS food_type,
+             fp.quantity,
+             fp.status::text AS status,
+             fp.expiry_time,
+             fp.image_url AS image,
+             fp.district,
+             fp.thana,
+             fp.latitude,
+             fp.longitude,
+             u.name AS donor_name,
+             6371 * 2 * ASIN(SQRT(
+               POWER(SIN(RADIANS(fp.latitude::double precision - $1) / 2), 2) +
+               COS(RADIANS($1)) * COS(RADIANS(fp.latitude::double precision)) *
+               POWER(SIN(RADIANS(fp.longitude::double precision - $2) / 2), 2)
+             )) AS distance_km
+           FROM food_posts fp
+           JOIN users u ON u.id = fp.donor_id
+           WHERE fp.status::text = 'available'
+             AND fp.expiry_time > NOW()
+             AND u.role = 'donor'
+             AND fp.latitude IS NOT NULL
+             AND fp.longitude IS NOT NULL
+         )
+         SELECT *
+         FROM active_posts
+         WHERE distance_km <= $3
+         ORDER BY distance_km ASC, expiry_time ASC;`,
+        [latitude, longitude, 25]
+      );
+
+      return res.status(200).json({
+        foodPosts: result.rows,
+        searchMode: 'coordinates',
+        radiusKm: 25
+      });
+    }
+
+    const districtFilter = typeof district === 'string' ? district.trim() : '';
+    const thanaFilter = typeof thana === 'string' ? thana.trim() : '';
+    if (!districtFilter && !thanaFilter) {
+      return res.status(400).json({
+        message: 'Share your location or enter a district or thana.'
+      });
+    }
+
+    const result = await db.query(
+      `SELECT
+         fp.id,
+         COALESCE(fp.food_name, fp.title, 'Community Meal') AS title,
+         COALESCE(fp.food_type, 'Cooked') AS food_type,
+         fp.quantity,
+         fp.status::text AS status,
+         fp.expiry_time,
+         fp.image_url AS image,
+         fp.district,
+         fp.thana,
+         fp.latitude,
+         fp.longitude,
+         u.name AS donor_name,
+         NULL::double precision AS distance_km
+       FROM food_posts fp
+       JOIN users u ON u.id = fp.donor_id
+       WHERE fp.status::text = 'available'
+         AND fp.expiry_time > NOW()
+         AND u.role = 'donor'
+         AND ($1::text = '' OR fp.district ILIKE '%' || $1 || '%')
+         AND ($2::text = '' OR fp.thana ILIKE '%' || $2 || '%')
+       ORDER BY fp.expiry_time ASC, fp.created_at DESC;`,
+      [districtFilter, thanaFilter]
+    );
+
+    return res.status(200).json({
+      foodPosts: result.rows,
+      searchMode: 'area',
+      district: districtFilter,
+      thana: thanaFilter
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getFoodLocations = async (req, res, next) => {
+  try {
+    const result = await db.query(
+      `SELECT DISTINCT fp.district, fp.thana
+       FROM food_posts fp
+       JOIN users u ON u.id = fp.donor_id
+       WHERE fp.status::text = 'available'
+         AND fp.expiry_time > NOW()
+         AND u.role = 'donor'
+         AND NULLIF(TRIM(fp.district), '') IS NOT NULL
+       ORDER BY fp.district ASC, fp.thana ASC;`
+    );
+    return res.status(200).json({ locations: result.rows });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
-  getHomeData
+  getHomeData,
+  getNearbyFood,
+  getFoodLocations
 };
