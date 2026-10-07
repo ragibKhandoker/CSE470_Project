@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ShareMealLoading from '../components/common/ShareMealLoading';
 
 // Public Pages
 import Home from '../pages/public/Home';
@@ -72,7 +73,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div className="p-12 text-center">Loading ShareMeal Application...</div>;
+    return <ShareMealLoading />;
   }
 
   if (!user) {
