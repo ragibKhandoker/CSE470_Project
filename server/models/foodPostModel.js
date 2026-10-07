@@ -148,7 +148,7 @@ const getAllNgoPosts = async () => {
       WHERE fr_ngo.food_post_id = f.id AND u_ngo.role = 'ngo'
       ORDER BY fr_ngo.id DESC LIMIT 1
     ) fr ON true
-    WHERE (u.role = 'ngo' OR f.status IN ('at_ngo_point'))
+    WHERE (u.role = 'ngo' OR f.status::text IN ('at_ngo_point'))
       AND f.status != 'completed'
       AND (fr.remaining_packets IS NULL OR fr.remaining_packets > 0)
     ORDER BY f.id DESC;

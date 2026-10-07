@@ -339,13 +339,15 @@ SUPABASE_ANON_KEY=your_supabase_anon_key_here
 
 # Google Gemini API for the receiver help assistant
 GEMINI_API_KEY=your_gemini_api_key
-GEMINI_FAST_MODEL=gemini-2.5-flash-lite
-GEMINI_MODEL=gemini-3.5-flash-lite
+GEMINI_FAST_MODEL=gemini-3.8-flash
+GEMINI_MODEL=gemini-3.8-flash
 GEMINI_FALLBACK_MODEL=gemini-3.8-flash
-GEMINI_FALLBACK_MODELS=gemini-3.8-flash,gemini-2.5-flash-lite,gemini-2.5-flash
+GEMINI_FALLBACK_MODELS=gemini-3.8-flash
 ```
 
-The role-aware ShareMeal help assistant is available to receivers, donors, NGOs, and admins through Gemini on their authenticated portal. Add a valid Google AI Studio API key to `GEMINI_API_KEY` in `server/.env` and restart the server. `GEMINI_FAST_MODEL` defaults to Gemini 2.5 Flash-Lite, Google's low-latency model for lightweight tasks. `GEMINI_MODEL` and the comma-separated `GEMINI_FALLBACK_MODELS` provide additional fallbacks; `GEMINI_FALLBACK_MODEL` remains supported. Temporary overload/rate-limit/model errors move directly to the next model. Responses use concise output, and 2.5 models run with thinking disabled for lower latency. Each provider attempt is limited to 15 seconds and the overall request to 35 seconds. Chat questions are sent to Google Gemini; users are warned not to enter personal or sensitive data, and common email/phone/long-number patterns are redacted before forwarding. The assistant can answer general knowledge and ShareMeal project questions, but AI responses can be inaccurate and it cannot access live account data.
+The role-aware ShareMeal help assistant is available to receivers, donors, NGOs, and admins through Gemini on their authenticated portal. Add a valid Google AI Studio API key to `GEMINI_API_KEY` in `server/.env` and restart the server. `GEMINI_FAST_MODEL` defaults to Gemini 3.8 Flash; unsupported older model names are skipped automatically. `GEMINI_MODEL` and the comma-separated `GEMINI_FALLBACK_MODELS` provide additional fallbacks; `GEMINI_FALLBACK_MODEL` remains supported. Temporary overload/rate-limit/model errors move directly to the next model. Each provider attempt is limited to 15 seconds and the overall request to 35 seconds. Chat questions are sent to Google Gemini; users are warned not to enter personal or sensitive data, and common email/phone/long-number patterns are redacted before forwarding. The assistant can answer general knowledge and ShareMeal project questions, but AI responses can be inaccurate and it cannot access live account data.
+
+Apply migration `024_align_post_status_and_pickup_point_schema.sql` if an existing database reports missing `at_ngo_point` status or `pickup_points.ngo_id`, then restart the backend.
 
 ### 5. Run Development Servers
 Start both the Express backend API and client watcher concurrently from the root directory:

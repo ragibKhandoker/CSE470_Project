@@ -77,7 +77,7 @@ const askAssistant = async (req, res, next) => {
     return res.status(400).json({ message: 'The latest chat message must be from you.' });
   }
 
-  const primaryModel = process.env.GEMINI_FAST_MODEL || 'gemini-2.5-flash-lite';
+  const primaryModel = process.env.GEMINI_FAST_MODEL || 'gemini-3.8-flash';
   const configuredPrimary = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
   const configuredFallbacks = [
     ...(process.env.GEMINI_FALLBACK_MODELS || '')
@@ -86,12 +86,12 @@ const askAssistant = async (req, res, next) => {
       .filter(Boolean),
     process.env.GEMINI_FALLBACK_MODEL || 'gemini-3.8-flash'
   ];
+  const retiredModels = new Set(['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-3.5-flash-lite']);
   const models = [...new Set([
     primaryModel,
     configuredPrimary,
     ...configuredFallbacks,
-    'gemini-2.5-flash'
-  ].filter(Boolean))];
+  ].filter((model) => model && !retiredModels.has(model)))];
   const requestDeadline = Date.now() + TOTAL_REQUEST_TIMEOUT_MS;
 
   try {
@@ -105,7 +105,6 @@ const askAssistant = async (req, res, next) => {
       generationConfig: {
         temperature: 0.1,
         maxOutputTokens: 192,
-        ...(model.startsWith('gemini-2.5-') ? { thinkingConfig: { thinkingBudget: 0 } } : {})
       }
     });
     let response = null;
