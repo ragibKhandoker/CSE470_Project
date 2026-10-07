@@ -1031,6 +1031,17 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
                       <span style={{ fontSize: '11px', color: '#6b7280' }}>{item.time}</span>
                     </div>
                     <p style={{ margin: 0, fontSize: '12px', color: '#4b5563', lineHeight: '16px' }}>{item.detail}</p>
+                    {selectedNotification.has_nid_pdf &&
+                      (item.label === 'NID Verification' || item.label === 'NID Document Uploaded') && (
+                        <a
+                          href={`${API_BASE_URL}/admin/nid-document/${selectedNotification.user_id}?token=${encodeURIComponent(token || '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ display: 'inline-block', marginTop: '8px', color: '#059669', fontSize: '12px', fontWeight: 700 }}
+                        >
+                          📄 View NID document
+                        </a>
+                      )}
                   </div>
                 </div>
               ))}

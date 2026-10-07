@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import authService from '../../services/authService';
-import { GoogleSignInButton } from './GoogleSignInButton';
 
-export const SignupForm = ({ role, onSubmit, onGoogleSuccess, loading, error }) => {
+export const SignupForm = ({ role, onSubmit, loading, error }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -95,10 +94,6 @@ export const SignupForm = ({ role, onSubmit, onGoogleSuccess, loading, error }) 
           </span>
         </div>
       </div>
-
-      <GoogleSignInButton onSuccess={onGoogleSuccess} text="signup_with" style={{ marginTop: 14 }} />
-
-      <div className="auth-divider">or</div>
 
       {hasAnyDuplicate ? (
         <div style={{

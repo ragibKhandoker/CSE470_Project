@@ -10,7 +10,7 @@ export const Login = () => {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, googleLogin } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleLoginSubmit = async (credentials) => {
@@ -55,34 +55,6 @@ export const Login = () => {
     }
   };
 
-  const handleGoogleSuccess = async (idToken) => {
-    setError('');
-    setLoading(true);
-
-    try {
-      const data = await googleLogin(idToken, 'donor');
-      const role = data.user?.role || 'donor';
-
-      if (redirectTarget) {
-        navigate(redirectTarget);
-      } else if (role === 'donor') {
-        navigate('/donor/profile');
-      } else if (role === 'ngo') {
-        navigate('/ngo/dashboard');
-      } else if (role === 'receiver') {
-        navigate('/receiver/dashboard');
-      } else if (role === 'admin') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Google login failed');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="auth-split-container">
       {/* Reusable Left Hero Panel */}
@@ -101,7 +73,6 @@ export const Login = () => {
           title="Log in"
           subtitle="Good to see you again."
           onSubmit={handleLoginSubmit}
-          onGoogleSuccess={handleGoogleSuccess}
           loading={loading}
           error={error}
         />

@@ -16,7 +16,7 @@ export const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { register, googleLogin } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSignupSubmit = async (formData) => {
@@ -54,32 +54,6 @@ export const Signup = () => {
         userExists: isDuplicate,
         field: serverData?.field || (serverMsg && /phone|mobile/i.test(serverMsg) ? 'phone' : serverMsg && /email/i.test(serverMsg) ? 'email' : null)
       });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleSuccess = async (idToken) => {
-    setError('');
-    setLoading(true);
-
-    try {
-      const data = await googleLogin(idToken, role);
-      const userRole = data.user?.role || role;
-
-      if (redirectTarget) {
-        navigate(redirectTarget);
-      } else if (userRole === 'donor') {
-        navigate('/donor/profile');
-      } else if (userRole === 'receiver') {
-        navigate('/receiver/dashboard');
-      } else if (userRole === 'ngo') {
-        navigate('/ngo/dashboard');
-      } else {
-        navigate('/');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Google sign-up failed');
     } finally {
       setLoading(false);
     }
@@ -132,7 +106,6 @@ export const Signup = () => {
           <SignupForm
             role={role}
             onSubmit={handleSignupSubmit}
-            onGoogleSuccess={handleGoogleSuccess}
             loading={loading}
             error={error}
           />

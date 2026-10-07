@@ -173,24 +173,35 @@ const getNidDocument = async (req, res, next) => {
       return res.status(404).send('NID Document file not uploaded or found for this user.');
     }
 
-    const buffer = result.rows[0].nid_pdf;
-    const headerHex = buffer.toString('hex', 0, 4).toLowerCase();
+    const document = Buffer.isBuffer(result.rows[0].nid_pdf)
+      ? result.rows[0].nid_pdf
+      : Buffer.from(result.rows[0].nid_pdf);
+    let contentType;
+    let extension;
 
-    if (headerHex.startsWith('25504446')) {
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `inline; filename="nid-${userId}.pdf"`);
-    } else if (headerHex.startsWith('89504e47')) {
-      res.setHeader('Content-Type', 'image/png');
-      res.setHeader('Content-Disposition', `inline; filename="nid-${userId}.png"`);
-    } else if (headerHex.startsWith('ffd8')) {
-      res.setHeader('Content-Type', 'image/jpeg');
-      res.setHeader('Content-Disposition', `inline; filename="nid-${userId}.jpg"`);
+    if (document.subarray(0, 5).toString('ascii') === '%PDF-') {
+      contentType = 'application/pdf';
+      extension = 'pdf';
+    } else if (document.subarray(0, 8).toString('hex') === '89504e470d0a1a0a') {
+      contentType = 'image/png';
+      extension = 'png';
+    } else if (document.subarray(0, 3).toString('hex') === 'ffd8ff') {
+      contentType = 'image/jpeg';
+      extension = 'jpg';
+    } else if (
+      document.subarray(0, 4).toString('ascii') === 'RIFF' &&
+      document.subarray(8, 12).toString('ascii') === 'WEBP'
+    ) {
+      contentType = 'image/webp';
+      extension = 'webp';
     } else {
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `inline; filename="nid-${userId}.pdf"`);
+      return res.status(415).send('The uploaded NID document format is not supported for preview.');
     }
 
-    res.send(buffer);
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `inline; filename="nid-${userId}.${extension}"`);
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    return res.send(document);
   } catch (error) {
     next(error);
   }
@@ -1248,7 +1259,7 @@ const getAdminNotifications = async (req, res, next) => {
 
     // 2. Fetch recent users (donors, receivers, NGOs) and NID submissions
     const usersRes = await db.query(`
-      SELECT id, name, phone, email, role, nid, (nid_pdf IS NOT NULL) AS has_nid_pdf, verification_status, created_at
+      SELECT id, name, phone, email, role, (nid_pdf IS NOT NULL) AS has_nid_pdf, verification_status, created_at
       FROM users
       ORDER BY id DESC LIMIT 15;
     `);
@@ -1370,6 +1381,7 @@ const getAdminNotifications = async (req, res, next) => {
       notifications.push({
         id: `user_reg_${u.id}`,
         user_id: u.id,
+        has_nid_pdf: u.has_nid_pdf,
         type: `new_${u.role}`,
         title: `${roleIcon} New ${roleLabel} Joined`,
         subtitle: `${u.name} registered as ${u.verification_status === 'verified' ? 'Verified ' : ''}${roleLabel}`,
@@ -1388,7 +1400,7 @@ const getAdminNotifications = async (req, res, next) => {
             step: 2,
             label: 'NID Verification',
             detail: u.has_nid_pdf
-              ? `National ID document uploaded (NID: ${u.nid || 'Attached'})`
+              ? 'National ID document uploaded and ready for review.'
               : 'Pending NID document upload',
             status: u.has_nid_pdf ? 'completed' : 'pending',
             time: u.has_nid_pdf ? 'Submitted' : 'Pending'
@@ -1410,6 +1422,7 @@ const getAdminNotifications = async (req, res, next) => {
         notifications.push({
           id: `user_nid_${u.id}`,
           user_id: u.id,
+          has_nid_pdf: u.has_nid_pdf,
           type: 'nid_submitted',
           title: '📄 NID Document Submitted',
           subtitle: `${u.name} (${roleLabel}) uploaded NID Document for verification`,

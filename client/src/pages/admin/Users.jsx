@@ -879,12 +879,12 @@ export const AdminUsers = () => {
                 <span style={{ color: '#6b5d56' }}>NID Document:</span>
                 {selectedUser.has_nid_pdf ? (
                   <a
-                    href={`${API_BASE_URL}/admin/nid-document/${selectedUser.id}?token=${token}`}
+                    href={`${API_BASE_URL}/admin/nid-document/${selectedUser.id}?token=${encodeURIComponent(token || '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: '#10b981', fontWeight: 700, textDecoration: 'underline' }}
                   >
-                    📄 View Uploaded NID PDF →
+                    📄 View NID document →
                   </a>
                 ) : (
                   <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>No PDF document attached</span>

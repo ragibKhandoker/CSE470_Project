@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { API_BASE_URL } from '../../utils/constants';
-import { GoogleSignInButton } from './GoogleSignInButton';
 
-export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "Log in", subtitle = "Good to see you again." }) => {
+export const LoginForm = ({ onSubmit, loading, error, title = "Log in", subtitle = "Good to see you again." }) => {
   const [searchParams] = useSearchParams();
   const initialIdentifier = searchParams.get('identifier') || searchParams.get('phone') || searchParams.get('email') || '';
   const [phone, setPhone] = useState(initialIdentifier);
@@ -59,10 +58,6 @@ export const LoginForm = ({ onSubmit, onGoogleSuccess, loading, error, title = "
         <h1>{title}</h1>
         <p>{subtitle}</p>
       </div>
-
-      <GoogleSignInButton onSuccess={onGoogleSuccess} text="continue_with" />
-
-      <div className="auth-divider">or</div>
 
       {isNotFound ? (
         <div style={{

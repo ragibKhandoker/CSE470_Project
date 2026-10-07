@@ -13,7 +13,7 @@ const { sendOtpEmail } = require('../services/emailService');
 const captchaService = require('../utils/captchaService');
 
 const GOOGLE_CLIENT_ID = (process.env.GOOGLE_CLIENT_ID || '').trim();
-const GOOGLE_SIGN_IN_ENABLED = /^[A-Za-z0-9-]+\.apps\.googleusercontent\.com$/.test(GOOGLE_CLIENT_ID);
+const GOOGLE_SIGN_IN_ENABLED = /^\d+-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com$/.test(GOOGLE_CLIENT_ID);
 const googleClient = GOOGLE_SIGN_IN_ENABLED ? new OAuth2Client(GOOGLE_CLIENT_ID) : null;
 
 // In-memory OTP Store for password recovery
