@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import DonorLayout from '../../components/donor/DonorLayout';
+import AdminMessageInbox from '../../components/common/AdminMessageInbox';
 import { notificationService } from '../../services/notificationService';
 
 // Seed Notifications strictly matching Figma Node 8:24610
@@ -191,6 +192,9 @@ export const DonorNotifications = () => {
   return (
     <DonorLayout title="Notifications">
       <div style={{ maxWidth: '980px', width: '100%', margin: '0 auto' }}>
+        <div style={{ marginBottom: 20 }}>
+          <AdminMessageInbox />
+        </div>
         {/* Top Control Bar (Figma Node 8:24610) */}
         <div
           style={{

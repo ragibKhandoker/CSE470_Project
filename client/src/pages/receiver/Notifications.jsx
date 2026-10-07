@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReceiverLayout from '../../components/receiver/ReceiverLayout';
+import AdminMessageInbox from '../../components/common/AdminMessageInbox';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../utils/constants';
 
@@ -75,6 +76,7 @@ export const ReceiverNotifications = () => {
   return (
     <ReceiverLayout title="Notifications">
       <div style={{ maxWidth: '1080px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <AdminMessageInbox />
         
         {/* Top Header Row matching Figma 8:32670 */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 4px' }}>

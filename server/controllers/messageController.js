@@ -56,4 +56,50 @@ const getConversation = async (req, res, next) => {
   }
 };
 
-module.exports = { sendMessage, getConversation };
+const sendAdminMessage = async (req, res, next) => {
+  try {
+    const receiverId = Number(req.body.receiver_id);
+    const messageText = typeof req.body.message_text === 'string' ? req.body.message_text.trim() : '';
+
+    if (!Number.isInteger(receiverId) || receiverId <= 0 || !messageText) {
+      return res.status(400).json({ message: 'A valid receiver and non-empty message are required' });
+    }
+    if (messageText.length > 2000) {
+      return res.status(400).json({ message: 'Message must be 2000 characters or fewer' });
+    }
+
+    const receiver = await userModel.findById(receiverId);
+    if (!receiver) {
+      return res.status(404).json({ message: 'Receiver user not found' });
+    }
+    if (!['donor', 'receiver'].includes((receiver.role || '').toLowerCase())) {
+      return res.status(400).json({ message: 'Admins can send profile messages only to donors and receivers' });
+    }
+
+    const message = await messageModel.createAdminMessage({
+      sender_id: req.user.id,
+      receiver_id: receiverId,
+      receiver_role: receiver.role.toLowerCase(),
+      message_text: messageText
+    });
+
+    return res.status(201).json({ message: 'Message sent successfully', data: message });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAdminInbox = async (req, res, next) => {
+  try {
+    if (!['donor', 'receiver'].includes((req.user.role || '').toLowerCase())) {
+      return res.status(403).json({ message: 'Admin messages are available to donors and receivers only' });
+    }
+
+    const messages = await messageModel.findAdminMessagesForUser(req.user.id);
+    return res.status(200).json({ message: 'Admin messages retrieved successfully', data: messages });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { sendMessage, getConversation, sendAdminMessage, getAdminInbox };

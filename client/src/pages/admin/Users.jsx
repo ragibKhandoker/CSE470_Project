@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../utils/constants';
+import messageService from '../../services/messageService';
 import AdminLayout from '../../components/admin/AdminLayout';
 import '../../App.css';
 
@@ -26,6 +27,9 @@ export const AdminUsers = () => {
   const [adminNewPassword, setAdminNewPassword] = useState('');
   const [passwordResetStatus, setPasswordResetStatus] = useState('');
   const [passwordResetLoading, setPasswordResetLoading] = useState(false);
+  const [userMessageText, setUserMessageText] = useState('');
+  const [userMessageStatus, setUserMessageStatus] = useState('');
+  const [userMessageLoading, setUserMessageLoading] = useState(false);
 
   // Deletion & batch cleanup state
   const [deletingId, setDeletingId] = useState(null);
@@ -253,6 +257,26 @@ export const AdminUsers = () => {
       setPasswordResetStatus(`❌ ${err.message}`);
     } finally {
       setPasswordResetLoading(false);
+    }
+  };
+
+  const handleSendUserMessage = async (e) => {
+    e.preventDefault();
+    if (!selectedUser || !userMessageText.trim()) return;
+
+    setUserMessageLoading(true);
+    setUserMessageStatus('');
+    try {
+      await messageService.sendAdminMessage({
+        receiver_id: selectedUser.id,
+        message_text: userMessageText.trim()
+      });
+      setUserMessageStatus(`Message sent to ${selectedUser.name}.`);
+      setUserMessageText('');
+    } catch (err) {
+      setUserMessageStatus(err.response?.data?.message || 'Could not send the message. Please try again.');
+    } finally {
+      setUserMessageLoading(false);
     }
   };
 
@@ -955,6 +979,40 @@ export const AdminUsers = () => {
                 </div>
               )}
             </div>
+
+            {(selectedUser.role === 'donor' || selectedUser.role === 'receiver') && (
+              <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '14px', padding: '16px', marginTop: '14px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: '#1e40af', marginBottom: '8px' }}>
+                  Message {selectedUser.name} about their profile
+                </div>
+                {userMessageStatus && (
+                  <p role="status" style={{ margin: '0 0 8px', color: userMessageStatus.startsWith('Message sent') ? '#047857' : '#b91c1c', fontSize: '12px' }}>
+                    {userMessageStatus}
+                  </p>
+                )}
+                <form onSubmit={handleSendUserMessage} style={{ display: 'grid', gap: '8px' }}>
+                  <textarea
+                    value={userMessageText}
+                    onChange={(e) => setUserMessageText(e.target.value)}
+                    placeholder="Ask the user to review or update their profile..."
+                    maxLength={2000}
+                    rows={3}
+                    required
+                    style={{ width: '100%', boxSizing: 'border-box', resize: 'vertical', padding: '10px 12px', borderRadius: '8px', border: '1px solid #93c5fd', fontSize: '13px', fontFamily: 'inherit' }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: '#64748b', fontSize: '11px' }}>{userMessageText.length}/2000</span>
+                    <button
+                      type="submit"
+                      disabled={userMessageLoading || !userMessageText.trim()}
+                      style={{ background: '#2563eb', color: '#ffffff', border: 0, borderRadius: '8px', padding: '9px 14px', fontSize: '12px', fontWeight: 700, cursor: userMessageLoading ? 'wait' : 'pointer' }}
+                    >
+                      {userMessageLoading ? 'Sending...' : 'Send Message'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
 
             {/* Super Admin Password Change Form */}
             <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: '14px', padding: '16px' }}>
