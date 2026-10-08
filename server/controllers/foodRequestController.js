@@ -23,7 +23,16 @@ const generatePickupCode = () => {
 
 const createFoodRequest = async (req, res, next) => {
   try {
-    const { food_post_id, is_anonymous, requested_quantity, notes, captchaId, captchaAnswer } = req.body;
+    const {
+      food_post_id,
+      is_anonymous,
+      requested_quantity,
+      notes,
+      payment_method,
+      bkash_transaction_id,
+      captchaId,
+      captchaAnswer
+    } = req.body;
     const receiver_id = req.user.id;
 
     // Verify CAPTCHA to prevent automated bot food claiming
@@ -62,6 +71,47 @@ const createFoodRequest = async (req, res, next) => {
       return res.status(400).json({ message: 'You cannot request your own food post' });
     }
 
+    const requestedQuantity = Number(requested_quantity || 1);
+    const availableQuantity = Number(foodPost.quantity);
+    if (!Number.isInteger(requestedQuantity) || requestedQuantity < 1) {
+      return res.status(400).json({ message: 'Requested portions must be a positive whole number.' });
+    }
+    if (Number.isFinite(availableQuantity) && requestedQuantity > availableQuantity) {
+      return res.status(400).json({ message: `Only ${availableQuantity} portions are currently available.` });
+    }
+
+    const distributionTotal = Number(foodPost.distribution_total_amount) || 0;
+    const distributionPackets = Number(foodPost.distribution_total_packets) || availableQuantity;
+    const isPaidDistribution = distributionTotal > 0 && distributionPackets > 0;
+    let requestPaymentMethod = 'none';
+    let paymentStatus = 'not_required';
+    let paymentAmount = 0;
+    let transactionId = null;
+    let paymentBkashNumber = null;
+
+    if (isPaidDistribution) {
+      if (!['cash_on_delivery', 'bkash'].includes(payment_method)) {
+        return res.status(400).json({ message: 'Choose Cash on Delivery or bKash payment.' });
+      }
+      paymentAmount = Number(((distributionTotal * requestedQuantity) / distributionPackets).toFixed(2));
+      requestPaymentMethod = payment_method;
+      paymentBkashNumber = foodPost.distribution_bkash_number;
+      if (!paymentBkashNumber) {
+        return res.status(409).json({ message: 'The NGO has not configured a bKash payment number for this food post.' });
+      }
+      if (payment_method === 'bkash') {
+        transactionId = typeof bkash_transaction_id === 'string'
+          ? bkash_transaction_id.trim().toUpperCase()
+          : '';
+        if (!/^[A-Z0-9]{6,20}$/.test(transactionId)) {
+          return res.status(400).json({ message: 'Enter a valid bKash Transaction ID (6–20 letters or numbers).' });
+        }
+        paymentStatus = 'verification_pending';
+      } else {
+        paymentStatus = 'cod_due';
+      }
+    }
+
     // Check if receiver already has an active or completed request for this post
     const existing = await foodRequestModel.findExistingRequest(food_post_id, receiver_id);
     if (existing) {
@@ -93,8 +143,13 @@ const createFoodRequest = async (req, res, next) => {
       receiver_id,
       is_anonymous: Boolean(is_anonymous),
       pickup_code: pickupCode,
-      requested_quantity: requested_quantity ? parseInt(requested_quantity, 10) : 1,
-      notes: notes || ''
+      requested_quantity: requestedQuantity,
+      notes: notes || '',
+      payment_method: requestPaymentMethod,
+      payment_amount: paymentAmount,
+      payment_status: paymentStatus,
+      bkash_transaction_id: transactionId,
+      payment_bkash_number: paymentBkashNumber
     });
 
     return res.status(201).json({
@@ -124,7 +179,8 @@ const getIncomingFoodRequests = async (req, res, next) => {
     const userRole = req.user.role;
     let requests;
     if (userRole === 'ngo' || userRole === 'admin' || userRole === 'super_admin') {
-      requests = await foodRequestModel.findIncomingForNgo();
+      const ngoUserId = userRole === 'ngo' ? (req.user.parent_ngo_id || req.user.id) : null;
+      requests = await foodRequestModel.findIncomingForNgo(ngoUserId);
     } else {
       requests = await foodRequestModel.findIncomingForDonor(req.user.id);
     }
@@ -162,6 +218,26 @@ const updateFoodRequestStatus = async (req, res, next) => {
 
     if (!isDonor && !isReceiver && !isAdmin && !isNgo) {
       return res.status(403).json({ message: 'Not authorized to update this food request' });
+    }
+
+    if (
+      status === 'approved' &&
+      existingRequest.payment_method === 'bkash' &&
+      existingRequest.payment_status !== 'paid'
+    ) {
+      return res.status(409).json({
+        message: 'Verify the receiver’s bKash payment before approving this request.'
+      });
+    }
+
+    if (
+      status === 'fulfilled' &&
+      Number(existingRequest.payment_amount) > 0 &&
+      existingRequest.payment_status !== 'paid'
+    ) {
+      return res.status(409).json({
+        message: 'Confirm payment collection before completing this food handover.'
+      });
     }
 
     // When distributor/NGO accepts request ('approved'), validate remaining quantity for this food post
@@ -575,17 +651,86 @@ const markAtHub = async (req, res, next) => {
 const postDistributing = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { pickup_point_id, total_packets, needs_options } = req.body;
-    if (!pickup_point_id || !total_packets) {
-      return res.status(400).json({ message: 'Pickup point and total packet count are required.' });
+    const { pickup_point_id, total_packets, needs_options, total_amount, bkash_number } = req.body;
+    const ngoUserId = req.user.parent_ngo_id || req.user.id;
+    if (req.user.role !== 'ngo') {
+      return res.status(403).json({ message: 'Only an NGO account can post food for distribution.' });
+    }
+    const packetCount = Number(total_packets);
+    const totalAmount = Number(total_amount || 0);
+    const normalizedBkashNumber = typeof bkash_number === 'string'
+      ? bkash_number.replace(/[\s-]/g, '')
+      : '';
+    if (!pickup_point_id || !Number.isInteger(packetCount) || packetCount < 1) {
+      return res.status(400).json({ message: 'Pickup point and a positive whole packet count are required.' });
+    }
+    if (!Number.isFinite(totalAmount) || totalAmount < 0) {
+      return res.status(400).json({ message: 'The total amount must be zero or a positive number.' });
+    }
+    if (totalAmount > 0 && !/^(?:\+?88)?01[3-9]\d{8}$/.test(normalizedBkashNumber)) {
+      return res.status(400).json({ message: 'Enter a valid Bangladesh bKash number for paid distribution.' });
     }
     const updated = await foodRequestModel.postForDistribution(id, {
       pickup_point_id,
-      total_packets: parseInt(total_packets, 10),
-      needs_options
+      total_packets: packetCount,
+      needs_options,
+      total_amount: totalAmount,
+      bkash_number: totalAmount > 0 ? normalizedBkashNumber : null,
+      ngo_user_id: ngoUserId
     });
+    if (!updated) {
+      return res.status(404).json({ message: 'The hub request was not found or does not belong to your NGO.' });
+    }
     return res.status(200).json({
       message: 'Food posted for distribution successfully!',
+      data: updated
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateFoodPayment = async (req, res, next) => {
+  try {
+    const { action } = req.body;
+    if (action === 'resubmit_bkash') {
+      if (req.user.role !== 'receiver') {
+        return res.status(403).json({ message: 'Only the receiver who submitted the request can replace its bKash Transaction ID.' });
+      }
+      const transactionId = typeof req.body.bkash_transaction_id === 'string'
+        ? req.body.bkash_transaction_id.trim().toUpperCase()
+        : '';
+      if (!/^[A-Z0-9]{6,20}$/.test(transactionId)) {
+        return res.status(400).json({ message: 'Enter a valid bKash Transaction ID (6–20 letters or numbers).' });
+      }
+      const updated = await foodRequestModel.resubmitBikashTransaction(req.params.id, req.user.id, transactionId);
+      if (!updated) {
+        return res.status(409).json({ message: 'This payment is not awaiting a corrected bKash Transaction ID.' });
+      }
+      return res.status(200).json({ message: 'Transaction ID resubmitted for NGO verification.', data: updated });
+    }
+
+    if (req.user.role !== 'ngo') {
+      return res.status(403).json({ message: 'Only the responsible NGO can verify or collect this payment.' });
+    }
+    const paymentStatuses = {
+      verify_bkash: 'paid',
+      reject_bkash: 'rejected',
+      confirm_cash: 'paid'
+    };
+    const paymentStatus = paymentStatuses[action];
+    if (!paymentStatus) {
+      return res.status(400).json({ message: 'Choose a valid payment action.' });
+    }
+    const ngoUserId = req.user.parent_ngo_id || req.user.id;
+    const updated = await foodRequestModel.updatePaymentStatus(req.params.id, ngoUserId, paymentStatus);
+    if (!updated) {
+      return res.status(409).json({
+        message: 'Payment was already processed or this request is not assigned to your NGO.'
+      });
+    }
+    return res.status(200).json({
+      message: paymentStatus === 'rejected' ? 'bKash transaction marked as unverified.' : 'Payment confirmed.',
       data: updated
     });
   } catch (error) {
@@ -832,5 +977,6 @@ module.exports = {
   markPickedUp,
   markAtHub,
   postDistributing,
-  handoverPackets
+  handoverPackets,
+  updateFoodPayment
 };

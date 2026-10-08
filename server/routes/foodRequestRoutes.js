@@ -34,6 +34,7 @@ router.post('/', protect, foodRequestController.createFoodRequest);
 router.get('/my-requests', protect, foodRequestController.getMyFoodRequests);
 router.get('/incoming', protect, foodRequestController.getIncomingFoodRequests);
 router.patch('/:id/status', protect, foodRequestController.updateFoodRequestStatus);
+router.patch('/:id/payment', protect, foodRequestController.updateFoodPayment);
 router.post('/verify-code', protect, foodRequestController.verifyPickupCode);
 router.get('/lookup-code/:code', protect, foodRequestController.lookupPickupCode);
 router.post('/:id/receipt', protect, upload.single('receipt_photo'), foodRequestController.uploadReceiptPhoto);
@@ -52,4 +53,3 @@ router.patch('/:id/post-distributing', protect, foodRequestController.postDistri
 router.post('/:id/handover', protect, foodRequestController.handoverPackets);
 
 module.exports = router;
-

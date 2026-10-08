@@ -23,6 +23,8 @@ export const CollectionRequests = () => {
   const [distributeModalItem, setDistributeModalItem] = useState(null);
   const [selectedPickupPointId, setSelectedPickupPointId] = useState('');
   const [totalPackets, setTotalPackets] = useState('');
+  const [distributionTotalAmount, setDistributionTotalAmount] = useState('0');
+  const [distributionBkashNumber, setDistributionBkashNumber] = useState('');
   const [selectedNeeds, setSelectedNeeds] = useState(['Cooked Meal', 'Halal']);
 
   const [handoverModalItem, setHandoverModalItem] = useState(null);
@@ -216,7 +218,9 @@ export const CollectionRequests = () => {
         body: JSON.stringify({
           pickup_point_id: selectedPickupPointId,
           total_packets: parseInt(totalPackets, 10),
-          needs_options: selectedNeeds
+          needs_options: selectedNeeds,
+          total_amount: Number(distributionTotalAmount || 0),
+          bkash_number: distributionBkashNumber
         })
       });
       if (res.ok) {
@@ -751,6 +755,8 @@ export const CollectionRequests = () => {
                         onClick={() => {
                           setDistributeModalItem(item);
                           setTotalPackets(item.post_quantity || 50);
+                          setDistributionTotalAmount('0');
+                          setDistributionBkashNumber('');
                           if (pickupPoints.length > 0) {
                             setSelectedPickupPointId(pickupPoints[0].id);
                           }
@@ -1163,7 +1169,7 @@ export const CollectionRequests = () => {
                 Post Food for Distribution
               </h3>
               <p style={{ margin: '0 0 18px', fontSize: '13px', color: '#786d66' }}>
-                Select the NGO Pickup Point and packet quantity. This will immediately display to receivers on <strong>Find Food</strong>.
+                Select the NGO Pickup Point and packet quantity. Set the total above zero to offer Cash on Delivery or bKash to receivers; enter 0 to keep the food free. The post will appear on <strong>Find Food</strong>.
               </p>
 
               <form onSubmit={handlePostDistribution}>
@@ -1215,6 +1221,37 @@ export const CollectionRequests = () => {
                     }}
                   />
                 </div>
+
+                <div style={{ marginBottom: 16 }}>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#2c2320', marginBottom: 6 }}>
+                    Total Amount for All Packets (৳; enter 0 for free food)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={distributionTotalAmount}
+                    onChange={(e) => setDistributionTotalAmount(e.target.value)}
+                    required
+                    style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1.5px solid #e5e7eb', fontSize: '14px', boxSizing: 'border-box' }}
+                  />
+                </div>
+
+                {Number(distributionTotalAmount) > 0 && (
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#2c2320', marginBottom: 6 }}>
+                      NGO bKash Number
+                    </label>
+                    <input
+                      type="tel"
+                      value={distributionBkashNumber}
+                      onChange={(e) => setDistributionBkashNumber(e.target.value)}
+                      placeholder="01XXXXXXXXX"
+                      required
+                      style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1.5px solid #e5e7eb', fontSize: '14px', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                )}
 
                 <div style={{ marginBottom: 20 }}>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#2c2320', marginBottom: 8 }}>

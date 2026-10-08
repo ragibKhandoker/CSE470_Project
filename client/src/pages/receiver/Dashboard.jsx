@@ -27,6 +27,8 @@ export const ReceiverDashboard = () => {
   // Request Food Modal State
   const [requestModalItem, setRequestModalItem] = useState(null);
   const [requestedPortions, setRequestedPortions] = useState(1);
+  const [paymentMethod, setPaymentMethod] = useState('cash_on_delivery');
+  const [bkashTransactionId, setBkashTransactionId] = useState('');
   const [requestNote, setRequestNote] = useState('');
   const [requestSuccessMessage, setRequestSuccessMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -151,6 +153,8 @@ export const ReceiverDashboard = () => {
           food_post_id: requestModalItem.id,
           is_anonymous: isAnonymous,
           requested_quantity: requestedPortions,
+          payment_method: Number(requestModalItem.distribution_total_amount) > 0 ? paymentMethod : 'none',
+          bkash_transaction_id: bkashTransactionId,
           notes: requestNote,
           captchaId: requestCaptcha.captchaId,
           captchaAnswer: requestCaptcha.captchaAnswer
@@ -720,6 +724,11 @@ export const ReceiverDashboard = () => {
                           <span>📍 {locationText}</span>
                           <span>👤 {food.donor_name || 'Community Donor'}</span>
                         </div>
+                        {Number(food.distribution_total_amount) > 0 && (
+                          <div style={{ marginTop: 7, fontSize: 12, color: '#9a3412', fontWeight: 700 }}>
+                            ৳{(Number(food.distribution_total_amount) / (Number(food.distribution_total_packets) || Number(food.quantity) || 1)).toFixed(2)} per portion · COD or bKash
+                          </div>
+                        )}
                       </div>
 
                       <button
@@ -732,6 +741,8 @@ export const ReceiverDashboard = () => {
                           if (!hasClaimed) {
                             setRequestModalItem(food);
                             setRequestedPortions(1);
+                            setPaymentMethod('cash_on_delivery');
+                            setBkashTransactionId('');
                             setRequestNote('');
                           }
                         }}
@@ -974,6 +985,41 @@ export const ReceiverDashboard = () => {
                     </span>
                   </div>
                 </div>
+
+                {Number(requestModalItem.distribution_total_amount) > 0 && (
+                  <div style={{ marginBottom: '16px', padding: '14px', borderRadius: '14px', background: '#fff7ed', border: '1px solid #fed7aa' }}>
+                    {(() => {
+                      const packetCount = Number(requestModalItem.distribution_total_packets) || Number(requestModalItem.quantity) || 1;
+                      const amount = (Number(requestModalItem.distribution_total_amount) * requestedPortions / packetCount).toFixed(2);
+                      return (
+                        <>
+                          <div style={{ fontWeight: 800, color: '#9a3412', marginBottom: 8 }}>Total to pay: ৳{amount}</div>
+                          <label style={{ display: 'block', marginBottom: 8, fontSize: 13 }}>
+                            <input type="radio" name="dashboard-payment-method" value="cash_on_delivery" checked={paymentMethod === 'cash_on_delivery'} onChange={() => setPaymentMethod('cash_on_delivery')} /> Cash on Delivery
+                          </label>
+                          <label style={{ display: 'block', fontSize: 13 }}>
+                            <input type="radio" name="dashboard-payment-method" value="bkash" checked={paymentMethod === 'bkash'} onChange={() => setPaymentMethod('bkash')} /> Prepaid bKash Send Money
+                          </label>
+                          {paymentMethod === 'bkash' && (
+                            <div style={{ marginTop: 10 }}>
+                              <div style={{ fontSize: 13, marginBottom: 8 }}>Send ৳{amount} to <strong>{requestModalItem.distribution_bkash_number}</strong>, then enter your Transaction ID. The NGO will verify it.</div>
+                              <input
+                                type="text"
+                                value={bkashTransactionId}
+                                onChange={(e) => setBkashTransactionId(e.target.value.toUpperCase())}
+                                placeholder="bKash Transaction ID"
+                                minLength={6}
+                                maxLength={20}
+                                required
+                                style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #e5e7eb', boxSizing: 'border-box' }}
+                              />
+                            </div>
+                          )}
+                        </>
+                      );
+                    })()}
+                  </div>
+                )}
 
                 <div style={{ marginBottom: '18px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#2c2320', marginBottom: '6px' }}>

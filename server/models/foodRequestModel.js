@@ -10,7 +10,12 @@ const createFoodRequest = async ({
   is_anonymous = false,
   pickup_code,
   requested_quantity = 1,
-  notes = ''
+  notes = '',
+  payment_method = 'none',
+  payment_amount = 0,
+  payment_status = 'not_required',
+  bkash_transaction_id = null,
+  payment_bkash_number = null
 }) => {
   const query = `
     INSERT INTO food_requests (
@@ -20,9 +25,14 @@ const createFoodRequest = async ({
       pickup_code,
       requested_quantity,
       notes,
+      payment_method,
+      payment_amount,
+      payment_status,
+      bkash_transaction_id,
+      payment_bkash_number,
       status
     )
-    VALUES ($1, $2, $3, $4, $5, $6, 'requested')
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'requested')
     RETURNING *;
   `;
   const values = [
@@ -31,7 +41,12 @@ const createFoodRequest = async ({
     is_anonymous,
     pickup_code,
     requested_quantity,
-    notes
+    notes,
+    payment_method,
+    payment_amount,
+    payment_status,
+    bkash_transaction_id,
+    payment_bkash_number
   ];
   const result = await db.query(query, values);
   return result.rows[0];
@@ -146,6 +161,10 @@ const findIncomingForNgo = async (ngoUserId) => {
       fp.donor_id,
       fp.image_url AS food_image_url,
       fp.quantity AS post_quantity,
+      fp.distribution_total_amount,
+      fp.distribution_total_packets,
+      fp.distribution_bkash_number,
+      fp.distribution_ngo_user_id,
       COALESCE(
         (SELECT fr_ngo.remaining_packets 
          FROM food_requests fr_ngo 
@@ -166,10 +185,49 @@ const findIncomingForNgo = async (ngoUserId) => {
     FROM food_requests fr
     JOIN food_posts fp ON fr.food_post_id = fp.id
     JOIN users u ON fr.receiver_id = u.id
+    WHERE ($1::integer IS NULL OR fp.distribution_ngo_user_id = $1)
     ORDER BY fr.created_at DESC;
   `;
-  const result = await db.query(query);
+  const result = await db.query(query, [ngoUserId]);
   return result.rows;
+};
+
+const updatePaymentStatus = async (requestId, ngoUserId, paymentStatus) => {
+  const query = `
+    UPDATE food_requests fr
+    SET payment_status = $1,
+        payment_verified_at = CASE WHEN $1 = 'paid' THEN CURRENT_TIMESTAMP ELSE NULL END,
+        updated_at = CURRENT_TIMESTAMP
+    FROM food_posts fp
+    WHERE fr.id = $2
+      AND fp.id = fr.food_post_id
+      AND fp.distribution_ngo_user_id = $3
+      AND (
+        ($1 = 'rejected' AND fr.payment_method = 'bkash' AND fr.payment_status = 'verification_pending')
+        OR ($1 = 'paid' AND fr.payment_method = 'bkash' AND fr.payment_status = 'verification_pending')
+        OR ($1 = 'paid' AND fr.payment_method = 'cash_on_delivery' AND fr.payment_status = 'cod_due')
+      )
+    RETURNING fr.*;
+  `;
+  const result = await db.query(query, [paymentStatus, requestId, ngoUserId]);
+  return result.rows[0];
+};
+
+const resubmitBikashTransaction = async (requestId, receiverId, transactionId) => {
+  const query = `
+    UPDATE food_requests
+    SET bkash_transaction_id = $1,
+        payment_status = 'verification_pending',
+        payment_verified_at = NULL,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id = $2
+      AND receiver_id = $3
+      AND payment_method = 'bkash'
+      AND payment_status = 'rejected'
+    RETURNING *;
+  `;
+  const result = await db.query(query, [transactionId, requestId, receiverId]);
+  return result.rows[0];
 };
 
 /**
@@ -300,7 +358,14 @@ const markAtHub = async (requestId, staffId) => {
   return result.rows[0];
 };
 
-const postForDistribution = async (requestId, { pickup_point_id, total_packets, needs_options }) => {
+const postForDistribution = async (requestId, {
+  pickup_point_id,
+  total_packets,
+  needs_options,
+  total_amount,
+  bkash_number,
+  ngo_user_id
+}) => {
   const query = `
     UPDATE food_requests
     SET 
@@ -310,23 +375,43 @@ const postForDistribution = async (requestId, { pickup_point_id, total_packets, 
       status = 'distributing',
       updated_at = CURRENT_TIMESTAMP
     WHERE id = $3
+      AND (
+        receiver_id = $4
+        OR receiver_id IN (SELECT id FROM users WHERE parent_ngo_id = $4)
+      )
+      AND status = 'at_hub'
     RETURNING *;
   `;
-  const result = await db.query(query, [pickup_point_id, total_packets, requestId]);
+  const client = await db.pool.connect();
+  try {
+    await client.query('BEGIN');
+    const result = await client.query(query, [pickup_point_id, total_packets, requestId, ngo_user_id]);
+    if (!result.rows[0]) {
+      await client.query('ROLLBACK');
+      return null;
+    }
 
-  // Also update food post so receivers can see it at this pickup point
-  await db.query(
-    `UPDATE food_posts 
-     SET 
-       pickup_point_id = $1,
-       quantity = $2,
-       needs_options = $3,
-       status = 'at_ngo_point' 
-     WHERE id = (SELECT food_post_id FROM food_requests WHERE id = $4)`,
-    [pickup_point_id, total_packets, needs_options || [], requestId]
-  );
-
-  return result.rows[0];
+    await client.query(
+      `UPDATE food_posts
+       SET pickup_point_id = $1,
+           quantity = $2,
+           needs_options = $3,
+           distribution_total_amount = $4,
+           distribution_total_packets = $2,
+           distribution_bkash_number = $5,
+           distribution_ngo_user_id = $6,
+           status = 'at_ngo_point'
+       WHERE id = $7`,
+      [pickup_point_id, total_packets, needs_options || [], total_amount, bkash_number, ngo_user_id, result.rows[0].food_post_id]
+    );
+    await client.query('COMMIT');
+    return result.rows[0];
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 const handoverPackets = async (requestId, { receiver_name, receiver_phone, quantity, pickup_code, staff_id, staff_name }) => {
@@ -447,6 +532,8 @@ module.exports = {
   findByReceiverId,
   findIncomingForDonor,
   findIncomingForNgo,
+  updatePaymentStatus,
+  resubmitBikashTransaction,
   findPickupRequestsForDonor,
   findPickupRequestsByNgo,
   assignReceivingStaff,
@@ -459,4 +546,3 @@ module.exports = {
   updateReceiptPhoto,
   deleteFoodRequest
 };
-
