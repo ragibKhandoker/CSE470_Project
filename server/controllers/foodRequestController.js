@@ -82,34 +82,64 @@ const createFoodRequest = async (req, res, next) => {
 
     const distributionTotal = Number(foodPost.distribution_total_amount) || 0;
     const distributionPackets = Number(foodPost.distribution_total_packets) || availableQuantity;
-    const isPaidDistribution = distributionTotal > 0 && distributionPackets > 0;
+    const isFixedPaidDistribution = distributionTotal > 0 && distributionPackets > 0;
     let requestPaymentMethod = 'none';
     let paymentStatus = 'not_required';
     let paymentAmount = 0;
     let transactionId = null;
     let paymentBkashNumber = null;
+    let ngoUserId = foodPost.distribution_ngo_user_id || null;
 
-    if (isPaidDistribution) {
-      if (!['cash_on_delivery', 'bkash'].includes(payment_method)) {
-        return res.status(400).json({ message: 'Choose Cash on Delivery or bKash payment.' });
-      }
-      paymentAmount = Number(((distributionTotal * requestedQuantity) / distributionPackets).toFixed(2));
-      requestPaymentMethod = payment_method;
-      paymentBkashNumber = foodPost.distribution_bkash_number;
-      if (!paymentBkashNumber) {
-        return res.status(409).json({ message: 'The NGO has not configured a bKash payment number for this food post.' });
-      }
-      if (payment_method === 'bkash') {
-        transactionId = typeof bkash_transaction_id === 'string'
-          ? bkash_transaction_id.trim().toUpperCase()
-          : '';
-        if (!/^[A-Z0-9]{6,20}$/.test(transactionId)) {
-          return res.status(400).json({ message: 'Enter a valid bKash Transaction ID (6–20 letters or numbers).' });
+    // Look up default system NGO if post does not have an NGO user ID
+    if (!ngoUserId) {
+      const ngoRes = await db.query("SELECT id, phone FROM users WHERE role = 'ngo' ORDER BY id ASC LIMIT 1");
+      if (ngoRes.rows.length > 0) {
+        ngoUserId = ngoRes.rows[0].id;
+        if (!foodPost.distribution_bkash_number) {
+          paymentBkashNumber = ngoRes.rows[0].phone || '01788776655';
         }
-        paymentStatus = 'verification_pending';
-      } else {
-        paymentStatus = 'cod_due';
       }
+    }
+    if (!paymentBkashNumber) {
+      paymentBkashNumber = foodPost.distribution_bkash_number || '01788776655';
+    }
+
+    if (payment_method === 'bkash') {
+      requestPaymentMethod = 'bkash';
+      paymentBkashNumber = foodPost.distribution_bkash_number || req.body.payment_bkash_number || paymentBkashNumber || '01788776655';
+
+      if (isFixedPaidDistribution) {
+        paymentAmount = Number(((distributionTotal * requestedQuantity) / distributionPackets).toFixed(2));
+      } else {
+        paymentAmount = Number(req.body.payment_amount) || 20;
+      }
+
+      if (paymentAmount <= 0) {
+        return res.status(400).json({ message: 'Payment amount must be greater than 0 for bKash payment.' });
+      }
+
+      transactionId = typeof bkash_transaction_id === 'string'
+        ? bkash_transaction_id.trim().toUpperCase()
+        : '';
+      if (!/^[A-Z0-9]{6,20}$/.test(transactionId)) {
+        return res.status(400).json({ message: 'Enter a valid bKash Transaction ID (6–20 letters or numbers, e.g. BL83JX99A).' });
+      }
+      paymentStatus = 'verification_pending';
+    } else if (payment_method === 'cash_on_delivery') {
+      requestPaymentMethod = 'cash_on_delivery';
+      if (isFixedPaidDistribution) {
+        paymentAmount = Number(((distributionTotal * requestedQuantity) / distributionPackets).toFixed(2));
+      } else {
+        paymentAmount = Number(req.body.payment_amount) || 0;
+      }
+      paymentStatus = paymentAmount > 0 ? 'cod_due' : 'not_required';
+    } else {
+      if (isFixedPaidDistribution) {
+        return res.status(400).json({ message: 'This food distribution requires Cash on Delivery or bKash payment.' });
+      }
+      requestPaymentMethod = 'none';
+      paymentStatus = 'not_required';
+      paymentAmount = 0;
     }
 
     // Check if receiver already has an active or completed request for this post
@@ -149,8 +179,40 @@ const createFoodRequest = async (req, res, next) => {
       payment_amount: paymentAmount,
       payment_status: paymentStatus,
       bkash_transaction_id: transactionId,
-      payment_bkash_number: paymentBkashNumber
+      payment_bkash_number: paymentBkashNumber,
+      ngo_user_id: ngoUserId
     });
+
+    // Ensure food_posts links to this NGO
+    if (ngoUserId && !foodPost.distribution_ngo_user_id) {
+      await db.query(
+        `UPDATE food_posts 
+         SET distribution_ngo_user_id = $1, 
+             distribution_bkash_number = COALESCE(distribution_bkash_number, $2)
+         WHERE id = $3`,
+        [ngoUserId, paymentBkashNumber, food_post_id]
+      );
+    }
+
+    // Send notification to the NGO about incoming payment
+    if (requestPaymentMethod === 'bkash' && ngoUserId) {
+      try {
+        await db.query(
+          `INSERT INTO notifications (user_id, title, message, type, link, metadata)
+           VALUES ($1, $2, $3, $4, $5, $6::jsonb)`,
+          [
+            ngoUserId,
+            '💳 New bKash Payment Received from Receiver',
+            `Receiver paid ৳${paymentAmount} via bKash (TrxID: ${transactionId}) for ${requestedQuantity} portions of "${foodPost.food_name || foodPost.title}". Please verify.`,
+            'bkash_payment_received',
+            '/ngo/requests',
+            JSON.stringify({ food_request_id: newRequest.id, payment_amount: paymentAmount, bkash_transaction_id: transactionId })
+          ]
+        );
+      } catch (notifErr) {
+        console.error('Error sending NGO payment notification:', notifErr);
+      }
+    }
 
     return res.status(201).json({
       message: 'Food request submitted successfully!',

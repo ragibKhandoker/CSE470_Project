@@ -15,7 +15,8 @@ const createFoodRequest = async ({
   payment_amount = 0,
   payment_status = 'not_required',
   bkash_transaction_id = null,
-  payment_bkash_number = null
+  payment_bkash_number = null,
+  ngo_user_id = null
 }) => {
   const query = `
     INSERT INTO food_requests (
@@ -30,9 +31,10 @@ const createFoodRequest = async ({
       payment_status,
       bkash_transaction_id,
       payment_bkash_number,
+      ngo_user_id,
       status
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'requested')
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'requested')
     RETURNING *;
   `;
   const values = [
@@ -46,7 +48,8 @@ const createFoodRequest = async ({
     payment_amount,
     payment_status,
     bkash_transaction_id,
-    payment_bkash_number
+    payment_bkash_number,
+    ngo_user_id
   ];
   const result = await db.query(query, values);
   return result.rows[0];
@@ -185,7 +188,10 @@ const findIncomingForNgo = async (ngoUserId) => {
     FROM food_requests fr
     JOIN food_posts fp ON fr.food_post_id = fp.id
     JOIN users u ON fr.receiver_id = u.id
-    WHERE ($1::integer IS NULL OR fp.distribution_ngo_user_id = $1)
+    WHERE ($1::integer IS NULL 
+       OR fr.ngo_user_id = $1 
+       OR fp.distribution_ngo_user_id = $1 
+       OR (fr.ngo_user_id IS NULL AND fp.distribution_ngo_user_id IS NULL))
     ORDER BY fr.created_at DESC;
   `;
   const result = await db.query(query, [ngoUserId]);
@@ -197,11 +203,12 @@ const updatePaymentStatus = async (requestId, ngoUserId, paymentStatus) => {
     UPDATE food_requests fr
     SET payment_status = $1,
         payment_verified_at = CASE WHEN $1 = 'paid' THEN CURRENT_TIMESTAMP ELSE NULL END,
+        ngo_user_id = COALESCE(fr.ngo_user_id, $3),
         updated_at = CURRENT_TIMESTAMP
     FROM food_posts fp
     WHERE fr.id = $2
       AND fp.id = fr.food_post_id
-      AND fp.distribution_ngo_user_id = $3
+      AND (fp.distribution_ngo_user_id = $3 OR fp.distribution_ngo_user_id IS NULL OR fr.ngo_user_id = $3 OR fr.ngo_user_id IS NULL)
       AND (
         ($1 = 'rejected' AND fr.payment_method = 'bkash' AND fr.payment_status = 'verification_pending')
         OR ($1 = 'paid' AND fr.payment_method = 'bkash' AND fr.payment_status = 'verification_pending')
@@ -210,6 +217,12 @@ const updatePaymentStatus = async (requestId, ngoUserId, paymentStatus) => {
     RETURNING fr.*;
   `;
   const result = await db.query(query, [paymentStatus, requestId, ngoUserId]);
+  if (result.rows[0] && paymentStatus === 'paid') {
+    await db.query(
+      `UPDATE food_posts SET distribution_ngo_user_id = COALESCE(distribution_ngo_user_id, $1) WHERE id = $2`,
+      [ngoUserId, result.rows[0].food_post_id]
+    );
+  }
   return result.rows[0];
 };
 
