@@ -228,6 +228,9 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
             transition: left 0.3s ease-in-out;
             z-index: 2000;
           }
+          .ngo-main-viewport {
+            margin-left: 0 !important;
+          }
           .ngo-sidebar.open {
             left: 0 !important;
           }
@@ -260,15 +263,21 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
         className={`ngo-sidebar ${isMobileOpen ? 'open' : ''}`}
         style={{
           width: '256px',
-          background: '#ffffff',
-          borderRight: '1px solid rgba(44, 35, 32, 0.06)',
+          background: 'linear-gradient(180deg, #172a49 0%, #1c3151 100%)',
+          borderRight: '1px solid rgba(10, 22, 40, 0.18)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          flexShrink: 0,
+          flex: '0 0 256px',
           height: '100vh',
-          position: 'sticky',
-          top: 0
+          minHeight: '100vh',
+          maxHeight: '100vh',
+          overflowY: 'auto',
+          position: 'fixed',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: 100
         }}
       >
         <div>
@@ -280,7 +289,7 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
               display: 'flex',
               alignItems: 'center',
               gap: 12,
-              borderBottom: '1px solid rgba(44, 35, 32, 0.05)'
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
             }}
           >
             <div
@@ -299,7 +308,7 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
             >
               <NgoIcons.Brand />
             </div>
-            <span style={{ fontSize: 18, fontWeight: 700, color: '#2c2320', fontFamily: "'Fraunces', serif" }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#f7f9fc', fontFamily: "'Fraunces', serif" }}>
               ShareMeal
             </span>
           </div>
@@ -320,19 +329,19 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     padding: '10px 14px',
-                    height: '42px',
+                    height: '44px',
                     borderRadius: '12px',
                     textDecoration: 'none',
                     fontSize: '14px',
                     fontWeight: 500,
                     boxSizing: 'border-box',
                     transition: 'all 0.15s ease-in-out',
-                    background: isActive ? 'var(--brand-primary)' : 'transparent',
-                    color: isActive ? '#ffffff' : '#6b5d56',
-                    boxShadow: isActive ? '0px 6px 14px rgba(var(--brand-primary-rgb), 0.45)' : 'none'
+                    background: isActive ? '#3769bd' : 'transparent',
+                    color: isActive ? '#ffffff' : '#d5deeb',
+                    boxShadow: isActive ? '0px 6px 14px rgba(4, 12, 28, 0.24)' : 'none'
                   }}
                   onMouseOver={(e) => {
-                    if (!isActive) e.currentTarget.style.background = '#f7f2ef';
+                    if (!isActive) e.currentTarget.style.background = 'rgba(255, 255, 255, 0.09)';
                   }}
                   onMouseOut={(e) => {
                     if (!isActive) e.currentTarget.style.background = 'transparent';
@@ -340,7 +349,7 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18 }}>
-                      <IconComponent color={isActive ? '#ffffff' : '#6b5d56'} />
+                      <IconComponent color={isActive ? '#ffffff' : '#bac8dc'} />
                     </div>
                     <span>{item.label}</span>
                   </div>
@@ -352,7 +361,7 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
         </div>
 
         {/* User Profile & Logout Footer */}
-        <div style={{ padding: '16px 14px', borderTop: '1px solid rgba(44, 35, 32, 0.05)', marginTop: 'auto' }}>
+        <div style={{ padding: '16px 14px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', marginTop: 'auto' }}>
           <div
             onClick={() => navigate('/ngo/profile')}
             style={{
@@ -365,7 +374,7 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
               cursor: 'pointer',
               transition: 'background 0.2s'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = '#fcf8f6')}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)')}
             onMouseOut={(e) => (e.currentTarget.style.background = 'transparent')}
           >
             <div
@@ -373,8 +382,8 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
                 width: 38,
                 height: 38,
                 borderRadius: '50%',
-                background: '#ffe8e0',
-                color: 'var(--brand-primary-dark)',
+                background: '#ffedd5',
+                color: '#c2410c',
                 fontWeight: 700,
                 fontSize: 14,
                 display: 'flex',
@@ -386,10 +395,10 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
               {displayInitials}
             </div>
             <div style={{ overflow: 'hidden' }}>
-              <div style={{ fontSize: '14px', fontWeight: 600, color: '#2c2320', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+              <div style={{ fontSize: '14px', fontWeight: 600, color: '#f7f9fc', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                 {displayName}
               </div>
-              <div style={{ fontSize: '12px', color: '#887d77', fontWeight: 600 }}>{displayRoleLabel}</div>
+              <div style={{ fontSize: '12px', color: '#aebdd2', fontWeight: 500 }}>{displayRoleLabel}</div>
             </div>
           </div>
 
@@ -402,7 +411,7 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
               borderRadius: '12px',
               border: 0,
               background: 'transparent',
-              color: '#6b5d56',
+              color: '#d5deeb',
               fontSize: 14,
               fontWeight: 500,
               display: 'flex',
@@ -411,11 +420,11 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
               cursor: 'pointer',
               transition: 'background 0.2s'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = '#f7f2ef')}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.09)')}
             onMouseOut={(e) => (e.currentTarget.style.background = 'transparent')}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18 }}>
-              <NgoIcons.Logout color="#6b5d56" />
+              <NgoIcons.Logout color="#bac8dc" />
             </div>
             <span>Logout</span>
           </button>
@@ -423,7 +432,7 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
       </aside>
 
       {/* Main Content Viewport */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh' }}>
+      <div className="ngo-main-viewport" style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh', marginLeft: '256px' }}>
         {/* Top Header Bar */}
         <header
           style={{

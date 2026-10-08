@@ -188,6 +188,9 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
             transition: left 0.3s ease-in-out;
             z-index: 2000;
           }
+          .receiver-main-viewport {
+            margin-left: 0 !important;
+          }
           .receiver-sidebar.open {
             left: 0 !important;
           }
@@ -220,15 +223,21 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
         className={`receiver-sidebar ${isMobileOpen ? 'open' : ''}`}
         style={{
           width: '256px',
-          background: '#ffffff',
-          borderRight: '1px solid rgba(44, 35, 32, 0.06)',
+          background: 'linear-gradient(180deg, #172a49 0%, #1c3151 100%)',
+          borderRight: '1px solid rgba(10, 22, 40, 0.18)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          flexShrink: 0,
+          flex: '0 0 256px',
           height: '100vh',
-          position: 'sticky',
-          top: 0
+          minHeight: '100vh',
+          maxHeight: '100vh',
+          overflowY: 'auto',
+          position: 'fixed',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: 100
         }}
       >
         <div>
@@ -240,7 +249,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
               display: 'flex',
               alignItems: 'center',
               gap: 12,
-              borderBottom: '1px solid rgba(44, 35, 32, 0.05)'
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
             }}
           >
             <div
@@ -259,7 +268,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
             >
               <ReceiverIcons.Brand />
             </div>
-            <span style={{ fontSize: 18, fontWeight: 700, color: '#2c2320', fontFamily: "'Fraunces', serif" }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#f7f9fc', fontFamily: "'Fraunces', serif" }}>
               ShareMeal
             </span>
           </div>
@@ -287,12 +296,12 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                     fontWeight: 500,
                     boxSizing: 'border-box',
                     transition: 'all 0.15s ease-in-out',
-                    background: isActive ? 'var(--brand-primary)' : 'transparent',
-                    color: isActive ? '#ffffff' : '#6b5d56',
-                    boxShadow: isActive ? '0px 6px 14px rgba(var(--brand-primary-rgb), 0.45)' : 'none'
+                    background: isActive ? '#3769bd' : 'transparent',
+                    color: isActive ? '#ffffff' : '#d5deeb',
+                    boxShadow: isActive ? '0px 6px 14px rgba(4, 12, 28, 0.24)' : 'none'
                   }}
                   onMouseOver={(e) => {
-                    if (!isActive) e.currentTarget.style.background = '#f7f2ef';
+                    if (!isActive) e.currentTarget.style.background = 'rgba(255, 255, 255, 0.09)';
                   }}
                   onMouseOut={(e) => {
                     if (!isActive) e.currentTarget.style.background = 'transparent';
@@ -300,7 +309,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18 }}>
-                      <IconComponent color={isActive ? '#ffffff' : '#6b5d56'} />
+                      <IconComponent color={isActive ? '#ffffff' : '#bac8dc'} />
                     </div>
                     <span>{item.label}</span>
                   </div>
@@ -312,7 +321,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
         </div>
 
         {/* User Profile & Logout Footer */}
-        <div style={{ padding: '16px 14px', borderTop: '1px solid rgba(44, 35, 32, 0.05)', marginTop: 'auto' }}>
+        <div style={{ padding: '16px 14px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', marginTop: 'auto' }}>
           <div
             onClick={() => navigate('/receiver/profile')}
             style={{
@@ -325,7 +334,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
               cursor: 'pointer',
               transition: 'background 0.2s'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = '#fcf8f6')}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)')}
             onMouseOut={(e) => (e.currentTarget.style.background = 'transparent')}
           >
             <div
@@ -333,8 +342,8 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
                 width: 38,
                 height: 38,
                 borderRadius: '50%',
-                background: '#ffe8e0',
-                color: 'var(--brand-primary-dark)',
+                background: '#dbeafe',
+                color: '#1e3a8a',
                 fontWeight: 700,
                 fontSize: 14,
                 display: 'flex',
@@ -346,10 +355,10 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
               {displayInitials}
             </div>
             <div style={{ overflow: 'hidden' }}>
-              <div style={{ fontSize: 14, fontWeight: 600, color: '#2c2320', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: '#f7f9fc', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                 {displayName}
               </div>
-              <div style={{ fontSize: 12, color: '#887d77' }}>Receiver</div>
+              <div style={{ fontSize: 12, color: '#aebdd2' }}>Receiver</div>
             </div>
           </div>
 
@@ -362,7 +371,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
               borderRadius: '12px',
               border: 0,
               background: 'transparent',
-              color: '#6b5d56',
+              color: '#d5deeb',
               fontSize: 14,
               fontWeight: 500,
               display: 'flex',
@@ -371,11 +380,11 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
               cursor: 'pointer',
               transition: 'background 0.2s'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = '#f7f2ef')}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.09)')}
             onMouseOut={(e) => (e.currentTarget.style.background = 'transparent')}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18 }}>
-              <ReceiverIcons.Logout color="#6b5d56" />
+              <ReceiverIcons.Logout color="#bac8dc" />
             </div>
             <span>Logout</span>
           </button>
@@ -383,7 +392,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
       </aside>
 
       {/* Main Content Viewport */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh' }}>
+      <div className="receiver-main-viewport" style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh', marginLeft: '256px' }}>
         {/* Top Header Bar */}
         <header
           style={{
@@ -614,7 +623,9 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
         </header>
 
         {/* Page Content */}
-        <main style={{ flex: 1, padding: '28px', overflowY: 'auto', background: '#f7f4f0' }}>
+        <main
+          style={{ flex: 1, padding: '28px', overflowY: 'auto', background: '#f7f4f0' }}
+        >
           {children}
         </main>
       </div>

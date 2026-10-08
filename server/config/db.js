@@ -91,8 +91,34 @@ const query = async (text, params) => {
   }
 };
 
+const initializeDatabase = async () => {
+  try {
+    await query(`
+      DO $$
+      BEGIN
+        IF EXISTS (
+          SELECT 1
+          FROM information_schema.tables
+          WHERE table_schema = 'public' AND table_name = 'pickup_points'
+        ) THEN
+          ALTER TABLE public.pickup_points
+            ADD COLUMN IF NOT EXISTS ngo_id INTEGER REFERENCES public.ngos(id) ON DELETE CASCADE;
+        END IF;
+      END $$;
+
+      ALTER TYPE public.food_post_status ADD VALUE IF NOT EXISTS 'at_ngo_point';
+      ALTER TYPE public.food_post_status ADD VALUE IF NOT EXISTS 'distributed';
+    `);
+
+    console.log('✅ [DB Schema] Critical schema check completed.');
+  } catch (error) {
+    console.warn('⚠️ [DB Schema] Critical schema alignment skipped:', error.message);
+  }
+};
+
 module.exports = {
   query,
+  initializeDatabase,
   get pool() {
     return currentPool;
   }

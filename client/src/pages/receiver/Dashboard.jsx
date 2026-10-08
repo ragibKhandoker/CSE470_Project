@@ -7,6 +7,7 @@ import { getAnonymousMode, setAnonymousMode as persistAnonymousMode } from '../.
 import authService from '../../services/authService';
 import CaptchaWidget from '../../components/common/CaptchaWidget';
 import ShareMealHelpChatbot from '../../components/common/ShareMealHelpChatbot';
+import './Dashboard.css';
 
 export const ReceiverDashboard = () => {
   const { user, token, updateUser } = useAuth();
@@ -182,13 +183,27 @@ export const ReceiverDashboard = () => {
 
   // Strictly Bangladeshi user display name
   const displayName = user?.name ? user.name.split(' ')[0] : 'Rahim';
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const todayLabel = new Intl.DateTimeFormat('en-BD', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  }).format(new Date());
+  const activeRequestsCount = myRequests.filter((request) =>
+    ['requested', 'approved', 'accepted'].includes(request.status)
+  ).length;
+  const completedRequestsCount = myRequests.filter((request) =>
+    ['fulfilled', 'completed', 'collected', 'delivered', 'distributed'].includes(request.status)
+  ).length;
 
   return (
     <ReceiverLayout title="Receiver Dashboard">
-      <div style={{ maxWidth: '1080px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '28px' }}>
+      <div className="receiver-dashboard" style={{ maxWidth: '1080px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '28px' }}>
         
-        {/* Blue Hero Card matching Figma */}
+        {/* Welcome panel */}
         <div
+          className="receiver-dashboard-hero"
           style={{
             background: 'linear-gradient(135deg, #3b82f6 0%, var(--brand-primary) 100%)',
             borderRadius: '24px',
@@ -216,7 +231,7 @@ export const ReceiverDashboard = () => {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '8px' }}>
                 <h2 style={{ margin: 0, fontSize: '28px', fontWeight: 800, fontFamily: "'Fraunces', serif" }}>
-                  Hello, {displayName}!
+                  {greeting}, {displayName}
                 </h2>
                 <div
                   style={{
@@ -258,6 +273,7 @@ export const ReceiverDashboard = () => {
                   ? 'Hidden from donors & NGOs — admin can still see your identity.'
                   : 'Your identity is visible to donors and NGOs when requesting meals.'}
               </p>
+              <p className="receiver-dashboard-date">{todayLabel} · Find a meal near you</p>
             </div>
 
             {/* Interactive Anonymous Mode Switch */}
@@ -345,9 +361,37 @@ export const ReceiverDashboard = () => {
           </form>
         </div>
 
+        <section className="receiver-dashboard-stats" aria-label="Your food activity">
+          <article className="receiver-dashboard-stat">
+            <span className="receiver-dashboard-stat-icon" aria-hidden="true">🍲</span>
+            <div>
+              <span className="receiver-dashboard-stat-label">Available meals</span>
+              <strong>{loadingPosts ? '—' : nearbyFoods.length}</strong>
+              <span className="receiver-dashboard-stat-caption">ready to request</span>
+            </div>
+          </article>
+          <article className="receiver-dashboard-stat">
+            <span className="receiver-dashboard-stat-icon receiver-dashboard-stat-icon--blue" aria-hidden="true">📦</span>
+            <div>
+              <span className="receiver-dashboard-stat-label">Open requests</span>
+              <strong>{loadingRequests ? '—' : activeRequestsCount}</strong>
+              <span className="receiver-dashboard-stat-caption">being processed</span>
+            </div>
+          </article>
+          <article className="receiver-dashboard-stat">
+            <span className="receiver-dashboard-stat-icon receiver-dashboard-stat-icon--green" aria-hidden="true">💚</span>
+            <div>
+              <span className="receiver-dashboard-stat-label">Meals received</span>
+              <strong>{loadingRequests ? '—' : completedRequestsCount}</strong>
+              <span className="receiver-dashboard-stat-caption">from your requests</span>
+            </div>
+          </article>
+        </section>
+
         {/* Verification Warning Banner for Unverified Food Seekers */}
         {!isVerified && (
           <div
+            className="receiver-dashboard-verification"
             style={{
               background: '#fffbeb',
               border: '1.5px solid #fde68a',
@@ -392,7 +436,7 @@ export const ReceiverDashboard = () => {
         )}
 
         {/* Active Request Section */}
-        <div>
+        <div className="receiver-dashboard-active-section">
           <h3 style={{ margin: '0 0 16px', fontSize: '18px', fontWeight: 700, color: '#2c2320', fontFamily: "'Fraunces', serif" }}>
             Active Request
           </h3>
@@ -404,6 +448,7 @@ export const ReceiverDashboard = () => {
           ) : activeRequest ? (
             /* Active Request Card from DB */
             <div
+              className="receiver-dashboard-active-card"
               style={{
                 background: '#ffffff',
                 borderRadius: '20px',
@@ -628,8 +673,8 @@ export const ReceiverDashboard = () => {
         </div>
 
         {/* Nearby Food Grid from DB */}
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <div className="receiver-dashboard-food-section">
+          <div className="receiver-dashboard-section-heading" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#2c2320', fontFamily: "'Fraunces', serif" }}>
               Nearby Food
             </h3>
@@ -662,7 +707,7 @@ export const ReceiverDashboard = () => {
               No food posts available right now.
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+            <div className="receiver-dashboard-food-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
               {nearbyFoods.slice(0, 4).map((food) => {
                 const img =
                   food.image_url ||
@@ -677,6 +722,7 @@ export const ReceiverDashboard = () => {
                 return (
                   <div
                     key={food.id}
+                    className="receiver-dashboard-food-card"
                     style={{
                       background: '#ffffff',
                       borderRadius: '20px',
@@ -687,10 +733,12 @@ export const ReceiverDashboard = () => {
                       flexDirection: 'column'
                     }}
                   >
-                    <div style={{ position: 'relative', height: '170px', background: '#e5e7eb' }}>
+                    <div className="receiver-dashboard-food-image" style={{ position: 'relative', height: '170px', background: '#e5e7eb' }}>
                       <img
                         src={img}
                         alt={food.food_type}
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => {
                           e.currentTarget.onerror = null;
                           e.currentTarget.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80';

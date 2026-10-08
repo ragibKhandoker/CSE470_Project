@@ -202,6 +202,9 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
             transition: left 0.3s ease-in-out;
             z-index: 2000;
           }
+          .donor-main-viewport {
+            margin-left: 0 !important;
+          }
           .donor-sidebar.open {
             left: 0 !important;
           }
@@ -234,25 +237,31 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
         className={`donor-sidebar ${isMobileOpen ? 'open' : ''}`}
         style={{
           width: '256px',
-          background: '#ffffff',
-          borderRight: '1px solid rgba(44, 35, 32, 0.06)',
+          background: 'linear-gradient(180deg, #172a49 0%, #1c3151 100%)',
+          borderRight: '1px solid rgba(10, 22, 40, 0.18)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          flexShrink: 0,
+          flex: '0 0 256px',
           boxShadow: '1px 0px 0px rgba(44,35,32,0.06)',
           height: '100vh',
-          position: 'sticky',
-          top: 0
+          minHeight: '100vh',
+          maxHeight: '100vh',
+          overflowY: 'auto',
+          position: 'fixed',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: 100
         }}
       >
         <div>
           {/* Centered Brand Navbar Logo Header */}
           <div
             style={{
-              height: '60px',
-              padding: '0 20px',
-              borderBottom: '1px solid rgba(44,35,32,0.05)',
+              height: '64px',
+              padding: '0 24px',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
               display: 'flex',
               alignItems: 'center',
               gap: 12
@@ -268,19 +277,19 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: '#fff',
-                boxShadow: '0px 6px 7px rgba(var(--brand-primary-rgb), 0.6)',
+                boxShadow: '0px 6px 14px rgba(var(--brand-primary-rgb), 0.35)',
                 flexShrink: 0
               }}
             >
               <Icons.Brand />
             </div>
-            <span style={{ fontSize: 18, fontWeight: 700, color: '#2c2320', fontFamily: "'Fraunces', serif", lineHeight: 1 }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: '#f7f9fc', fontFamily: "'Fraunces', serif", lineHeight: 1 }}>
               ShareMeal
             </span>
           </div>
 
           {/* Figma Side Nav Tabs */}
-          <nav style={{ padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <nav style={{ padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               const { IconComponent } = item;
@@ -294,20 +303,20 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '10px 12px',
-                    height: '40px',
+                    padding: '10px 14px',
+                    height: '44px',
                     borderRadius: '12px',
                     textDecoration: 'none',
                     fontSize: '14px',
                     fontWeight: 500,
                     boxSizing: 'border-box',
                     transition: 'all 0.15s ease-in-out',
-                    background: isActive ? 'var(--brand-primary)' : 'transparent',
-                    color: isActive ? '#ffffff' : '#6b5d56',
-                    boxShadow: isActive ? '0px 8px 9px rgba(var(--brand-primary-rgb), 0.55)' : 'none'
+                    background: isActive ? '#3769bd' : 'transparent',
+                    color: isActive ? '#ffffff' : '#d5deeb',
+                    boxShadow: isActive ? '0px 6px 14px rgba(4, 12, 28, 0.24)' : 'none'
                   }}
                   onMouseOver={(e) => {
-                    if (!isActive) e.currentTarget.style.background = '#f7f2ef';
+                    if (!isActive) e.currentTarget.style.background = 'rgba(255, 255, 255, 0.09)';
                   }}
                   onMouseOut={(e) => {
                     if (!isActive) e.currentTarget.style.background = 'transparent';
@@ -315,7 +324,7 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18 }}>
-                      <IconComponent color={isActive ? '#ffffff' : '#6b5d56'} />
+                      <IconComponent color={isActive ? '#ffffff' : '#bac8dc'} />
                     </div>
                     <span>{item.label}</span>
                   </div>
@@ -327,7 +336,7 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
         </div>
 
         {/* Bottom Donor Profile Footer */}
-        <div style={{ padding: '16px 12px', borderTop: '1px solid rgba(44,35,32,0.05)', marginTop: 'auto' }}>
+        <div style={{ padding: '16px 14px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', marginTop: 'auto' }}>
           <div
             onClick={() => navigate('/donor/profile')}
             style={{
@@ -340,18 +349,18 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
               cursor: 'pointer',
               transition: 'background 0.2s'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = '#fcf8f6')}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)')}
             onMouseOut={(e) => (e.currentTarget.style.background = 'transparent')}
           >
             <div
               style={{
-                width: 36,
-                height: 36,
+                width: 38,
+                height: 38,
                 borderRadius: '50%',
-                background: 'var(--brand-soft)',
-                color: 'var(--brand-primary-deep)',
+                background: '#dbeafe',
+                color: '#1e3a8a',
                 fontWeight: 700,
-                fontSize: 13,
+                fontSize: 14,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -362,10 +371,10 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
             </div>
 
             <div style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <div style={{ fontSize: 14, fontWeight: 600, color: '#2c2320', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', lineHeight: '18px' }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: '#f7f9fc', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', lineHeight: '18px' }}>
                 {user?.name || 'Abdur Rahman'}
               </div>
-              <div style={{ fontSize: 12, color: '#6b5d56', lineHeight: '16px' }}>Donor</div>
+              <div style={{ fontSize: 12, color: '#aebdd2', lineHeight: '16px' }}>Donor</div>
             </div>
           </div>
 
@@ -378,7 +387,7 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
               borderRadius: '12px',
               border: 0,
               background: 'transparent',
-              color: '#6b5d56',
+              color: '#d5deeb',
               fontSize: 14,
               fontWeight: 500,
               display: 'flex',
@@ -387,11 +396,11 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
               cursor: 'pointer',
               transition: 'background 0.2s'
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = '#f7f2ef')}
+            onMouseOver={(e) => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.09)')}
             onMouseOut={(e) => (e.currentTarget.style.background = 'transparent')}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18 }}>
-              <Icons.Logout color="#6b5d56" />
+              <Icons.Logout color="#bac8dc" />
             </div>
             <span>Logout</span>
           </button>
@@ -399,15 +408,15 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
       </aside>
 
       {/* Main Content Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+      <div className="donor-main-viewport" style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh', marginLeft: '256px' }}>
         {/* Top Header Bar */}
         <header
           style={{
             width: '100%',
-            height: '60px',
+            height: '64px',
             background: '#ffffff',
-            borderBottom: '1px solid rgba(44,35,32,0.05)',
-            padding: '0 24px',
+            borderBottom: '1px solid rgba(44,35,32,0.06)',
+            padding: '0 28px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
