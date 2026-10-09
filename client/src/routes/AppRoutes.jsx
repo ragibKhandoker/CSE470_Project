@@ -49,6 +49,7 @@ import BlogManagement from '../pages/ngo/BlogManagement';
 // Receiver Pages
 import ReceiverDashboard from '../pages/receiver/Dashboard';
 import ReceiverFindFood from '../pages/receiver/FindFood';
+import CartWishlist from '../pages/receiver/CartWishlist';
 import MyRequests from '../pages/receiver/MyRequests';
 import RequestDetail from '../pages/receiver/RequestDetail';
 import ReceiverHistory from '../pages/receiver/History';
@@ -59,7 +60,6 @@ import ReceiverNotifications from '../pages/receiver/Notifications';
 // Admin Pages
 import AdminDashboard from '../pages/admin/Dashboard';
 import AdminUsers from '../pages/admin/Users';
-import AdminPoints from '../pages/admin/Points';
 import FoodPostThreads from '../pages/admin/FoodPostThreads';
 import NGOVerificationQueue from '../pages/admin/NGOVerificationQueue';
 import AdminReports from '../pages/admin/Reports';
@@ -148,6 +148,7 @@ export const AppRoutes = () => {
       {/* Receiver Protected Routes */}
       <Route path="/receiver/dashboard" element={<ProtectedRoute allowedRoles={['receiver']}><ReceiverDashboard /></ProtectedRoute>} />
       <Route path="/receiver/find-food" element={<ProtectedRoute allowedRoles={['receiver']}><ReceiverFindFood /></ProtectedRoute>} />
+      <Route path="/receiver/cart" element={<ProtectedRoute allowedRoles={['receiver']}><CartWishlist /></ProtectedRoute>} />
       <Route path="/receiver/my-requests" element={<ProtectedRoute allowedRoles={['receiver']}><MyRequests /></ProtectedRoute>} />
       <Route path="/receiver/requests/:id" element={<ProtectedRoute allowedRoles={['receiver']}><RequestDetail /></ProtectedRoute>} />
       <Route path="/receiver/history" element={<ProtectedRoute allowedRoles={['receiver']}><ReceiverHistory /></ProtectedRoute>} />
@@ -158,7 +159,6 @@ export const AppRoutes = () => {
       {/* Admin Protected Routes */}
       <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminDashboard /></ProtectedRoute>} />
       <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminUsers /></ProtectedRoute>} />
-      <Route path="/admin/points" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminPoints /></ProtectedRoute>} />
       <Route path="/admin/food-threads" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><FoodPostThreads /></ProtectedRoute>} />
       <Route path="/admin/threads" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><FoodPostThreads /></ProtectedRoute>} />
       <Route path="/admin/ngo-queue" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><NGOVerificationQueue /></ProtectedRoute>} />

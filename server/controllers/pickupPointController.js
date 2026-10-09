@@ -7,11 +7,16 @@ const db = require('../config/db');
 
 // Helper to resolve NGO id from user id
 const getNgoId = async (userId) => {
-  const res = await db.query('SELECT id FROM ngos WHERE user_id = $1', [userId]);
-  if (res.rows.length > 0) return res.rows[0].id;
-  // Fallback to first NGO
-  const anyNgo = await db.query('SELECT id FROM ngos LIMIT 1');
-  return anyNgo.rows.length > 0 ? anyNgo.rows[0].id : 1;
+  const res = await db.query(
+    `SELECT n.id
+     FROM ngos n
+     WHERE n.user_id = $1
+        OR n.user_id = (SELECT parent_ngo_id FROM users WHERE id = $1)
+     ORDER BY CASE WHEN n.user_id = $1 THEN 0 ELSE 1 END
+     LIMIT 1`,
+    [userId]
+  );
+  return res.rows[0]?.id || null;
 };
 
 const getPickupPoints = async (req, res, next) => {
@@ -38,6 +43,9 @@ const createPickupPoint = async (req, res, next) => {
     }
 
     const ngoId = await getNgoId(req.user.id);
+    if (!ngoId) {
+      return res.status(403).json({ message: 'Your account is not linked to an NGO profile. Contact an administrator to link it before adding pickup points.' });
+    }
     const newPoint = await pickupPointModel.create({
       ngo_id: ngoId,
       name,

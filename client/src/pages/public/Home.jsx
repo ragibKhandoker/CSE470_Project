@@ -268,7 +268,7 @@ export const Home = () => {
           >
             <a
               href="#how-it-works"
-              className="home-navbar-mobile-link"
+              className="home-navbar-mobile-link nav-link-item"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: '#6b5d56', fontSize: '15px', fontWeight: 600, padding: '4px 0' }}
             >
@@ -276,7 +276,7 @@ export const Home = () => {
             </a>
             <Link
               to="/find-food"
-              className="home-navbar-mobile-link"
+              className="home-navbar-mobile-link nav-link-item"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: '#6b5d56', fontSize: '15px', fontWeight: 600, padding: '4px 0' }}
             >
@@ -284,7 +284,7 @@ export const Home = () => {
             </Link>
             <Link
               to={user ? (user.role === 'donor' ? '/donor/profile' : `/${user.role}/dashboard`) : '/donate'}
-              className="home-navbar-mobile-link"
+              className="home-navbar-mobile-link nav-link-item"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: '#6b5d56', fontSize: '15px', fontWeight: 600, padding: '4px 0' }}
             >
@@ -292,7 +292,7 @@ export const Home = () => {
             </Link>
             <Link
               to="/stories"
-              className="home-navbar-mobile-link"
+              className="home-navbar-mobile-link nav-link-item"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: 'var(--brand-primary-dark)', fontSize: '15px', fontWeight: 700, padding: '4px 0' }}
             >

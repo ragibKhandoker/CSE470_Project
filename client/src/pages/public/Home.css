@@ -339,24 +339,8 @@
   transition: color 0.3s ease;
 }
 
-.nav-link-item::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--brand-primary-dark);
-  border-radius: 2px;
-  transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
 .nav-link-item:hover {
   color: var(--brand-primary-dark) !important;
-}
-
-.nav-link-item:hover::after {
-  width: 100%;
 }
 
 /* Ticker Pill Hover */

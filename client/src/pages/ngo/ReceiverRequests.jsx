@@ -384,17 +384,11 @@ export const ReceiverRequests = () => {
                         )}
                       </div>
                     )}
-                    {Number(req.payment_amount) > 0 && (
-                      <div style={{ marginTop: 8, fontSize: 12, color: '#374151' }}>
-                        <strong>Points:</strong> {Number(req.payment_amount).toFixed(2)} (৳{Number(req.payment_amount).toFixed(2)} equivalent) · <strong>{req.payment_status}</strong>
-                      </div>
-                    )}
                   </div>
 
                   <div style={{ display: 'flex', gap: '10px' }}>
                     <button
                       onClick={() => handleUpdateStatus(req.id, 'approved')}
-                      disabled={Number(req.payment_amount) > 0 && req.payment_status !== 'paid'}
                       style={{
                         padding: '8px 20px',
                         borderRadius: '12px',
@@ -403,14 +397,12 @@ export const ReceiverRequests = () => {
                         color: '#ffffff',
                         fontSize: '13px',
                         fontWeight: 700,
-                        cursor: Number(req.payment_amount) > 0 && req.payment_status !== 'paid' ? 'not-allowed' : 'pointer',
-                        opacity: Number(req.payment_amount) > 0 && req.payment_status !== 'paid' ? 0.55 : 1,
                         transition: 'all 0.15s ease'
                       }}
                       onMouseOver={(e) => (e.currentTarget.style.background = 'var(--brand-primary-dark)')}
                       onMouseOut={(e) => (e.currentTarget.style.background = 'var(--brand-primary)')}
                     >
-                      {Number(req.payment_amount) > 0 && req.payment_status !== 'paid' ? 'Payment required' : 'Accept'}
+                      Accept
                     </button>
                     <button
                       onClick={() => handleUpdateStatus(req.id, 'rejected')}
@@ -508,11 +500,7 @@ export const ReceiverRequests = () => {
                     <div style={{ fontSize: '13px', color: '#786d66' }}>
                       <strong>{req.food_name || req.food_title || req.food_type || 'Cooked Food'}</strong> ({req.requested_quantity || 1} portions) · {req.thana || 'Dhaka'}
                     </div>
-                    {Number(req.payment_amount) > 0 && (
-                      <div style={{ marginTop: 6, fontSize: 12, color: '#374151' }}>
-                      Points: {Number(req.payment_amount).toFixed(2)} (৳{Number(req.payment_amount).toFixed(2)} equivalent) · {req.payment_status}
-                      </div>
-                    )}
+                    {Number(req.purchase_price_bdt) > 0 && <div style={{ marginTop: 4, fontSize: 12, color: '#166534', fontWeight: 700 }}>Purchase request: ৳{Number(req.purchase_price_bdt).toFixed(2)}</div>}
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -651,6 +639,7 @@ export const ReceiverRequests = () => {
                     <div style={{ fontSize: '12px', color: '#786d66' }}>
                       <strong>{req.food_name || req.food_title || req.food_type || 'Cooked Food'}</strong> ({req.requested_quantity || 1} portions) · {req.thana || 'Dhaka'}
                     </div>
+                    {Number(req.purchase_price_bdt) > 0 && <div style={{ marginTop: 4, fontSize: 12, color: '#166534', fontWeight: 700 }}>Purchase request: ৳{Number(req.purchase_price_bdt).toFixed(2)}</div>}
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

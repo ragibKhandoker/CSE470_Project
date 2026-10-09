@@ -168,7 +168,9 @@ const getMyNotifications = async (req, res, next) => {
         });
 
         // B: NGO Accepted
-        if (r.ngo_requested_at) {
+        // Pending pickup requests have a persistent, actionable notification.
+        // Keep this lifecycle item for requests the donor has already approved.
+        if (r.ngo_requested_at && r.ngo_request_status !== 'pickup_requested' && r.ngo_request_status !== 'rejected') {
           const ngoName = r.ngo_organization_name || r.ngo_user_name || 'Partner NGO';
           notifications.push({
             id: `donor_ngo_${r.ngo_request_id}`,

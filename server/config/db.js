@@ -93,19 +93,29 @@ const query = async (text, params) => {
 
 const initializeDatabase = async () => {
   try {
-    // Wallet-backed queries need these columns on every database, including
-    // databases where the historical wallet migration was never applied.
+    await query(`ALTER TABLE public.food_posts
+      ADD COLUMN IF NOT EXISTS receiver_price_bdt NUMERIC(12, 2) NOT NULL DEFAULT 0`);
+    await query(`ALTER TABLE public.food_requests
+      ADD COLUMN IF NOT EXISTS purchase_price_bdt NUMERIC(12, 2) NOT NULL DEFAULT 0`);
     await query(`
-      ALTER TABLE public.users
-        ADD COLUMN IF NOT EXISTS ngo_bkash_wallet_number VARCHAR(20),
-        ADD COLUMN IF NOT EXISTS ngo_rocket_wallet_number VARCHAR(20),
-        ADD COLUMN IF NOT EXISTS ngo_nagad_wallet_number VARCHAR(20)
+      CREATE TABLE IF NOT EXISTS public.receiver_cart_items (
+        id BIGSERIAL PRIMARY KEY,
+        receiver_id INTEGER NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+        food_post_id INTEGER NOT NULL REFERENCES public.food_posts(id) ON DELETE CASCADE,
+        quantity INTEGER NOT NULL DEFAULT 1 CHECK (quantity > 0),
+        created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE (receiver_id, food_post_id)
+      )
     `);
     await query(`
-      ALTER TABLE public.food_posts
-        ADD COLUMN IF NOT EXISTS distribution_bkash_number VARCHAR(20),
-        ADD COLUMN IF NOT EXISTS distribution_rocket_number VARCHAR(20),
-        ADD COLUMN IF NOT EXISTS distribution_nagad_number VARCHAR(20)
+      CREATE TABLE IF NOT EXISTS public.receiver_wishlist_items (
+        id BIGSERIAL PRIMARY KEY,
+        receiver_id INTEGER NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+        food_post_id INTEGER NOT NULL REFERENCES public.food_posts(id) ON DELETE CASCADE,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE (receiver_id, food_post_id)
+      )
     `);
 
     await query(`
@@ -118,12 +128,15 @@ const initializeDatabase = async () => {
         ) THEN
           ALTER TABLE public.pickup_points
             ADD COLUMN IF NOT EXISTS ngo_id INTEGER REFERENCES public.ngos(id) ON DELETE CASCADE;
+          ALTER TABLE public.pickup_points
+            ADD COLUMN IF NOT EXISTS active_items INTEGER NOT NULL DEFAULT 0;
+          ALTER TABLE public.pickup_points
+            ADD COLUMN IF NOT EXISTS status VARCHAR(30) NOT NULL DEFAULT 'Active';
         END IF;
       END $$;
     `);
 
-    // Run schema changes separately so a failure in one check cannot prevent
-    // the wallet columns required by food request queries from being created.
+    // Keep schema enum alignment independent from optional table migrations.
     await query(`ALTER TYPE public.food_post_status ADD VALUE IF NOT EXISTS 'at_ngo_point'`);
     await query(`ALTER TYPE public.food_post_status ADD VALUE IF NOT EXISTS 'distributed'`);
 

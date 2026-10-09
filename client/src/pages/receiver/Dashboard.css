@@ -170,63 +170,9 @@
   outline-offset: 1px;
 }
 
-.receiver-payment-panel:not(.is-open) > :not(.receiver-payment-heading) {
-  display: none !important;
-}
-
-.receiver-payment-heading {
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.receiver-pay-here-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 9px 14px;
-  border: 0;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #17345f, #285b9e);
-  color: #fff;
-  box-shadow: 0 5px 12px rgba(23, 52, 95, .2);
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.receiver-payment-methods {
-  align-items: stretch;
-}
-
-.receiver-wallet-help {
-  margin-top: 7px;
-  color: #59677a;
-  font-size: 12px;
-  line-height: 1.55;
-}
-
-.receiver-payment-methods > button {
-  min-width: 120px;
-  min-height: 44px;
-  flex: 1 1 120px !important;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-}
-
-.receiver-payment-panel > div > input,
-.receiver-payment-panel input[type="text"],
-.receiver-payment-panel input[type="number"] {
-  min-height: 42px;
-  max-width: 100%;
-}
-
-@media (max-width: 520px) {
-  .receiver-request-form { gap: 10px; }
-  .receiver-payment-panel { padding: 12px !important; }
-  .receiver-payment-heading > div { min-width: 0; }
-  .receiver-payment-methods > button { min-width: 100%; }
+.receiver-dashboard-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.92);
+  opacity: 1;
 }
 
 @media (max-width: 760px) {

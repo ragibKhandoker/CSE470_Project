@@ -13,16 +13,6 @@ export const ngoService = {
     return response.data;
   },
 
-  getPaymentWallets: async () => {
-    const response = await api.get('/ngos/profile/payment-wallets');
-    return response.data;
-  },
-
-  savePaymentWallets: async (wallets) => {
-    const response = await api.put('/ngos/profile/payment-wallets', wallets);
-    return response.data;
-  },
-
   requestCollection: async (collectionData) => {
     // TODO: implement API call
     const response = await api.post('/collection-requests', collectionData);

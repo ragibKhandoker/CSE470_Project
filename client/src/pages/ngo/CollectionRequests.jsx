@@ -9,6 +9,12 @@ export const CollectionRequests = () => {
   const [collectionItems, setCollectionItems] = useState([]);
   const [staffList, setStaffList] = useState([]);
   const [pickupPoints, setPickupPoints] = useState([]);
+  const activePickupPoints = pickupPoints.filter((point) => String(point.status || '').toLowerCase() === 'active');
+  const [pickupPointsError, setPickupPointsError] = useState('');
+  const [showQuickPointForm, setShowQuickPointForm] = useState(false);
+  const [quickPointName, setQuickPointName] = useState('');
+  const [quickPointAddress, setQuickPointAddress] = useState('');
+  const [creatingPickupPoint, setCreatingPickupPoint] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('All');
 
@@ -23,7 +29,7 @@ export const CollectionRequests = () => {
   const [distributeModalItem, setDistributeModalItem] = useState(null);
   const [selectedPickupPointId, setSelectedPickupPointId] = useState('');
   const [totalPackets, setTotalPackets] = useState('');
-  const [distributionTotalAmount, setDistributionTotalAmount] = useState('0');
+  const [distributionPrice, setDistributionPrice] = useState('');
   const [selectedNeeds, setSelectedNeeds] = useState(['Cooked Meal', 'Halal']);
 
   const [handoverModalItem, setHandoverModalItem] = useState(null);
@@ -90,12 +96,59 @@ export const CollectionRequests = () => {
       });
       if (res.ok) {
         const data = await res.json();
-        setPickupPoints(data.data || []);
+        setPickupPoints(Array.isArray(data.data) ? data.data : []);
+        setPickupPointsError('');
+      } else {
+        setPickupPoints([]);
+        const message = await res.text();
+        setPickupPointsError('Pickup points could not be loaded. Please refresh this page and try again.');
+        console.error('Could not load pickup points:', res.status, message);
       }
     } catch (err) {
+      setPickupPoints([]);
+      setPickupPointsError('Could not connect to load pickup points. Check your connection and try again.');
       console.error('Error fetching pickup points:', err);
     }
   }, [token]);
+
+  const handleQuickCreatePickupPoint = async () => {
+    if (!quickPointName.trim() || !quickPointAddress.trim()) {
+      showToast('Enter the pickup point name and real street address.', 'error');
+      return;
+    }
+    setCreatingPickupPoint(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/pickup-points`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: quickPointName.trim(),
+          address: quickPointAddress.trim(),
+          status: 'Active'
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.message || 'Could not create the pickup point.', 'error');
+        return;
+      }
+      const newPoint = data.data;
+      setPickupPoints((current) => [newPoint, ...current.filter((point) => String(point.id) !== String(newPoint.id))]);
+      setSelectedPickupPointId(String(newPoint.id));
+      setQuickPointName('');
+      setQuickPointAddress('');
+      setShowQuickPointForm(false);
+      showToast('Pickup point created and selected.');
+    } catch (err) {
+      console.error('Error creating pickup point:', err);
+      showToast('Could not connect to create the pickup point.', 'error');
+    } finally {
+      setCreatingPickupPoint(false);
+    }
+  };
 
   useEffect(() => {
     fetchCollectionItems();
@@ -202,8 +255,9 @@ export const CollectionRequests = () => {
   // Action: Post food for distribution
   const handlePostDistribution = async (e) => {
     e.preventDefault();
-    if (!selectedPickupPointId || !totalPackets) {
-      showToast('Please select a pickup point and enter total packets available.', 'error');
+    const price = Number(distributionPrice);
+    if (!selectedPickupPointId || !totalPackets || !distributionPrice || !Number.isFinite(price) || price <= 0) {
+      showToast('Please select a pickup point, enter the available packets, and set a price above BDT 0.', 'error');
       return;
     }
     setActionLoading(true);
@@ -218,7 +272,7 @@ export const CollectionRequests = () => {
           pickup_point_id: selectedPickupPointId,
           total_packets: parseInt(totalPackets, 10),
           needs_options: selectedNeeds,
-          total_amount: Number(distributionTotalAmount || 0),
+          price_per_portion_bdt: price,
         })
       });
       if (res.ok) {
@@ -753,9 +807,9 @@ export const CollectionRequests = () => {
                         onClick={() => {
                           setDistributeModalItem(item);
                           setTotalPackets(item.post_quantity || 50);
-                          setDistributionTotalAmount('0');
+                          setDistributionPrice('');
                           if (pickupPoints.length > 0) {
-                            setSelectedPickupPointId(pickupPoints[0].id);
+                          setSelectedPickupPointId(activePickupPoints[0]?.id ? String(activePickupPoints[0].id) : '');
                           }
                         }}
                         style={{
@@ -1160,13 +1214,15 @@ export const CollectionRequests = () => {
               padding: '28px',
               maxWidth: '520px',
               width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
               boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
             }}>
               <h3 style={{ margin: '0 0 8px', fontSize: '18px', fontWeight: 800, color: '#2c2320' }}>
                 Post Food for Distribution
               </h3>
               <p style={{ margin: '0 0 18px', fontSize: '13px', color: '#786d66' }}>
-                Select a pickup point and packet quantity. Set the points cost for all packets; 1 point is shown as ৳1.00 equivalent. Enter 0 to keep the food free.
+                Set the pickup point, available quantity, and a fair price per portion. Receivers will see this price before adding the meal to their cart.
               </p>
 
               <form onSubmit={handlePostDistribution}>
@@ -1177,7 +1233,8 @@ export const CollectionRequests = () => {
                   <select
                     value={selectedPickupPointId}
                     onChange={(e) => setSelectedPickupPointId(e.target.value)}
-                    required
+                    required={activePickupPoints.length > 0}
+                    disabled={activePickupPoints.length === 0}
                     style={{
                       width: '100%',
                       padding: '11px 14px',
@@ -1188,13 +1245,63 @@ export const CollectionRequests = () => {
                       outline: 'none'
                     }}
                   >
-                    <option value="">-- Choose Pickup Point --</option>
-                    {pickupPoints.map((pt) => (
+                    <option value="">
+                      {activePickupPoints.length ? '-- Choose Pickup Point --' : 'No active pickup points available'}
+                    </option>
+                    {activePickupPoints.map((pt) => (
                       <option key={pt.id} value={pt.id}>
                         📍 {pt.name} — {pt.address} ({pt.operating_hours})
                       </option>
                     ))}
                   </select>
+                  {pickupPointsError ? (
+                    <p role="alert" style={{ margin: '8px 0 0', fontSize: '12px', color: '#b91c1c' }}>
+                      {pickupPointsError} <button type="button" onClick={fetchPickupPoints} style={{ border: 0, background: 'none', color: 'var(--brand-primary)', fontWeight: 700, cursor: 'pointer' }}>Retry</button>
+                    </p>
+                  ) : activePickupPoints.length === 0 && (
+                    <div style={{ marginTop: 8, fontSize: '12px', color: '#9a3412' }}>
+                      <p style={{ margin: '0 0 8px' }}>
+                        Add or activate a pickup point before posting this food.{' '}
+                        <Link to="/ngo/pickup-points" style={{ color: 'var(--brand-primary)', fontWeight: 700 }}>
+                          Manage pickup points
+                        </Link>
+                      </p>
+                      {!showQuickPointForm ? (
+                        <button
+                          type="button"
+                          onClick={() => setShowQuickPointForm(true)}
+                          style={{ padding: '7px 11px', border: '1px solid #fed7aa', borderRadius: 8, background: '#fff7ed', color: '#9a3412', fontWeight: 700, cursor: 'pointer' }}
+                        >
+                          + Create pickup point here
+                        </button>
+                      ) : (
+                        <div style={{ display: 'grid', gap: 8, padding: 12, border: '1px solid #fed7aa', borderRadius: 10, background: '#fffaf5' }}>
+                          <input
+                            value={quickPointName}
+                            onChange={(e) => setQuickPointName(e.target.value)}
+                            placeholder="Pickup point name"
+                            aria-label="Pickup point name"
+                            required
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '9px 11px', border: '1px solid #e7d5c8', borderRadius: 8 }}
+                          />
+                          <input
+                            value={quickPointAddress}
+                            onChange={(e) => setQuickPointAddress(e.target.value)}
+                            placeholder="Full street address"
+                            aria-label="Full street address"
+                            required
+                            style={{ width: '100%', boxSizing: 'border-box', padding: '9px 11px', border: '1px solid #e7d5c8', borderRadius: 8 }}
+                          />
+                          <div style={{ display: 'flex', gap: 8 }}>
+                            <button type="button" onClick={() => setShowQuickPointForm(false)} style={{ padding: '8px 12px', border: '1px solid #e7d5c8', borderRadius: 8, background: '#fff', cursor: 'pointer' }}>Cancel</button>
+                            <button type="button" onClick={handleQuickCreatePickupPoint} disabled={creatingPickupPoint} style={{ padding: '8px 12px', border: 0, borderRadius: 8, background: 'var(--brand-primary)', color: '#fff', fontWeight: 700, cursor: creatingPickupPoint ? 'wait' : 'pointer' }}>
+                              {creatingPickupPoint ? 'Creating…' : 'Create and select'}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ marginBottom: 16 }}>
@@ -1221,17 +1328,22 @@ export const CollectionRequests = () => {
 
                 <div style={{ marginBottom: 16 }}>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#2c2320', marginBottom: 6 }}>
-                    Total Amount for All Packets (৳; enter 0 for free food)
+                    Price per portion (BDT)
                   </label>
                   <input
                     type="number"
-                    min="0"
+                    min="0.01"
+                    max="100000"
                     step="0.01"
-                    value={distributionTotalAmount}
-                    onChange={(e) => setDistributionTotalAmount(e.target.value)}
+                    value={distributionPrice}
+                    onChange={(e) => setDistributionPrice(e.target.value)}
                     required
+                    placeholder="For example: 80.00"
                     style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1.5px solid #e5e7eb', fontSize: '14px', boxSizing: 'border-box' }}
                   />
+                  <p style={{ margin: '7px 0 0', fontSize: '12px', color: '#786d66' }}>
+                    Estimated total at this quantity: BDT {((Number(totalPackets) || 0) * (Number(distributionPrice) || 0)).toFixed(2)}
+                  </p>
                 </div>
 
                 <div style={{ marginBottom: 20 }}>
@@ -1283,7 +1395,7 @@ export const CollectionRequests = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={actionLoading}
+                    disabled={actionLoading || activePickupPoints.length === 0}
                     style={{
                       padding: '9px 24px',
                       background: 'var(--brand-primary)',

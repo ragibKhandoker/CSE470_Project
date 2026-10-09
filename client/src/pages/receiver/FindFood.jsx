@@ -42,12 +42,12 @@ export const ReceiverFindFood = () => {
   const [foodPosts, setFoodPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [myRequests, setMyRequests] = useState([]);
+  const [cartPostIds, setCartPostIds] = useState(() => new Set());
+  const [wishlistByPostId, setWishlistByPostId] = useState({});
 
   // Request Food State
   const [requestModalItem, setRequestModalItem] = useState(null);
   const [requestedPortions, setRequestedPortions] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState('points');
-  const [pointsBalance, setPointsBalance] = useState(0);
   const [requestNote, setRequestNote] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(getAnonymousMode());
   const [requestSuccessMessage, setRequestSuccessMessage] = useState('');
@@ -58,9 +58,58 @@ export const ReceiverFindFood = () => {
     fetchFoodPosts();
     if (token) {
       fetchMyRequests();
-      fetch(`${API_BASE_URL}/points/mine`, { headers: { Authorization: `Bearer ${token}` } }).then((r) => r.ok ? r.json() : null).then((d) => setPointsBalance(Number(d?.data?.balance || 0))).catch(() => setPointsBalance(0));
+      fetch(`${API_BASE_URL}/receiver-commerce/cart`, { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => res.ok ? res.json() : { data: [] })
+        .then((data) => setCartPostIds(new Set((data.data || []).map((item) => Number(item.food_post_id)))))
+        .catch(() => setCartPostIds(new Set()));
+      fetch(`${API_BASE_URL}/receiver-commerce/wishlist`, { headers: { Authorization: `Bearer ${token}` } })
+        .then((res) => res.ok ? res.json() : { data: [] })
+        .then((data) => setWishlistByPostId(Object.fromEntries((data.data || []).map((item) => [Number(item.food_post_id), item.id]))))
+        .catch(() => setWishlistByPostId({}));
     }
   }, [token]);
+
+  const addMealToCart = async (food) => {
+    if (!token) return navigate('/login');
+    if (!isVerified) {
+      alert('Verify your receiver profile before adding meals to your cart.');
+      return navigate('/receiver/profile');
+    }
+    try {
+      const response = await fetch(`${API_BASE_URL}/receiver-commerce/cart`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ food_post_id: food.id, quantity: 1 })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Could not add this meal to your cart.');
+      setCartPostIds((current) => new Set([...current, Number(food.id)]));
+      alert('Meal added to your cart.');
+    } catch (error) { alert(error.message); }
+  };
+
+  const toggleMealWishlist = async (food) => {
+    if (!token) return navigate('/login');
+    const savedId = wishlistByPostId[Number(food.id)];
+    try {
+      const response = await fetch(
+        savedId ? `${API_BASE_URL}/receiver-commerce/wishlist/${savedId}` : `${API_BASE_URL}/receiver-commerce/wishlist`,
+        {
+          method: savedId ? 'DELETE' : 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          ...(savedId ? {} : { body: JSON.stringify({ food_post_id: food.id }) })
+        }
+      );
+      const data = response.status === 204 ? {} : await response.json();
+      if (!response.ok) throw new Error(data.message || 'Could not update your wishlist.');
+      setWishlistByPostId((current) => {
+        const next = { ...current };
+        if (savedId) delete next[Number(food.id)];
+        else next[Number(food.id)] = data.data?.id || food.id;
+        return next;
+      });
+    } catch (error) { alert(error.message); }
+  };
 
   const fetchMyRequests = async () => {
     if (!token) return;
@@ -159,7 +208,6 @@ export const ReceiverFindFood = () => {
     }
     setRequestModalItem(item);
     setRequestedPortions(1);
-    setPaymentMethod('points');
     setRequestNote('');
     setIsAnonymous(getAnonymousMode());
     setRequestSuccessMessage('');
@@ -175,9 +223,6 @@ export const ReceiverFindFood = () => {
       alert('Please enter the security verification code (CAPTCHA) to verify you are not a bot.');
       return;
     }
-    const packetCount = Number(requestModalItem.distribution_total_packets) || Number(requestModalItem.quantity) || 1;
-    const amount = Number(requestModalItem.distribution_total_amount) > 0 ? Number((Number(requestModalItem.distribution_total_amount) * requestedPortions / packetCount).toFixed(2)) : 0;
-    if (amount > pointsBalance) { alert(`Not enough points. Required: ${amount.toFixed(2)}; available: ${pointsBalance.toFixed(2)}.`); return; }
     setSubmitting(true);
 
     try {
@@ -191,8 +236,6 @@ export const ReceiverFindFood = () => {
           food_post_id: requestModalItem.id,
           is_anonymous: isAnonymous,
           requested_quantity: requestedPortions,
-          payment_method: amount > 0 ? 'points' : 'none',
-          payment_amount: amount,
           notes: requestNote,
           captchaId: requestCaptcha.captchaId,
           captchaAnswer: requestCaptcha.captchaAnswer
@@ -200,7 +243,6 @@ export const ReceiverFindFood = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        if (data.data?.points_balance != null) setPointsBalance(Number(data.data.points_balance));
         setRequestSuccessMessage('Request submitted! Pickup code generated.');
         setTimeout(() => {
           setRequestModalItem(null);
@@ -426,11 +468,9 @@ export const ReceiverFindFood = () => {
               const existingReq = getExistingRequestForPost(food.id);
               const hasClaimed = Boolean(existingReq);
               const isFulfilled = existingReq?.status === 'fulfilled';
+              const unitPrice = Number(food.receiver_price_bdt || 0);
               const remainingCount = food.remaining_packets != null ? food.remaining_packets : food.quantity;
               const totalCount = food.total_packets || food.quantity;
-              const distributionTotal = Number(food.distribution_total_amount) || 0;
-              const distributionPackets = Number(food.distribution_total_packets) || Number(food.quantity) || 1;
-              const pricePerPortion = (distributionTotal / distributionPackets).toFixed(2);
 
               return (
                 <div
@@ -515,15 +555,24 @@ export const ReceiverFindFood = () => {
                         </div>
                         <span>📍 {locationText}</span>
                         <span>👤 {food.donor_name || 'Donor'}</span>
-                        {distributionTotal > 0 && (
-                          <span style={{ color: '#9a3412', fontWeight: 700 }}>
-                            ৳{pricePerPortion} per portion equivalent · Points
-                          </span>
-                        )}
                       </div>
                     </div>
 
+                    <div style={{ marginTop: -8, fontSize: 15, fontWeight: 800, color: unitPrice > 0 ? '#166534' : '#64748b' }}>
+                      {unitPrice > 0 ? `৳${unitPrice.toFixed(2)} per portion` : 'Free'}
+                    </div>
+
                     <button
+                      type="button"
+                      onClick={() => toggleMealWishlist(food)}
+                      aria-label={wishlistByPostId[Number(food.id)] ? 'Remove from wishlist' : 'Add to wishlist'}
+                      title={wishlistByPostId[Number(food.id)] ? 'Remove from wishlist' : 'Add to wishlist'}
+                      style={{ alignSelf: 'flex-end', width: 42, height: 40, border: '1px solid #e5e7eb', borderRadius: 12, background: '#fff', color: wishlistByPostId[Number(food.id)] ? '#dc2626' : '#6b7280', fontSize: 22, cursor: 'pointer' }}
+                    >
+                      {wishlistByPostId[Number(food.id)] ? '♥' : '♡'}
+                    </button>
+
+                    {unitPrice <= 0 && <button
                       onClick={() => {
                         if (!isVerified) {
                           alert('National ID (NID) verification required. Please upload your NID document in your Profile and wait for Super Admin verification.');
@@ -570,7 +619,15 @@ export const ReceiverFindFood = () => {
                         : hasClaimed
                         ? (isFulfilled ? '✓ Food Received' : `✓ Already Requested (${existingReq.pickup_code || 'Pending'})`)
                         : 'Request Food'}
-                    </button>
+                    </button>}
+                    {unitPrice > 0 && <button
+                      type="button"
+                      onClick={() => addMealToCart(food)}
+                      disabled={hasClaimed || cartPostIds.has(Number(food.id))}
+                      style={{ width: '100%', background: hasClaimed || cartPostIds.has(Number(food.id)) ? '#f3f4f6' : 'var(--brand-primary)', color: hasClaimed || cartPostIds.has(Number(food.id)) ? '#6b7280' : '#ffffff', border: 'none', borderRadius: 14, padding: 12, fontSize: 13, fontWeight: 700, cursor: hasClaimed || cartPostIds.has(Number(food.id)) ? 'not-allowed' : 'pointer' }}
+                    >
+                      {hasClaimed ? 'Already requested' : cartPostIds.has(Number(food.id)) ? 'In cart · edit quantity there' : '+ Add to cart'}
+                    </button>}
                   </div>
                 </div>
               );
@@ -595,6 +652,7 @@ export const ReceiverFindFood = () => {
                 const hasClaimed = Boolean(existingReq);
                 const isFulfilled = existingReq?.status === 'fulfilled';
                 const rem = food.remaining_packets != null ? food.remaining_packets : food.quantity;
+                const unitPrice = Number(food.receiver_price_bdt || 0);
 
                 return (
                   <Marker
@@ -610,7 +668,15 @@ export const ReceiverFindFood = () => {
                         <div style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
                           📍 {food.thana || 'Dhaka'} · <strong>{rem} portions left</strong>
                         </div>
-                        <button
+                        <div style={{ fontSize: 13, fontWeight: 800, color: unitPrice > 0 ? '#166534' : '#64748b', marginBottom: 8 }}>
+                          {unitPrice > 0 ? `৳${unitPrice.toFixed(2)} per portion` : 'Free'}
+                        </div>
+                        <button type="button" onClick={() => toggleMealWishlist(food)} style={{ width: '100%', marginBottom: 6, background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8, padding: 6, color: wishlistByPostId[Number(food.id)] ? '#dc2626' : '#6b7280' }}>
+                          {wishlistByPostId[Number(food.id)] ? '♥ Saved to wishlist' : '♡ Add to wishlist'}
+                        </button>
+                        {unitPrice > 0 ? <button type="button" onClick={() => addMealToCart(food)} disabled={hasClaimed || cartPostIds.has(Number(food.id))} style={{ width: '100%', background: 'var(--brand-primary)', color: '#fff', border: 0, borderRadius: 8, padding: 7, opacity: hasClaimed || cartPostIds.has(Number(food.id)) ? 0.6 : 1 }}>
+                          {hasClaimed ? 'Already requested' : cartPostIds.has(Number(food.id)) ? 'In cart · edit quantity' : '+ Add to cart'}
+                        </button> : <button
                           onClick={() => {
                             if (!isVerified) {
                               alert('National ID (NID) verification required. Please upload your NID document in your Profile and wait for Super Admin verification.');
@@ -649,7 +715,7 @@ export const ReceiverFindFood = () => {
                             : hasClaimed
                             ? (isFulfilled ? '✓ Food Received' : `✓ Requested (${existingReq.pickup_code})`)
                             : 'Request Food'}
-                        </button>
+                        </button>}
                       </div>
                     </Popup>
                   </Marker>
@@ -717,16 +783,6 @@ export const ReceiverFindFood = () => {
                   </div>
                 </div>
 
-                {Number(requestModalItem.distribution_total_amount) > 0 && (() => {
-                  const packetCount = Number(requestModalItem.distribution_total_packets) || Number(requestModalItem.quantity) || 1;
-                  const amount = Number((Number(requestModalItem.distribution_total_amount) * requestedPortions / packetCount).toFixed(2));
-                  return <div style={{ marginBottom: 16, padding: 14, borderRadius: 14, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
-                    <div style={{ fontWeight: 800 }}>Points payment</div>
-                    <div>Required: <strong>{amount.toFixed(2)} points</strong> (৳{amount.toFixed(2)} equivalent)</div>
-                    <div>Available: <strong>{pointsBalance.toFixed(2)} points</strong> · 1 point = ৳1.00</div>
-                    <div style={{ marginTop: 6, fontSize: 12, color: '#64748b' }}>Points are deducted on submission. This is an internal value, not a real money transfer.</div>
-                  </div>;
-                })()}
                 <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#2c2320', marginBottom: '6px' }}>
                     Portions Needed

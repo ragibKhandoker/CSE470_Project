@@ -165,38 +165,6 @@ body {
   transform: translateY(-1px);
   box-shadow: 0 11px 22px rgba(23, 37, 84, 0.32) !important;
 }
-.distribution-wallet-fields {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding: 16px;
-  border: 1px solid #d7deea;
-  border-radius: 14px;
-  background: #f5f7fb;
-}
-.distribution-wallet-field {
-  display: grid;
-  gap: 6px;
-  color: #233b60;
-  font-size: 12px;
-  font-weight: 700;
-}
-.distribution-wallet-field b { color: #718096; font-size: 11px; font-weight: 600; }
-.distribution-wallet-field input {
-  width: 100%;
-  min-height: 42px;
-  padding: 9px 12px;
-  border: 1px solid #b9c5d7;
-  border-radius: 9px;
-  background: #fff;
-  color: #172554;
-  font: inherit;
-}
-.distribution-wallet-field input:focus {
-  outline: 3px solid rgba(30, 58, 138, .14);
-  border-color: #1e3a8a;
-}
-.distribution-wallet-help { margin: 0; color: #64748b; font-size: 12px; line-height: 1.45; }
 @media (max-width: 600px) {
   #root .donor-profile-editor { padding: 20px !important; }
   #root .donor-profile-form-heading { align-items: flex-start; gap: 10px; }
@@ -955,29 +923,11 @@ body {
   position: relative;
   transition: color 0.3s ease;
 }
-.home-navbar .nav-mobile-drawer .nav-link-item {
-  align-self: flex-start;
-  width: fit-content;
-  max-width: 100%;
-}
-.home-navbar .nav-link-item::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--brand-primary-dark);
-  transition: width 0.3s ease;
-}
 .home-navbar .nav-link-item:hover,
-.home-navbar .nav-link-item:focus-visible {
+.home-navbar .nav-link-item:focus,
+.home-navbar .nav-link-item:focus-visible,
+.home-navbar .nav-link-item:active {
   color: var(--brand-primary-dark) !important;
-}
-.home-navbar .nav-link-item:hover::after,
-.home-navbar .nav-link-item:focus-visible::after {
-  width: 100%;
 }
 .home-navbar .nav-mobile-drawer {
   background: #ffffff !important;

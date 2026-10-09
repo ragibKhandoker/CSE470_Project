@@ -11,9 +11,6 @@ const createFoodRequest = async ({
   pickup_code,
   requested_quantity = 1,
   notes = '',
-  payment_method = 'none',
-  payment_amount = 0,
-  payment_status = 'not_required',
   ngo_user_id = null
 }) => {
   const query = `
@@ -24,13 +21,10 @@ const createFoodRequest = async ({
       pickup_code,
       requested_quantity,
       notes,
-      payment_method,
-      payment_amount,
-      payment_status,
       ngo_user_id,
       status
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'requested')
+    VALUES ($1, $2, $3, $4, $5, $6, $7, 'requested')
     RETURNING *;
   `;
   const values = [
@@ -40,60 +34,63 @@ const createFoodRequest = async ({
     pickup_code,
     requested_quantity,
     notes,
-    payment_method,
-    payment_amount,
-    payment_status,
     ngo_user_id
   ];
   const result = await db.query(query, values);
   return result.rows[0];
 };
 
-const createFoodRequestWithPoints = async ({
-  food_post_id, receiver_id, is_anonymous = false, pickup_code,
-  requested_quantity = 1, notes = '', amount, ngo_user_id = null
+const createNgoPickupRequestWithNotification = async ({
+  food_post_id,
+  donor_id,
+  ngo_user_id,
+  pickup_code,
+  requested_quantity = 1,
+  notes = '',
+  food_title
 }) => {
   const client = await db.pool.connect();
   try {
     await client.query('BEGIN');
-    const receiver = await client.query('SELECT points_balance FROM users WHERE id = $1 FOR UPDATE', [receiver_id]);
-    const balance = Number(receiver.rows[0]?.points_balance || 0);
-    if (!receiver.rows[0] || balance < amount) {
-      const error = new Error('Insufficient points balance.');
-      error.code = 'INSUFFICIENT_POINTS';
-      error.balance = balance;
-      error.amount = amount;
-      throw error;
-    }
-    const existing = await client.query(`SELECT id FROM food_requests
-      WHERE food_post_id = $1 AND receiver_id = $2
-        AND status IN ('requested', 'approved', 'fulfilled', 'accepted') LIMIT 1`, [food_post_id, receiver_id]);
-    if (existing.rows[0]) {
-      const error = new Error('You already have a request for this food post.');
-      error.code = 'REQUEST_EXISTS';
-      throw error;
-    }
-    const request = await client.query(`INSERT INTO food_requests (
-        food_post_id, receiver_id, is_anonymous, pickup_code, requested_quantity, notes,
-        payment_method, payment_amount, payment_status, ngo_user_id, status
-      ) VALUES ($1, $2, $3, $4, $5, $6, 'points', $7, 'paid', $8, 'requested') RETURNING *`,
-    [food_post_id, receiver_id, is_anonymous, pickup_code, requested_quantity, notes, amount, ngo_user_id]);
-    const updated = await client.query(`UPDATE users SET points_balance = points_balance - $1
-      WHERE id = $2 AND points_balance >= $1 RETURNING points_balance`, [amount, receiver_id]);
-    if (!updated.rows[0]) {
-      const error = new Error('Insufficient points balance.');
-      error.code = 'INSUFFICIENT_POINTS';
-      error.balance = balance;
-      throw error;
-    }
-    await client.query(`INSERT INTO points_transactions (user_id, request_id, kind, points, taka_value, note)
-      VALUES ($1, $2, 'debit', $3, $3, $4)`, [receiver_id, request.rows[0].id, amount, `Food request #${request.rows[0].id}`]);
+    const requestResult = await client.query(
+      `INSERT INTO food_requests (
+         food_post_id, receiver_id, ngo_user_id, is_anonymous,
+         pickup_code, requested_quantity, notes, status
+       )
+       VALUES ($1, $2, $2, FALSE, $3, $4, $5, 'pickup_requested')
+       RETURNING *;`,
+      [food_post_id, ngo_user_id, pickup_code, requested_quantity, notes]
+    );
+    const request = requestResult.rows[0];
+    const ngoResult = await client.query(
+      `SELECT COALESCE(n.organization_name, u.name, 'An NGO') AS name
+       FROM users u LEFT JOIN ngos n ON n.user_id = u.id
+       WHERE u.id = $1;`,
+      [ngo_user_id]
+    );
+    const ngoName = ngoResult.rows[0]?.name || 'An NGO';
+    const safeFoodTitle = food_title || 'your food donation';
+    const message = `${ngoName} has requested pickup of "${safeFoodTitle}". Please review the request in My Donations.`;
+    await client.query(
+      `INSERT INTO notifications (user_id, title, message, type, link, metadata)
+       VALUES ($1, $2, $3, $4, $5, $6::jsonb);`,
+      [
+        donor_id,
+        'New NGO Pickup Request',
+        message,
+        'ngo_pickup_requested',
+        '/donor/my-donations',
+        JSON.stringify({ food_request_id: request.id, food_post_id: Number(food_post_id), ngo_user_id })
+      ]
+    );
     await client.query('COMMIT');
-    return { ...request.rows[0], points_balance: updated.rows[0].points_balance };
+    return request;
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;
-  } finally { client.release(); }
+  } finally {
+    client.release();
+  }
 };
 
 const findById = async (id) => {
@@ -206,9 +203,6 @@ const findIncomingForNgo = async (ngoUserId) => {
       fp.donor_id,
       fp.image_url AS food_image_url,
       fp.quantity AS post_quantity,
-      fp.distribution_total_amount,
-      fp.distribution_total_packets,
-      fp.distribution_bkash_number,
       fp.distribution_ngo_user_id,
       COALESCE(
         (SELECT fr_ngo.remaining_packets 
@@ -286,9 +280,6 @@ const findPickupRequestsByNgo = async (ngoUserId) => {
       fp.area_ward,
       fp.quantity AS post_quantity,
       fp.image_url AS food_image_url,
-      fp.distribution_bkash_number,
-      fp.distribution_rocket_number,
-      fp.distribution_nagad_number,
       fp.status AS food_post_status,
       d.name AS donor_name,
       d.phone AS donor_phone,
@@ -375,10 +366,7 @@ const postForDistribution = async (requestId, {
   pickup_point_id,
   total_packets,
   needs_options,
-  total_amount,
-  bkash_number,
-  rocket_number,
-  nagad_number,
+  price_per_portion_bdt,
   ngo_user_id
 }) => {
   const query = `
@@ -411,15 +399,11 @@ const postForDistribution = async (requestId, {
        SET pickup_point_id = $1,
            quantity = $2,
            needs_options = $3,
-           distribution_total_amount = $4,
-           distribution_total_packets = $2,
-           distribution_bkash_number = $5,
-           distribution_rocket_number = $6,
-           distribution_nagad_number = $7,
-           distribution_ngo_user_id = $8,
+           receiver_price_bdt = $4,
+           distribution_ngo_user_id = $5,
            status = 'at_ngo_point'
-       WHERE id = $9`,
-      [pickup_point_id, total_packets, needs_options || [], total_amount, bkash_number, rocket_number, nagad_number, ngo_user_id, result.rows[0].food_post_id]
+       WHERE id = $6`,
+      [pickup_point_id, total_packets, needs_options || [], price_per_portion_bdt, ngo_user_id, result.rows[0].food_post_id]
     );
     await client.query('COMMIT');
     return result.rows[0];
@@ -429,22 +413,6 @@ const postForDistribution = async (requestId, {
   } finally {
     client.release();
   }
-};
-
-const updateDistributionWallets = async (requestId, { bkash_number, rocket_number, nagad_number, ngo_user_id }) => {
-  const result = await db.query(
-    `UPDATE food_posts fp
-     SET distribution_bkash_number = $1,
-         distribution_rocket_number = $2,
-         distribution_nagad_number = $3
-     WHERE fp.id = (SELECT fr.food_post_id FROM food_requests fr
-                    WHERE fr.id = $4 AND fr.status = 'distributing'
-                      AND (fr.receiver_id = $5 OR fr.receiver_id IN (SELECT id FROM users WHERE parent_ngo_id = $5)))
-       AND (fp.distribution_ngo_user_id = $5 OR fp.distribution_ngo_user_id IS NULL)
-     RETURNING fp.id`,
-    [bkash_number, rocket_number, nagad_number, requestId, ngo_user_id]
-  );
-  return result.rows[0];
 };
 
 const handoverPackets = async (requestId, { receiver_name, receiver_phone, quantity, pickup_code, staff_id, staff_name }) => {
@@ -561,7 +529,7 @@ const deleteFoodRequest = async (id) => {
 
 module.exports = {
   createFoodRequest,
-  createFoodRequestWithPoints,
+  createNgoPickupRequestWithNotification,
   findById,
   findExistingRequest,
   findByReceiverId,
@@ -573,7 +541,6 @@ module.exports = {
   markPickedUp,
   markAtHub,
   postForDistribution,
-  updateDistributionWallets,
   handoverPackets,
   findByPickupCode,
   updateStatus,

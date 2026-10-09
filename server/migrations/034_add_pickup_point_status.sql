@@ -1,0 +1,2 @@
+ALTER TABLE public.pickup_points
+  ADD COLUMN IF NOT EXISTS status VARCHAR(30) NOT NULL DEFAULT 'Active';

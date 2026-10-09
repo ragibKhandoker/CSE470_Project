@@ -48,61 +48,9 @@ const updateVerification = async (user_id, verified) => {
   return result.rows[0];
 };
 
-const getPaymentWallets = async (userId) => {
-  const result = await db.query(
-    `SELECT ngo_bkash_wallet_number AS bkash_number,
-            ngo_rocket_wallet_number AS rocket_number,
-            ngo_nagad_wallet_number AS nagad_number
-     FROM users
-     WHERE id = $1 AND role::text = 'ngo'`,
-    [userId]
-  );
-  return result.rows[0] || null;
-};
-
-const updatePaymentWallets = async (userId, { bkash_number, rocket_number, nagad_number }) => {
-  const client = await db.pool.connect();
-  try {
-    await client.query('BEGIN');
-    const updated = await client.query(
-      `UPDATE users
-       SET ngo_bkash_wallet_number = $1,
-           ngo_rocket_wallet_number = $2,
-           ngo_nagad_wallet_number = $3
-       WHERE id = $4 AND role::text = 'ngo'
-       RETURNING id`,
-      [bkash_number, rocket_number, nagad_number, userId]
-    );
-    if (!updated.rows[0]) {
-      await client.query('ROLLBACK');
-      return null;
-    }
-
-    // Apply account defaults to active distributions without an override.
-    await client.query(
-      `UPDATE food_posts
-       SET distribution_bkash_number = COALESCE(distribution_bkash_number, $1),
-           distribution_rocket_number = COALESCE(distribution_rocket_number, $2),
-           distribution_nagad_number = COALESCE(distribution_nagad_number, $3)
-       WHERE distribution_ngo_user_id = $4
-         AND status::text IN ('available', 'at_ngo_point')`,
-      [bkash_number, rocket_number, nagad_number, userId]
-    );
-    await client.query('COMMIT');
-    return { bkash_number, rocket_number, nagad_number };
-  } catch (error) {
-    await client.query('ROLLBACK');
-    throw error;
-  } finally {
-    client.release();
-  }
-};
-
 module.exports = {
   createNgo,
   findByUserId,
   getAllNgos,
-  updateVerification,
-  getPaymentWallets,
-  updatePaymentWallets
+  updateVerification
 };

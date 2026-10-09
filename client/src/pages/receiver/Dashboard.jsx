@@ -18,8 +18,6 @@ export const ReceiverDashboard = () => {
   const [isAnonymous, setIsAnonymous] = useState(getAnonymousMode());
   const [activeRequest, setActiveRequest] = useState(null);
   const [myRequests, setMyRequests] = useState([]);
-  const [paymentHistory, setPaymentHistory] = useState([]);
-  const [pointsBalance, setPointsBalance] = useState(0);
   const [nearbyFoods, setNearbyFoods] = useState([]);
   const [loadingRequests, setLoadingRequests] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
@@ -30,10 +28,6 @@ export const ReceiverDashboard = () => {
   // Request Food Modal State
   const [requestModalItem, setRequestModalItem] = useState(null);
   const [requestedPortions, setRequestedPortions] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState('points');
-  const [paymentPanelOpen, setPaymentPanelOpen] = useState(false);
-  const [customAmount, setCustomAmount] = useState('20');
-  const [selectedPreset, setSelectedPreset] = useState(20);
   const [requestNote, setRequestNote] = useState('');
   const [requestSuccessMessage, setRequestSuccessMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -42,12 +36,6 @@ export const ReceiverDashboard = () => {
   useEffect(() => {
     fetchActiveRequest();
     fetchNearbyFoodPosts();
-    if (token) fetch(`${API_BASE_URL}/points/mine`, { headers: { Authorization: `Bearer ${token}` } })
-      .then((response) => response.ok ? response.json() : { data: { balance: 0, transactions: [] } })
-      .then((data) => {
-        setPointsBalance(Number(data.data?.balance || 0));
-        setPaymentHistory(data.data?.transactions || []);
-      }).catch(() => { setPointsBalance(0); setPaymentHistory([]); });
     if (token && updateUser) {
       authService.getMe().then((data) => {
         if (data?.user) updateUser(data.user);
@@ -153,14 +141,6 @@ export const ReceiverDashboard = () => {
       return;
     }
 
-    const isMandatory = Number(requestModalItem?.distribution_total_amount) > 0;
-    const packetCount = Number(requestModalItem?.distribution_total_packets) || Number(requestModalItem?.quantity) || 1;
-    const calculatedMandatory = (Number(requestModalItem?.distribution_total_amount || 0) * requestedPortions / packetCount).toFixed(2);
-    const finalAmount = isMandatory ? Number(calculatedMandatory) : Number(customAmount || 20);
-    if (paymentMethod !== 'free' && (!Number.isFinite(finalAmount) || finalAmount <= 0 || finalAmount > pointsBalance)) {
-      alert(`Not enough points. Required: ${Number(finalAmount).toFixed(2)} points (BDT ${Number(finalAmount).toFixed(2)}); available: ${pointsBalance.toFixed(2)}.`);
-      return;
-    }
     setSubmitting(true);
     try {
       const res = await fetch(`${API_BASE_URL}/food-requests`, {
@@ -173,8 +153,6 @@ export const ReceiverDashboard = () => {
           food_post_id: requestModalItem.id,
           is_anonymous: isAnonymous,
           requested_quantity: requestedPortions,
-          payment_method: paymentMethod === 'free' ? 'none' : 'points',
-          payment_amount: paymentMethod === 'free' ? 0 : finalAmount,
           notes: requestNote,
           captchaId: requestCaptcha.captchaId,
           captchaAnswer: requestCaptcha.captchaAnswer
@@ -182,7 +160,6 @@ export const ReceiverDashboard = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        if (data.data?.points_balance != null) setPointsBalance(Number(data.data.points_balance));
         setRequestSuccessMessage('Request submitted successfully! Refreshing status...');
         setTimeout(() => {
           setRequestSuccessMessage('');
@@ -348,6 +325,7 @@ export const ReceiverDashboard = () => {
               <span style={{ fontSize: '18px', marginRight: '10px', opacity: 0.85 }}>🔍</span>
               <input
                 type="text"
+                className="receiver-dashboard-search-input"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search food near you (e.g. Dhanmondi, Banani, Mirpur)..."
@@ -455,11 +433,6 @@ export const ReceiverDashboard = () => {
           </div>
         )}
 
-        {/* Active Request Section */}
-        <section style={{ background: '#fff', borderRadius: 18, padding: 20, marginBottom: 20 }}>
-          <h3 style={{ marginTop: 0 }}>Points History</h3>
-          {paymentHistory.length === 0 ? <p>No points transactions yet.</p> : <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}><thead><tr>{['Points', 'Type', 'Reason', 'Date'].map((heading) => <th key={heading} style={{ padding: 8 }}>{heading}</th>)}</tr></thead><tbody>{paymentHistory.map((entry) => <tr key={entry.id}><td style={{ padding: 8 }}>{entry.kind === 'debit' ? '−' : '+'}{Number(entry.points).toFixed(2)} (৳{Number(entry.taka_value).toFixed(2)} equivalent)</td><td style={{ padding: 8 }}>{entry.kind}</td><td style={{ padding: 8 }}>{entry.note}</td><td style={{ padding: 8 }}>{new Date(entry.created_at).toLocaleString()}</td></tr>)}</tbody></table></div>}
-        </section>
         <div className="receiver-dashboard-active-section">
           <h3 style={{ margin: '0 0 16px', fontSize: '18px', fontWeight: 700, color: '#2c2320', fontFamily: "'Fraunces', serif" }}>
             Active Request
@@ -796,11 +769,6 @@ export const ReceiverDashboard = () => {
                           <span>📍 {locationText}</span>
                           <span>👤 {food.donor_name || 'Community Donor'}</span>
                         </div>
-                        {Number(food.distribution_total_amount) > 0 && (
-                          <div style={{ marginTop: 7, fontSize: 12, color: '#9a3412', fontWeight: 700 }}>
-                            ৳{(Number(food.distribution_total_amount) / (Number(food.distribution_total_packets) || Number(food.quantity) || 1)).toFixed(2)} equivalent per portion · Points
-                          </div>
-                        )}
                       </div>
 
                       <button
@@ -813,10 +781,6 @@ export const ReceiverDashboard = () => {
                           if (!hasClaimed) {
                             setRequestModalItem(food);
                             setRequestedPortions(1);
-                            setPaymentMethod('points');
-                            setPaymentPanelOpen(false);
-                            setCustomAmount('20');
-                            setSelectedPreset(20);
                             setRequestNote('');
                           }
                         }}
@@ -1062,31 +1026,6 @@ export const ReceiverDashboard = () => {
                   </div>
                 </div>
 
-                {(() => {
-                  const isMandatory = Number(requestModalItem.distribution_total_amount) > 0;
-                  const packetCount = Number(requestModalItem.distribution_total_packets) || Number(requestModalItem.quantity) || 1;
-                  const amount = isMandatory
-                    ? Number((Number(requestModalItem.distribution_total_amount) * requestedPortions / packetCount).toFixed(2))
-                    : Number(customAmount || 0);
-                  return (
-                    <div style={{ marginBottom: '18px', padding: '16px', borderRadius: '14px', background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
-                      <div style={{ fontWeight: 800, marginBottom: 8 }}>Points payment</div>
-                      <div style={{ marginBottom: 10 }}>Available: <strong>{pointsBalance.toFixed(2)} points</strong> · 1 point = ৳1.00</div>
-                      {isMandatory ? (
-                        <div>Request cost: <strong>{amount.toFixed(2)} points (৳{amount.toFixed(2)} equivalent)</strong></div>
-                      ) : (
-                        <>
-                          <label style={{ display: 'block', fontWeight: 700, marginBottom: 6 }}>Points to use (optional)</label>
-                          <input type="number" min="0" max="500000" step="0.01" value={customAmount} onChange={(e) => setCustomAmount(e.target.value)} style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }} />
-                          <div style={{ marginTop: 6 }}>Equivalent value: ৳{amount.toFixed(2)}</div>
-                          <button type="button" onClick={() => setPaymentMethod(paymentMethod === 'free' ? 'points' : 'free')} style={{ marginTop: 10, padding: '8px 12px', borderRadius: 8, border: '1px solid #86efac', background: '#fff', cursor: 'pointer' }}>{paymentMethod === 'free' ? 'Use points' : 'Submit as free claim'}</button>
-                        </>
-                      )}
-                      {paymentMethod !== 'free' && amount > pointsBalance && <div style={{ marginTop: 8, color: '#b91c1c' }}>Not enough points to submit this request.</div>}
-                      <div style={{ marginTop: 8, color: '#64748b', fontSize: 12 }}>Points are deducted when the request is submitted. This is an internal points value, not a real money transfer.</div>
-                    </div>
-                  );
-                })()}
                 <div style={{ marginBottom: '18px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#2c2320', marginBottom: '6px' }}>
                     Pickup Note (Optional)

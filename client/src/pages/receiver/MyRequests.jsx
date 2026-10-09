@@ -45,9 +45,7 @@ export const MyRequests = () => {
               status: r.status,
               pickupCode: r.pickup_code || 'SM-PENDING',
               portions: r.requested_quantity || 1,
-              paymentAmount: Number(r.payment_amount) || 0,
-              paymentMethod: r.payment_method,
-              paymentStatus: r.payment_status,
+              purchasePriceBdt: Number(r.purchase_price_bdt) || 0,
               location: `${r.thana || 'Dhaka'}, ${r.district || 'Bangladesh'}`,
               address: [r.house_no, r.road_no, r.area_ward, r.thana, r.district].filter(Boolean).join(', ') || 'Dhaka, Bangladesh',
               requestedAt: r.created_at ? new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent',
@@ -272,11 +270,7 @@ export const MyRequests = () => {
                           <span style={{ fontSize: '13px', color: '#786d66', marginTop: '4px', display: 'block' }}>
                             {req.source} · {req.location} · Requested on {req.requestedAt}
                           </span>
-                          {req.paymentAmount > 0 && (
-                            <div style={{ fontSize: 12, color: '#9a3412', marginTop: 5 }}>
-                              Points: {req.paymentAmount.toFixed(2)} (৳{req.paymentAmount.toFixed(2)} equivalent) · {req.paymentStatus}
-                            </div>
-                          )}
+                          {req.purchasePriceBdt > 0 && <span style={{ fontSize: 12, color: '#166534', fontWeight: 700 }}>Purchase request: ৳{req.purchasePriceBdt.toFixed(2)}</span>}
                         </div>
 
                         <span
@@ -453,11 +447,7 @@ export const MyRequests = () => {
                           <span style={{ fontSize: '13px', color: '#786d66' }}>
                             {req.source} · {req.location}
                           </span>
-                          {req.paymentAmount > 0 && (
-                            <div style={{ fontSize: 12, color: '#9a3412', marginTop: 5 }}>
-                              Points: {req.paymentAmount.toFixed(2)} (৳{req.paymentAmount.toFixed(2)} equivalent) · {req.paymentStatus}
-                            </div>
-                          )}
+                          {req.purchasePriceBdt > 0 && <span style={{ display: 'block', fontSize: 12, color: '#166534', fontWeight: 700 }}>Purchase request: ৳{req.purchasePriceBdt.toFixed(2)}</span>}
                         </div>
 
                         <div

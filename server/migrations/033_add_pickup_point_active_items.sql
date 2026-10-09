@@ -1,0 +1,2 @@
+ALTER TABLE public.pickup_points
+  ADD COLUMN IF NOT EXISTS active_items INTEGER NOT NULL DEFAULT 0;

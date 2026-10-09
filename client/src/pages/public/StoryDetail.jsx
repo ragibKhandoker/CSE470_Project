@@ -251,6 +251,7 @@ export const StoryDetail = () => {
           >
             <Link
               to="/#how-it-works"
+              className="nav-link-item"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: '#6b5d56', fontSize: '15px', fontWeight: 600, padding: '4px 0' }}
             >
@@ -258,6 +259,7 @@ export const StoryDetail = () => {
             </Link>
             <Link
               to="/find-food"
+              className="nav-link-item"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: '#6b5d56', fontSize: '15px', fontWeight: 600, padding: '4px 0' }}
             >
@@ -265,6 +267,7 @@ export const StoryDetail = () => {
             </Link>
             <Link
               to={user ? (user.role === 'donor' ? '/donor/profile' : `/${user.role}/dashboard`) : '/donate'}
+              className="nav-link-item"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: '#6b5d56', fontSize: '15px', fontWeight: 600, padding: '4px 0' }}
             >
@@ -272,6 +275,7 @@ export const StoryDetail = () => {
             </Link>
             <Link
               to="/stories"
+              className="nav-link-item"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: 'var(--brand-primary-dark)', fontSize: '15px', fontWeight: 700, padding: '4px 0' }}
             >

@@ -33,6 +33,13 @@ const ReceiverIcons = {
       <line x1="12" y1="22.08" x2="12" y2="12" />
     </svg>
   ),
+  Cart: ({ color = "currentColor" }) => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="9" cy="21" r="1" />
+      <circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+    </svg>
+  ),
   History: ({ color = "currentColor" }) => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
@@ -159,6 +166,7 @@ export const ReceiverLayout = ({ children, title = 'Receiver Dashboard' }) => {
   const navItems = [
     { label: 'Home', path: '/receiver/dashboard', IconComponent: ReceiverIcons.Home },
     { label: 'Find Food', path: '/receiver/find-food', IconComponent: ReceiverIcons.FindFood },
+    { label: 'Cart & Wishlist', path: '/receiver/cart', IconComponent: ReceiverIcons.Cart },
     { label: 'My Requests', path: '/receiver/my-requests', IconComponent: ReceiverIcons.MyRequests },
     { label: 'History', path: '/receiver/history', IconComponent: ReceiverIcons.History },
     { label: 'Ratings', path: '/receiver/ratings', IconComponent: ReceiverIcons.Ratings },

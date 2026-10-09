@@ -41,7 +41,7 @@ const ngoStaffRoutes = require('./routes/ngoStaffRoutes');
 const storyRoutes = require('./routes/storyRoutes');
 const publicRoutes = require('./routes/publicRoutes');
 const receiverAssistantRoutes = require('./routes/receiverAssistantRoutes');
-const pointsRoutes = require('./routes/pointsRoutes');
+const receiverCommerceRoutes = require('./routes/receiverCommerceRoutes');
 
 const app = express();
 
@@ -81,7 +81,7 @@ app.use('/api/stories', storyRoutes);
 app.use('/api/public', publicRoutes);
 app.use('/api/help-assistant', receiverAssistantRoutes);
 app.use('/api/receiver-assistant', receiverAssistantRoutes);
-app.use('/api/points', pointsRoutes);
+app.use('/api/receiver-commerce', receiverCommerceRoutes);
 
 // Serve Client Static Build on the same port (Unified Port Mode)
 const clientDist = path.join(__dirname, '../client/dist');
