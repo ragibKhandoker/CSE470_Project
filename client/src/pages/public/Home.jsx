@@ -116,7 +116,7 @@ export const Home = () => {
 
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'clip' }}>
       
       {/* ========================================================
           1. NAVIGATION BAR (From Figma Node 8:22362)

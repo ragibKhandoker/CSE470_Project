@@ -11,7 +11,8 @@
     "migrate:nid-document": "node scripts/apply-migration.js 021_store_nid_documents_as_bytea.sql",
     "migrate:ngo-registration": "node scripts/apply-migration.js 022_align_ngo_registration_schema.sql",
     "migrate:pickup-point-address": "node scripts/apply-migration.js 023_add_pickup_point_address.sql",
-    "migrate:manual-payments": "node scripts/apply-migration.js 025_add_manual_receiver_payments.sql"
+    "migrate:manual-payments": "node scripts/apply-migration.js 025_add_manual_receiver_payments.sql",
+    "migrate:mobile-wallets": "node scripts/apply-migration.js 027_add_ngo_wallet_numbers.sql"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",

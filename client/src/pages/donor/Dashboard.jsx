@@ -136,7 +136,7 @@ export const DonorDashboard = () => {
           <div
             style={{
               background: '#ffe9e2',
-              border: '1px solid #ffffff',
+              border: '1px solid #e8cfc6',
               borderRadius: '16px',
               padding: '20px',
               boxShadow: '0 4px 12px rgba(44, 35, 32, 0.05)'
@@ -174,7 +174,7 @@ export const DonorDashboard = () => {
           <div
             style={{
               background: '#e3f5ea',
-              border: '1px solid #ffffff',
+              border: '1px solid #c9e5d3',
               borderRadius: '16px',
               padding: '20px',
               boxShadow: '0 4px 12px rgba(44, 35, 32, 0.05)'
@@ -212,7 +212,7 @@ export const DonorDashboard = () => {
           <div
             style={{
               background: '#fff2d6',
-              border: '1px solid #ffffff',
+              border: '1px solid #eadbb8',
               borderRadius: '16px',
               padding: '20px',
               boxShadow: '0 4px 12px rgba(44, 35, 32, 0.05)'

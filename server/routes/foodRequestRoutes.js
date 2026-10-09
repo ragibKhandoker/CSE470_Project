@@ -50,6 +50,7 @@ router.patch('/:id/assign-staff', protect, foodRequestController.assignReceiving
 router.patch('/:id/mark-picked-up', protect, foodRequestController.markPickedUp);
 router.patch('/:id/mark-at-hub', protect, foodRequestController.markAtHub);
 router.patch('/:id/post-distributing', protect, foodRequestController.postDistributing);
+router.patch('/:id/wallets', protect, foodRequestController.updateDistributionWallets);
 router.post('/:id/handover', protect, foodRequestController.handoverPackets);
 
 module.exports = router;

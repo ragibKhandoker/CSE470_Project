@@ -565,20 +565,23 @@ export const MyDonations = () => {
                         style={{
                           flex: 1,
                           height: '42px',
-                          background: '#ffffff',
+                          background: 'linear-gradient(135deg, var(--brand-primary), var(--brand-primary-light))',
                           border: '1.5px solid var(--brand-primary)',
                           borderRadius: '12px',
-                          color: 'var(--brand-primary)',
+                          color: '#ffffff',
                           fontSize: '14px',
-                          fontWeight: 600,
+                          fontWeight: 700,
                           cursor: 'pointer',
+                          boxShadow: '0 5px 12px rgba(var(--brand-primary-rgb), 0.24)',
                           transition: 'all 0.18s ease'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#fff4f1';
+                          e.currentTarget.style.filter = 'brightness(1.08)';
+                          e.currentTarget.style.transform = 'translateY(-1px)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = '#ffffff';
+                          e.currentTarget.style.filter = 'none';
+                          e.currentTarget.style.transform = 'translateY(0)';
                         }}
                       >
                         View Details

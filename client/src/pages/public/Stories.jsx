@@ -61,7 +61,7 @@ export const Stories = () => {
     : storiesList.slice(0, 2);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'clip' }}>
       
       {/* ========================================================
           1. NAVIGATION BAR (Matching Home Pixel-Perfect Navbar)

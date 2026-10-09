@@ -113,7 +113,7 @@ export const MyRequests = () => {
   };
 
   const handleResubmitBikashTransaction = async (id) => {
-    const transactionId = window.prompt('Enter the corrected bKash Transaction ID:');
+    const transactionId = window.prompt('Enter the corrected mobile wallet Transaction ID:');
     if (!transactionId) return;
     try {
       const res = await fetch(`${API_BASE_URL}/food-requests/${id}/payment`, {
@@ -123,7 +123,7 @@ export const MyRequests = () => {
           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-          action: 'resubmit_bkash',
+          action: 'resubmit_wallet_payment',
           bkash_transaction_id: transactionId
         })
       });
@@ -302,7 +302,7 @@ export const MyRequests = () => {
                           </span>
                           {req.paymentAmount > 0 && (
                             <div style={{ fontSize: 12, color: '#9a3412', marginTop: 5 }}>
-                              Payment: ৳{req.paymentAmount.toFixed(2)} · {req.paymentMethod === 'bkash' ? 'bKash Txn ' + (req.bkashTransactionId || '—') : 'Cash on Delivery'} · {req.paymentStatus}
+                              Payment: ৳{req.paymentAmount.toFixed(2)} · {['bkash', 'rocket', 'nagad'].includes(req.paymentMethod) ? `${req.paymentMethod.toUpperCase()} Txn ${req.bkashTransactionId || '—'}` : 'Cash on Delivery'} · {req.paymentStatus}
                               {req.paymentStatus === 'rejected' && (
                                 <button type="button" onClick={() => handleResubmitBikashTransaction(req.id)} style={{ marginLeft: 8, padding: '4px 8px', border: '1px solid #fed7aa', borderRadius: 6, background: '#fff7ed', color: '#9a3412', fontWeight: 700, cursor: 'pointer' }}>
                                   Replace Transaction ID
@@ -488,7 +488,7 @@ export const MyRequests = () => {
                           </span>
                           {req.paymentAmount > 0 && (
                             <div style={{ fontSize: 12, color: '#9a3412', marginTop: 5 }}>
-                              Payment: ৳{req.paymentAmount.toFixed(2)} · {req.paymentMethod === 'bkash' ? 'bKash Txn ' + (req.bkashTransactionId || '—') : 'Cash on Delivery'} · {req.paymentStatus}
+                              Payment: ৳{req.paymentAmount.toFixed(2)} · {['bkash', 'rocket', 'nagad'].includes(req.paymentMethod) ? `${req.paymentMethod.toUpperCase()} Txn ${req.bkashTransactionId || '—'}` : 'Cash on Delivery'} · {req.paymentStatus}
                             </div>
                           )}
                         </div>

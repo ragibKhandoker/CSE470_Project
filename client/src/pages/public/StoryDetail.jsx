@@ -134,7 +134,7 @@ export const StoryDetail = () => {
   const moreStories = allStories.filter(s => s.id !== story?.id).slice(0, 2);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", overflowX: 'clip' }}>
       
       {/* ========================================================
           1. NAVIGATION BAR (Matching Home & Stories)

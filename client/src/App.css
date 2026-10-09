@@ -54,6 +54,156 @@ body {
   color: #2c2320; 
 }
 
+/* Give white content cards a soft grey fill and a visible outline throughout the app. */
+[style*="border: 1px solid rgba"][style*="0.06"] {
+  border-width: 2px !important;
+  border-color: #d6c9c3 !important;
+}
+
+:where(div, section, article, li, main, aside).bg-white,
+:where(div, section, article, li, main, aside)[style*="background: rgb(255, 255, 255)"][style*="border-radius"],
+:where(div, section, article, li, main, aside)[style*="background-color: rgb(255, 255, 255)"][style*="border-radius"],
+:where(div, section, article, li, main, aside)[style*="background: rgb(255, 255, 255)"][style*="padding"] {
+  background-color: #e2e6eb !important;
+}
+
+:where(div, section, article, li, main, aside).bg-white:not([style*="border:"]),
+:where(div, section, article, li, main, aside)[style*="background: rgb(255, 255, 255)"][style*="border-radius"]:not([style*="border:"]),
+:where(div, section, article, li, main, aside)[style*="background-color: rgb(255, 255, 255)"][style*="border-radius"]:not([style*="border:"]),
+:where(div, section, article, li, main, aside)[style*="background: rgb(255, 255, 255)"][style*="padding"]:not([style*="border:"]) {
+  border: 1.5px solid #d1d5db;
+  box-shadow: 0 4px 16px rgba(31, 41, 55, 0.06);
+}
+
+/* Navy styling for the donor profile editor, with a light field tint for readability. */
+#root .donor-profile-editor {
+  background: #edf3fc !important;
+  border: 1.5px solid #9aafcf !important;
+  box-shadow: 0 12px 30px rgba(23, 37, 84, 0.1) !important;
+}
+#root .donor-profile-editor-title {
+  color: #172554 !important;
+  font-size: 19px !important;
+  letter-spacing: -0.35px;
+  line-height: 1.35;
+}
+#root .donor-profile-form-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 22px;
+  padding-bottom: 17px;
+  border-bottom: 1px solid #c3d0e4;
+}
+#root .donor-profile-form-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  border: 1px solid #c5d3e8;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #dce8f8, #f8fbff);
+  color: #1e3a8a;
+}
+#root .donor-profile-form-subtitle {
+  margin: 4px 0 0;
+  color: #526582;
+  font-size: 13px;
+  line-height: 1.5;
+}
+#root .donor-profile-form { gap: 19px !important; }
+#root .donor-profile-fields-row { gap: 18px !important; }
+#root .donor-profile-field-label {
+  gap: 8px !important;
+  color: #233b60 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: .05px;
+}
+#root .donor-profile-input {
+  min-height: 46px;
+  padding: 11px 14px !important;
+  border-radius: 11px !important;
+  background: #f9fbff !important;
+  border: 1.5px solid #aabbd4 !important;
+  color: #172554 !important;
+  font-size: 14px !important;
+  line-height: 1.4;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease, transform .18s ease;
+}
+#root .donor-profile-input::placeholder { color: #72819a; }
+#root .donor-profile-input:focus {
+  background: #ffffff !important;
+  border-color: #1e3a8a !important;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+}
+#root .donor-profile-input[type="file"] { min-height: 52px; padding: 8px !important; }
+#root .donor-profile-input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #dce8f8;
+  color: #17345f;
+  font-weight: 700;
+  cursor: pointer;
+}
+#root .donor-profile-save-button {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-size: 14px !important;
+  letter-spacing: .1px;
+  background: linear-gradient(135deg, #172554, #1e40af) !important;
+  box-shadow: 0 8px 18px rgba(23, 37, 84, 0.25) !important;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+#root .donor-profile-save-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 11px 22px rgba(23, 37, 84, 0.32) !important;
+}
+.distribution-wallet-fields {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #d7deea;
+  border-radius: 14px;
+  background: #f5f7fb;
+}
+.distribution-wallet-field {
+  display: grid;
+  gap: 6px;
+  color: #233b60;
+  font-size: 12px;
+  font-weight: 700;
+}
+.distribution-wallet-field b { color: #718096; font-size: 11px; font-weight: 600; }
+.distribution-wallet-field input {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid #b9c5d7;
+  border-radius: 9px;
+  background: #fff;
+  color: #172554;
+  font: inherit;
+}
+.distribution-wallet-field input:focus {
+  outline: 3px solid rgba(30, 58, 138, .14);
+  border-color: #1e3a8a;
+}
+.distribution-wallet-help { margin: 0; color: #64748b; font-size: 12px; line-height: 1.45; }
+@media (max-width: 600px) {
+  #root .donor-profile-editor { padding: 20px !important; }
+  #root .donor-profile-form-heading { align-items: flex-start; gap: 10px; }
+  #root .donor-profile-form-icon { width: 40px; height: 40px; flex-basis: 40px; }
+  #root .donor-profile-editor-title { font-size: 17px !important; }
+}
+
 .sharemeal-loading-screen {
   min-height: 100vh;
   display: flex;
@@ -812,7 +962,7 @@ body {
 html, body, #root {
   width: 100%;
   max-width: 100vw;
-  overflow-x: hidden !important;
+  overflow-x: clip !important;
 }
 
 * {

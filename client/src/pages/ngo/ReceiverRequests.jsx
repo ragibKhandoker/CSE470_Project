@@ -409,7 +409,7 @@ export const ReceiverRequests = () => {
                     )}
                     {Number(req.payment_amount) > 0 && (
                       <div style={{ marginTop: 8, fontSize: 12, color: '#374151' }}>
-                        <strong>Payment:</strong> ৳{Number(req.payment_amount).toFixed(2)} · {req.payment_method === 'bkash' ? `bKash Txn: ${req.bkash_transaction_id || '—'}` : 'Cash on Delivery'} · <strong>{req.payment_status}</strong>
+                        <strong>Payment:</strong> ৳{Number(req.payment_amount).toFixed(2)} · {['bkash', 'rocket', 'nagad'].includes(req.payment_method) ? `${req.payment_method.toUpperCase()} Txn: ${req.bkash_transaction_id || '—'}` : 'Cash on Delivery'} · <strong>{req.payment_status}</strong>
                       </div>
                     )}
                   </div>
@@ -417,13 +417,13 @@ export const ReceiverRequests = () => {
                   <div style={{ display: 'flex', gap: '10px' }}>
                     {req.payment_status === 'verification_pending' && (
                       <>
-                        <button onClick={() => handlePaymentAction(req.id, 'verify_bkash')} style={{ padding: '8px 14px', borderRadius: 12, border: 'none', background: '#059669', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>Verify bKash</button>
-                        <button onClick={() => handlePaymentAction(req.id, 'reject_bkash')} style={{ padding: '8px 14px', borderRadius: 12, border: '1px solid #fecaca', background: '#fff', color: '#b91c1c', fontWeight: 700, cursor: 'pointer' }}>Reject Txn</button>
+                        <button onClick={() => handlePaymentAction(req.id, 'verify_wallet_payment')} style={{ padding: '8px 14px', borderRadius: 12, border: 'none', background: '#059669', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>Verify Payment</button>
+                        <button onClick={() => handlePaymentAction(req.id, 'reject_wallet_payment')} style={{ padding: '8px 14px', borderRadius: 12, border: '1px solid #fecaca', background: '#fff', color: '#b91c1c', fontWeight: 700, cursor: 'pointer' }}>Reject Txn</button>
                       </>
                     )}
                     <button
                       onClick={() => handleUpdateStatus(req.id, 'approved')}
-                      disabled={req.payment_method === 'bkash' && req.payment_status !== 'paid'}
+                      disabled={['bkash', 'rocket', 'nagad'].includes(req.payment_method) && req.payment_status !== 'paid'}
                       style={{
                         padding: '8px 20px',
                         borderRadius: '12px',
@@ -432,14 +432,14 @@ export const ReceiverRequests = () => {
                         color: '#ffffff',
                         fontSize: '13px',
                         fontWeight: 700,
-                        cursor: req.payment_method === 'bkash' && req.payment_status !== 'paid' ? 'not-allowed' : 'pointer',
-                        opacity: req.payment_method === 'bkash' && req.payment_status !== 'paid' ? 0.55 : 1,
+                        cursor: ['bkash', 'rocket', 'nagad'].includes(req.payment_method) && req.payment_status !== 'paid' ? 'not-allowed' : 'pointer',
+                        opacity: ['bkash', 'rocket', 'nagad'].includes(req.payment_method) && req.payment_status !== 'paid' ? 0.55 : 1,
                         transition: 'all 0.15s ease'
                       }}
                       onMouseOver={(e) => (e.currentTarget.style.background = 'var(--brand-primary-dark)')}
                       onMouseOut={(e) => (e.currentTarget.style.background = 'var(--brand-primary)')}
                     >
-                      {req.payment_method === 'bkash' && req.payment_status !== 'paid' ? 'Verify payment first' : 'Accept'}
+                      {['bkash', 'rocket', 'nagad'].includes(req.payment_method) && req.payment_status !== 'paid' ? 'Verify payment first' : 'Accept'}
                     </button>
                     <button
                       onClick={() => handleUpdateStatus(req.id, 'rejected')}
@@ -539,14 +539,14 @@ export const ReceiverRequests = () => {
                     </div>
                     {Number(req.payment_amount) > 0 && (
                       <div style={{ marginTop: 6, fontSize: 12, color: '#374151' }}>
-                        Payment: ৳{Number(req.payment_amount).toFixed(2)} · {req.payment_method === 'bkash' ? `bKash Txn ${req.bkash_transaction_id || '—'}` : 'Cash on Delivery'} · {req.payment_status}
+                        Payment: ৳{Number(req.payment_amount).toFixed(2)} · {['bkash', 'rocket', 'nagad'].includes(req.payment_method) ? `${req.payment_method.toUpperCase()} Txn ${req.bkash_transaction_id || '—'}` : 'Cash on Delivery'} · {req.payment_status}
                         {req.payment_status === 'cod_due' && (
                           <button onClick={() => handlePaymentAction(req.id, 'confirm_cash')} style={{ marginLeft: 8, padding: '5px 10px', borderRadius: 8, border: 'none', background: '#059669', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>Confirm Cash Received</button>
                         )}
                         {req.payment_status === 'verification_pending' && (
                           <>
-                            <button onClick={() => handlePaymentAction(req.id, 'verify_bkash')} style={{ marginLeft: 8, padding: '5px 10px', borderRadius: 8, border: 'none', background: '#059669', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>Verify bKash</button>
-                            <button onClick={() => handlePaymentAction(req.id, 'reject_bkash')} style={{ marginLeft: 6, padding: '5px 10px', borderRadius: 8, border: '1px solid #fecaca', background: '#fff', color: '#b91c1c', fontWeight: 700, cursor: 'pointer' }}>Reject Txn</button>
+                            <button onClick={() => handlePaymentAction(req.id, 'verify_wallet_payment')} style={{ marginLeft: 8, padding: '5px 10px', borderRadius: 8, border: 'none', background: '#059669', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>Verify Payment</button>
+                            <button onClick={() => handlePaymentAction(req.id, 'reject_wallet_payment')} style={{ marginLeft: 6, padding: '5px 10px', borderRadius: 8, border: '1px solid #fecaca', background: '#fff', color: '#b91c1c', fontWeight: 700, cursor: 'pointer' }}>Reject Txn</button>
                           </>
                         )}
                       </div>

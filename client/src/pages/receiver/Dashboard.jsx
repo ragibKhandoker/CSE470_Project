@@ -29,6 +29,7 @@ export const ReceiverDashboard = () => {
   const [requestModalItem, setRequestModalItem] = useState(null);
   const [requestedPortions, setRequestedPortions] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState('bkash');
+  const [paymentPanelOpen, setPaymentPanelOpen] = useState(false);
   const [customAmount, setCustomAmount] = useState('20');
   const [selectedPreset, setSelectedPreset] = useState(20);
   const [copiedBkash, setCopiedBkash] = useState(false);
@@ -150,11 +151,15 @@ export const ReceiverDashboard = () => {
     const packetCount = Number(requestModalItem?.distribution_total_packets) || Number(requestModalItem?.quantity) || 1;
     const calculatedMandatory = (Number(requestModalItem?.distribution_total_amount || 0) * requestedPortions / packetCount).toFixed(2);
     const finalAmount = isMandatory ? Number(calculatedMandatory) : Number(customAmount || 20);
-    const targetBkashNumber = requestModalItem?.distribution_bkash_number || '01788776655';
+    const targetWalletNumber = requestModalItem?.[`distribution_${paymentMethod}_number`] || '';
 
-    if (paymentMethod === 'bkash') {
+    if (['bkash', 'rocket', 'nagad'].includes(paymentMethod)) {
       if (!bkashTransactionId || bkashTransactionId.trim().length < 6) {
-        alert('Please enter your valid bKash Transaction ID (minimum 6 letters/numbers, e.g. BL83JX99A).');
+        alert(`Please enter your valid ${paymentMethod} Transaction ID (minimum 6 letters/numbers).`);
+        return;
+      }
+      if (!targetWalletNumber) {
+        alert(`This NGO has not configured its ${paymentMethod} wallet for this distribution.`);
         return;
       }
       if (finalAmount <= 0) {
@@ -175,10 +180,10 @@ export const ReceiverDashboard = () => {
           food_post_id: requestModalItem.id,
           is_anonymous: isAnonymous,
           requested_quantity: requestedPortions,
-          payment_method: paymentMethod === 'bkash' ? 'bkash' : (paymentMethod === 'cash_on_delivery' ? 'cash_on_delivery' : 'none'),
+          payment_method: ['bkash', 'rocket', 'nagad'].includes(paymentMethod) ? paymentMethod : (paymentMethod === 'cash_on_delivery' ? 'cash_on_delivery' : 'none'),
           payment_amount: paymentMethod === 'free' ? 0 : finalAmount,
-          bkash_transaction_id: paymentMethod === 'bkash' ? bkashTransactionId.trim().toUpperCase() : null,
-          payment_bkash_number: targetBkashNumber,
+          bkash_transaction_id: ['bkash', 'rocket', 'nagad'].includes(paymentMethod) ? bkashTransactionId.trim().toUpperCase() : null,
+          payment_bkash_number: targetWalletNumber,
           notes: requestNote,
           captchaId: requestCaptcha.captchaId,
           captchaAnswer: requestCaptcha.captchaAnswer
@@ -797,7 +802,7 @@ export const ReceiverDashboard = () => {
                         </div>
                         {Number(food.distribution_total_amount) > 0 && (
                           <div style={{ marginTop: 7, fontSize: 12, color: '#9a3412', fontWeight: 700 }}>
-                            ৳{(Number(food.distribution_total_amount) / (Number(food.distribution_total_packets) || Number(food.quantity) || 1)).toFixed(2)} per portion · COD or bKash
+                            ৳{(Number(food.distribution_total_amount) / (Number(food.distribution_total_packets) || Number(food.quantity) || 1)).toFixed(2)} per portion · bKash, Rocket, or Nagad
                           </div>
                         )}
                       </div>
@@ -812,7 +817,13 @@ export const ReceiverDashboard = () => {
                           if (!hasClaimed) {
                             setRequestModalItem(food);
                             setRequestedPortions(1);
-                            setPaymentMethod('bkash');
+                            setPaymentMethod(
+                              food.distribution_bkash_number ? 'bkash'
+                                : food.distribution_rocket_number ? 'rocket'
+                                : food.distribution_nagad_number ? 'nagad'
+                                : 'free'
+                            );
+                            setPaymentPanelOpen(false);
                             setCustomAmount('20');
                             setSelectedPreset(20);
                             setBkashTransactionId('');
@@ -967,8 +978,10 @@ export const ReceiverDashboard = () => {
               background: '#ffffff',
               borderRadius: '24px',
               padding: '28px',
-              maxWidth: '480px',
+              maxWidth: '520px',
               width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
               boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
             }}
           >
@@ -1021,7 +1034,7 @@ export const ReceiverDashboard = () => {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleConfirmRequest}>
+          <form className="receiver-request-form" onSubmit={handleConfirmRequest}>
                 <div style={{ marginBottom: '16px', background: '#fcf8f6', padding: '12px', borderRadius: '14px' }}>
                   <h4 style={{ margin: '0 0 4px', fontSize: '15px', fontWeight: 700, color: '#2c2320' }}>
                     {requestModalItem.food_name || requestModalItem.title || `${requestModalItem.food_type} Meals`}
@@ -1064,7 +1077,13 @@ export const ReceiverDashboard = () => {
                   const isMandatory = Number(requestModalItem.distribution_total_amount) > 0;
                   const packetCount = Number(requestModalItem.distribution_total_packets) || Number(requestModalItem.quantity) || 1;
                   const calculatedMandatory = (Number(requestModalItem.distribution_total_amount || 0) * requestedPortions / packetCount).toFixed(2);
-                  const targetBkashNumber = requestModalItem.distribution_bkash_number || '01788776655';
+                  const walletConfig = {
+                    bkash: { label: 'bKash', number: requestModalItem.distribution_bkash_number || '', color: '#d91567', icon: '💖' },
+                    rocket: { label: 'Rocket', number: requestModalItem.distribution_rocket_number || '', color: '#7b2c8e', icon: '🚀' },
+                    nagad: { label: 'Nagad', number: requestModalItem.distribution_nagad_number || '', color: '#ed1c24', icon: '📱' }
+                  };
+                  const selectedWallet = walletConfig[paymentMethod] || walletConfig.bkash;
+                  const targetBkashNumber = selectedWallet.number;
                   const displayAmount = isMandatory ? calculatedMandatory : (customAmount || '20');
 
                   const handleCopyBkashNumber = () => {
@@ -1074,22 +1093,30 @@ export const ReceiverDashboard = () => {
                   };
 
                   return (
-                    <div style={{ marginBottom: '18px', padding: '16px', borderRadius: '16px', background: '#fff5f7', border: '1.5px solid #fbcfe8' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <div className={`receiver-payment-panel${paymentPanelOpen ? ' is-open' : ''}`} style={{ marginBottom: '18px', padding: '16px', borderRadius: '16px', background: '#fff5f7', border: '1.5px solid #fbcfe8' }}>
+                      <div className="receiver-payment-heading" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <span style={{ fontSize: '18px' }}>📱</span>
-                          <span style={{ fontWeight: 800, fontSize: '14px', color: '#9d174d' }}>NGO Payment &amp; Support (bKash)</span>
+                          <span style={{ fontWeight: 800, fontSize: '14px', color: '#9d174d' }}>NGO Payment &amp; Support</span>
                         </div>
                         <span style={{ fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '12px', background: '#fce7f3', color: '#be185d' }}>
-                          Official bKash
+                          Secure mobile wallet
                         </span>
+                        {!paymentPanelOpen && (
+                          <button type="button" className="receiver-pay-here-button" onClick={() => setPaymentPanelOpen(true)}>
+                            {paymentMethod === 'free' ? 'Continue free claim' : `Pay here · BDT ${displayAmount}`} <span aria-hidden="true">→</span>
+                          </button>
+                        )}
                       </div>
 
                       {/* Payment Method Selector */}
-                      <div style={{ display: 'flex', gap: '10px', marginBottom: '14px' }}>
+                      <div className="receiver-payment-methods" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
                         <button
                           type="button"
-                          onClick={() => setPaymentMethod('bkash')}
+                          disabled={!walletConfig.bkash.number}
+                          aria-pressed={paymentMethod === 'bkash'}
+                          onClick={() => { setPaymentMethod('bkash'); setBkashTransactionId(''); }}
+                          title={walletConfig.bkash.number ? 'Pay with bKash' : 'bKash is not configured by this NGO'}
                           style={{
                             flex: 1,
                             padding: '10px 12px',
@@ -1099,7 +1126,8 @@ export const ReceiverDashboard = () => {
                             color: paymentMethod === 'bkash' ? '#e11d48' : '#6b7280',
                             fontWeight: 700,
                             fontSize: '13px',
-                            cursor: 'pointer',
+                            cursor: walletConfig.bkash.number ? 'pointer' : 'not-allowed',
+                            opacity: walletConfig.bkash.number ? 1 : 0.52,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -1110,6 +1138,36 @@ export const ReceiverDashboard = () => {
                         >
                           <span>💖 Pay NGO via bKash</span>
                         </button>
+
+                        {[
+                          { method: 'rocket', label: 'Rocket', color: '#7b2c8e', number: requestModalItem.distribution_rocket_number },
+                          { method: 'nagad', label: 'Nagad', color: '#ed1c24', number: requestModalItem.distribution_nagad_number }
+                        ].map((wallet) => (
+                          <button
+                            key={wallet.method}
+                            type="button"
+                            disabled={!wallet.number}
+                            aria-pressed={paymentMethod === wallet.method}
+                            onClick={() => { setPaymentMethod(wallet.method); setBkashTransactionId(''); }}
+                            style={{
+                              flex: 1,
+                              minWidth: '105px',
+                              padding: '10px 12px',
+                              borderRadius: '12px',
+                              border: paymentMethod === wallet.method ? `2px solid ${wallet.color}` : '1px solid #e5e7eb',
+                              background: paymentMethod === wallet.method ? '#ffffff' : '#f9fafb',
+                              color: paymentMethod === wallet.method ? wallet.color : '#526074',
+                              fontWeight: 700,
+                              fontSize: '13px',
+                              cursor: wallet.number ? 'pointer' : 'not-allowed',
+                              opacity: wallet.number ? 1 : 0.52,
+                              transition: 'all 0.15s ease'
+                            }}
+                            title={wallet.number ? `Pay with ${wallet.label}` : `${wallet.label} wallet number is not configured by the NGO`}
+                          >
+                            {wallet.label}{wallet.number ? '' : ' · unavailable'}
+                          </button>
+                        ))}
 
                         {!isMandatory && (
                           <button
@@ -1138,7 +1196,7 @@ export const ReceiverDashboard = () => {
                         )}
                       </div>
 
-                      {paymentMethod === 'bkash' ? (
+                      {['bkash', 'rocket', 'nagad'].includes(paymentMethod) ? (
                         <div>
                           {/* Payment Amount Display & Custom Selection */}
                           <div style={{ marginBottom: '12px' }}>
@@ -1161,9 +1219,9 @@ export const ReceiverDashboard = () => {
                                         flex: 1,
                                         padding: '7px 8px',
                                         borderRadius: '8px',
-                                        border: selectedPreset === amt ? '2px solid #e11d48' : '1px solid #e5e7eb',
-                                        background: selectedPreset === amt ? '#ffe4e6' : '#ffffff',
-                                        color: selectedPreset === amt ? '#e11d48' : '#374151',
+                                        border: selectedPreset === amt ? `2px solid ${selectedWallet.color}` : '1px solid #e5e7eb',
+                                        background: selectedPreset === amt ? '#eaf0fa' : '#ffffff',
+                                        color: selectedPreset === amt ? selectedWallet.color : '#374151',
                                         fontWeight: 700,
                                         fontSize: '13px',
                                         cursor: 'pointer'
@@ -1192,10 +1250,10 @@ export const ReceiverDashboard = () => {
                           {/* NGO bKash Number Box */}
                           <div style={{ background: '#ffffff', border: '1px dashed #f43f5e', borderRadius: '12px', padding: '12px', marginBottom: '12px' }}>
                             <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '4px' }}>
-                              NGO Official bKash Number (Send Money):
+                              NGO Official {selectedWallet.label} Number (Send Money):
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                              <span style={{ fontSize: '16px', fontWeight: 900, color: '#e11d48', letterSpacing: '1px', fontFamily: 'monospace' }}>
+                                <span style={{ fontSize: '16px', fontWeight: 900, color: selectedWallet.color, letterSpacing: '1px', fontFamily: 'monospace' }}>
                                 {targetBkashNumber}
                               </span>
                               <button
@@ -1205,8 +1263,8 @@ export const ReceiverDashboard = () => {
                                   padding: '4px 10px',
                                   borderRadius: '6px',
                                   border: 'none',
-                                  background: copiedBkash ? '#ecfdf5' : '#ffe4e6',
-                                  color: copiedBkash ? '#059669' : '#e11d48',
+                                  background: copiedBkash ? '#ecfdf5' : '#eaf0fa',
+                                  color: copiedBkash ? '#059669' : selectedWallet.color,
                                   fontSize: '11px',
                                   fontWeight: 700,
                                   cursor: 'pointer'
@@ -1215,15 +1273,13 @@ export const ReceiverDashboard = () => {
                                 {copiedBkash ? '✓ Copied' : '📋 Copy'}
                               </button>
                             </div>
-                            <div style={{ fontSize: '11px', color: '#888', marginTop: '6px', lineHeight: '1.4' }}>
-                              💡 bKash App থেকে Send Money করে <strong>৳{displayAmount}</strong> পাঠান। এরপর নিচের ঘরে Transaction ID লিখুন। এই টাকা NGO একাউন্টে সংরক্ষিত থাকবে।
-                            </div>
+                            <div className="receiver-wallet-help">Open your {selectedWallet.label} app and send BDT {displayAmount} to the NGO wallet number above. Then enter the transaction ID from your receipt. The NGO will verify the payment.</div>
                           </div>
 
                           {/* Transaction ID Input */}
                           <div>
                             <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
-                              bKash Transaction ID (TrxID) *
+                              {selectedWallet.label} Transaction ID (TrxID) *
                             </label>
                             <input
                               type="text"
@@ -1232,7 +1288,7 @@ export const ReceiverDashboard = () => {
                               placeholder="e.g. BL83JX99A"
                               minLength={6}
                               maxLength={20}
-                              required={paymentMethod === 'bkash'}
+                              required={['bkash', 'rocket', 'nagad'].includes(paymentMethod)}
                               style={{
                                 width: '100%',
                                 padding: '10px 12px',

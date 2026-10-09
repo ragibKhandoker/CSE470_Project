@@ -210,8 +210,8 @@ const updatePaymentStatus = async (requestId, ngoUserId, paymentStatus) => {
       AND fp.id = fr.food_post_id
       AND (fp.distribution_ngo_user_id = $3 OR fp.distribution_ngo_user_id IS NULL OR fr.ngo_user_id = $3 OR fr.ngo_user_id IS NULL)
       AND (
-        ($1 = 'rejected' AND fr.payment_method = 'bkash' AND fr.payment_status = 'verification_pending')
-        OR ($1 = 'paid' AND fr.payment_method = 'bkash' AND fr.payment_status = 'verification_pending')
+        ($1 = 'rejected' AND fr.payment_method IN ('bkash', 'rocket', 'nagad') AND fr.payment_status = 'verification_pending')
+        OR ($1 = 'paid' AND fr.payment_method IN ('bkash', 'rocket', 'nagad') AND fr.payment_status = 'verification_pending')
         OR ($1 = 'paid' AND fr.payment_method = 'cash_on_delivery' AND fr.payment_status = 'cod_due')
       )
     RETURNING fr.*;
@@ -235,7 +235,7 @@ const resubmitBikashTransaction = async (requestId, receiverId, transactionId) =
         updated_at = CURRENT_TIMESTAMP
     WHERE id = $2
       AND receiver_id = $3
-      AND payment_method = 'bkash'
+      AND payment_method IN ('bkash', 'rocket', 'nagad')
       AND payment_status = 'rejected'
     RETURNING *;
   `;
@@ -289,6 +289,9 @@ const findPickupRequestsByNgo = async (ngoUserId) => {
       fp.area_ward,
       fp.quantity AS post_quantity,
       fp.image_url AS food_image_url,
+      fp.distribution_bkash_number,
+      fp.distribution_rocket_number,
+      fp.distribution_nagad_number,
       fp.status AS food_post_status,
       d.name AS donor_name,
       d.phone AS donor_phone,
@@ -377,6 +380,8 @@ const postForDistribution = async (requestId, {
   needs_options,
   total_amount,
   bkash_number,
+  rocket_number,
+  nagad_number,
   ngo_user_id
 }) => {
   const query = `
@@ -412,10 +417,12 @@ const postForDistribution = async (requestId, {
            distribution_total_amount = $4,
            distribution_total_packets = $2,
            distribution_bkash_number = $5,
-           distribution_ngo_user_id = $6,
+           distribution_rocket_number = $6,
+           distribution_nagad_number = $7,
+           distribution_ngo_user_id = $8,
            status = 'at_ngo_point'
-       WHERE id = $7`,
-      [pickup_point_id, total_packets, needs_options || [], total_amount, bkash_number, ngo_user_id, result.rows[0].food_post_id]
+       WHERE id = $9`,
+      [pickup_point_id, total_packets, needs_options || [], total_amount, bkash_number, rocket_number, nagad_number, ngo_user_id, result.rows[0].food_post_id]
     );
     await client.query('COMMIT');
     return result.rows[0];
@@ -425,6 +432,22 @@ const postForDistribution = async (requestId, {
   } finally {
     client.release();
   }
+};
+
+const updateDistributionWallets = async (requestId, { bkash_number, rocket_number, nagad_number, ngo_user_id }) => {
+  const result = await db.query(
+    `UPDATE food_posts fp
+     SET distribution_bkash_number = $1,
+         distribution_rocket_number = $2,
+         distribution_nagad_number = $3
+     WHERE fp.id = (SELECT fr.food_post_id FROM food_requests fr
+                    WHERE fr.id = $4 AND fr.status = 'distributing'
+                      AND (fr.receiver_id = $5 OR fr.receiver_id IN (SELECT id FROM users WHERE parent_ngo_id = $5)))
+       AND (fp.distribution_ngo_user_id = $5 OR fp.distribution_ngo_user_id IS NULL)
+     RETURNING fp.id`,
+    [bkash_number, rocket_number, nagad_number, requestId, ngo_user_id]
+  );
+  return result.rows[0];
 };
 
 const handoverPackets = async (requestId, { receiver_name, receiver_phone, quantity, pickup_code, staff_id, staff_name }) => {
@@ -553,6 +576,7 @@ module.exports = {
   markPickedUp,
   markAtHub,
   postForDistribution,
+  updateDistributionWallets,
   handoverPackets,
   findByPickupCode,
   updateStatus,

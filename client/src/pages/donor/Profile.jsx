@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ShieldCheck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import DonorLayout from '../../components/donor/DonorLayout';
 import PasswordResetRequestModal from '../../components/common/PasswordResetRequestModal';
@@ -289,10 +290,16 @@ export const Profile = () => {
         </div>
 
         {/* Profile Editor Form */}
-        <div style={{ background: '#ffffff', borderRadius: '20px', padding: '28px', boxShadow: '0 4px 16px rgba(44,35,32,0.04)', border: '1px solid rgba(44,35,32,0.06)' }}>
-          <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#2c2320', margin: '0 0 16px', borderBottom: '1px solid #f4ece8', paddingBottom: '12px' }}>
-            Edit Account &amp; Verification Details
-          </h2>
+        <div className="donor-profile-editor" style={{ background: '#ffffff', borderRadius: '20px', padding: '28px', boxShadow: '0 4px 16px rgba(44,35,32,0.04)', border: '1px solid rgba(44,35,32,0.06)' }}>
+          <div className="donor-profile-form-heading">
+            <div className="donor-profile-form-icon"><ShieldCheck size={21} aria-hidden="true" /></div>
+            <div>
+              <h2 className="donor-profile-editor-title" style={{ fontSize: '16px', fontWeight: 700, color: '#2c2320', margin: 0 }}>
+                Edit Account &amp; Verification Details
+              </h2>
+              <p className="donor-profile-form-subtitle">Keep your information current so food pickups go smoothly.</p>
+            </div>
+          </div>
 
           {status && (
             <div style={{ background: '#ecfdf5', color: '#047857', border: '1px solid #a7f3d0', padding: '12px 16px', borderRadius: '12px', fontSize: '13px', marginBottom: '16px', fontWeight: 600 }}>
@@ -306,11 +313,12 @@ export const Profile = () => {
             </div>
           )}
 
-          <form onSubmit={handleUpdateProfile} style={{ display: 'grid', gap: '16px', width: '100%', boxSizing: 'border-box' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', width: '100%', boxSizing: 'border-box' }}>
-              <label style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
+          <form className="donor-profile-form" onSubmit={handleUpdateProfile} style={{ display: 'grid', gap: '16px', width: '100%', boxSizing: 'border-box' }}>
+            <div className="donor-profile-fields-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', width: '100%', boxSizing: 'border-box' }}>
+              <label className="donor-profile-field-label" style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
                 <span>Full Name (15%) *</span>
                 <input
+                  className="donor-profile-input"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -320,9 +328,10 @@ export const Profile = () => {
                 />
               </label>
 
-              <label style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
+              <label className="donor-profile-field-label" style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
                 <span>Mobile Number (15%) *</span>
                 <input
+                  className="donor-profile-input"
                   type="text"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -333,10 +342,11 @@ export const Profile = () => {
               </label>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', width: '100%', boxSizing: 'border-box' }}>
-              <label style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
+            <div className="donor-profile-fields-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', width: '100%', boxSizing: 'border-box' }}>
+              <label className="donor-profile-field-label" style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
                 <span>Email Address (15%) *</span>
                 <input
+                  className="donor-profile-input"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -346,9 +356,10 @@ export const Profile = () => {
                 />
               </label>
 
-              <label style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
+              <label className="donor-profile-field-label" style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
                 <span>NID / ID Number (15%) *</span>
                 <input
+                  className="donor-profile-input"
                   type="text"
                   value={nid}
                   onChange={(e) => setNid(e.target.value)}
@@ -359,9 +370,10 @@ export const Profile = () => {
               </label>
             </div>
 
-            <label style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
+            <label className="donor-profile-field-label" style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
               <span>Default Pickup Address (25%) *</span>
               <input
+                className="donor-profile-input"
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
@@ -370,7 +382,7 @@ export const Profile = () => {
               />
             </label>
 
-            <label style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
+            <label className="donor-profile-field-label" style={{ display: 'grid', gap: 6, fontSize: 13, fontWeight: 600, color: '#2c2320', width: '100%', boxSizing: 'border-box' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span>NID Document (PDF or Photo) (15%) *</span>
                 <span
@@ -387,6 +399,7 @@ export const Profile = () => {
                 </span>
               </div>
               <input
+                className="donor-profile-input"
                 type="file"
                 accept="application/pdf,image/*"
                 onChange={(e) => setNidPdf(e.target.files[0] || null)}
@@ -395,6 +408,7 @@ export const Profile = () => {
             </label>
 
             <button
+              className="donor-profile-save-button"
               type="submit"
               disabled={saving}
               style={{
