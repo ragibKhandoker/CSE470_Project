@@ -24,6 +24,22 @@ export const Home = () => {
   // Mobile menu drawer state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const heroImages = [
+    {
+      src: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1200&q=80',
+      alt: 'Fresh prepared meal boxes ready to share'
+    },
+    {
+      src: 'https://pub-afb2c9c370444b6ba887c702cb9a37e2.r2.dev/recipes/1c1b4a70-0a42-45b3-b954-4b0c14d1de37.png',
+      alt: 'Chicken biryani served on a white plate'
+    },
+    {
+      src: 'https://cdn-ak.f.st-hatena.com/images/fotolife/c/curry365curry/20250627/20250627234145.jpg',
+      alt: 'Yellow biryani served on a plate'
+    }
+  ];
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
+
   // Anonymous Mode interactive demo toggle in dark card
   const [demoAnonymous, setDemoAnonymous] = useState(true);
   const colorSchemeLabels = {
@@ -467,16 +483,31 @@ export const Home = () => {
                 maxWidth: '460px',
                 height: '430px',
                 borderRadius: '32px',
+                position: 'relative',
                 background: '#ffe9e2',
                 border: '5px solid #ffffff',
                 boxShadow: '0 20px 50px -10px rgba(var(--brand-primary-rgb), 0.25), 0 40px 90px -30px rgba(44, 35, 32, 0.2)'
               }}
             >
               <img
-                src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1200&q=80"
-                alt="Fresh prepared meal boxes ready to share"
+                key={heroImages[heroImageIndex].src}
+                className="hero-image-slide"
+                src={heroImages[heroImageIndex].src}
+                alt={heroImages[heroImageIndex].alt}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
+              <div className="hero-image-pagination" role="group" aria-label="Choose hero food image">
+                {heroImages.map((image, index) => (
+                  <button
+                    key={image.src}
+                    type="button"
+                    className={`hero-image-dot${heroImageIndex === index ? ' is-active' : ''}`}
+                    aria-label={`Show image ${index + 1}: ${image.alt}`}
+                    aria-pressed={heroImageIndex === index}
+                    onClick={() => setHeroImageIndex(index)}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Top-Left Floating Glass Card: "Live now • 3,235 posts" */}

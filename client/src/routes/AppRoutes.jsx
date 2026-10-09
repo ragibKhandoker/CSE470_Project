@@ -155,16 +155,16 @@ export const AppRoutes = () => {
       <Route path="/receiver/notifications" element={<ProtectedRoute allowedRoles={['receiver']}><ReceiverNotifications /></ProtectedRoute>} />
 
       {/* Admin Protected Routes */}
-      <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
-      <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['admin']}><AdminUsers /></ProtectedRoute>} />
-      <Route path="/admin/food-threads" element={<ProtectedRoute allowedRoles={['admin']}><FoodPostThreads /></ProtectedRoute>} />
-      <Route path="/admin/threads" element={<ProtectedRoute allowedRoles={['admin']}><FoodPostThreads /></ProtectedRoute>} />
-      <Route path="/admin/ngo-queue" element={<ProtectedRoute allowedRoles={['admin']}><NGOVerificationQueue /></ProtectedRoute>} />
-      <Route path="/admin/reports" element={<ProtectedRoute allowedRoles={['admin']}><AdminReports /></ProtectedRoute>} />
-      <Route path="/admin/food-reports" element={<ProtectedRoute allowedRoles={['admin']}><AdminReports /></ProtectedRoute>} />
-      <Route path="/admin/analytics" element={<ProtectedRoute allowedRoles={['admin']}><AdminAnalytics /></ProtectedRoute>} />
-      <Route path="/admin/bot-alerts" element={<ProtectedRoute allowedRoles={['admin']}><BotAlerts /></ProtectedRoute>} />
-      <Route path="/admin/settings" element={<ProtectedRoute allowedRoles={['admin']}><AdminSettings /></ProtectedRoute>} />
+      <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminDashboard /></ProtectedRoute>} />
+      <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminUsers /></ProtectedRoute>} />
+      <Route path="/admin/food-threads" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><FoodPostThreads /></ProtectedRoute>} />
+      <Route path="/admin/threads" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><FoodPostThreads /></ProtectedRoute>} />
+      <Route path="/admin/ngo-queue" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><NGOVerificationQueue /></ProtectedRoute>} />
+      <Route path="/admin/reports" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminReports /></ProtectedRoute>} />
+      <Route path="/admin/food-reports" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminReports /></ProtectedRoute>} />
+      <Route path="/admin/analytics" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminAnalytics /></ProtectedRoute>} />
+      <Route path="/admin/bot-alerts" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><BotAlerts /></ProtectedRoute>} />
+      <Route path="/admin/settings" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminSettings /></ProtectedRoute>} />
 
       {/* Fallback Catch-all Route */}
       <Route path="*" element={<Navigate to="/" replace />} />

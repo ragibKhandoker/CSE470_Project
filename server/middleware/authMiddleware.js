@@ -30,7 +30,14 @@ const protect = async (req, res, next) => {
  */
 const requireRole = (...roles) => {
   return (req, res, next) => {
-    if (!req.user || !roles.includes(req.user.role)) {
+    const normalizeRole = (role) => {
+      const normalized = String(role || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
+      return normalized === 'superadmin' ? 'super_admin' : normalized;
+    };
+    const userRole = normalizeRole(req.user?.role);
+    const allowedRoles = roles.map(normalizeRole);
+
+    if (!req.user || !allowedRoles.includes(userRole)) {
       return res.status(403).json({ message: `Access denied. Requires one of roles: ${roles.join(', ')}` });
     }
     next();

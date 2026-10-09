@@ -3,11 +3,26 @@ const fs = require('fs');
 const path = require('path');
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+// Prefer the server-only service role key for uploads. An anon key usually
+// cannot write to a private Storage bucket without an explicit upload policy.
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+
+const isPlaceholder = (value = '') => /your[_ -]?(project|supabase|anon|service|api|key)|placeholder/i.test(value);
+const hasPlaceholderCredentials = isPlaceholder(supabaseUrl) || isPlaceholder(supabaseKey);
+let validSupabaseUrl = false;
+
+try {
+  const parsedUrl = new URL(supabaseUrl);
+  validSupabaseUrl = (parsedUrl.protocol === 'https:' || parsedUrl.hostname === 'localhost') && !hasPlaceholderCredentials;
+} catch {
+  // Missing or malformed SUPABASE_URL is treated as an unconfigured integration.
+}
 
 let supabase = null;
-if (supabaseUrl && supabaseKey) {
+if (validSupabaseUrl && supabaseKey) {
   supabase = createClient(supabaseUrl, supabaseKey);
+} else if (hasPlaceholderCredentials) {
+  console.warn('[Supabase Storage] Placeholder credentials found in server/.env; uploads will use local storage until real project credentials are configured.');
 }
 
 /**
@@ -18,8 +33,9 @@ if (supabaseUrl && supabaseKey) {
 const uploadToSupabase = async (file, bucketName = 'food-images') => {
   if (!file) return null;
 
-  // Fallback if Supabase credentials are not configured
-  if (!supabase || !supabaseKey) {
+  // Fallback when Supabase is not configured. Avoid issuing requests to
+  // placeholder project URLs, which otherwise surface as a vague "fetch failed".
+  if (!supabase) {
     return `/uploads/${file.filename}`;
   }
 
