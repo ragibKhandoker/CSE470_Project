@@ -435,6 +435,7 @@ export const NgoLayout = ({ children, title = 'NGO Dashboard' }) => {
       <div className="ngo-main-viewport" style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh', marginLeft: '256px' }}>
         {/* Top Header Bar */}
         <header
+          className="dashboard-sticky-header"
           style={{
             height: '64px',
             background: '#ffffff',

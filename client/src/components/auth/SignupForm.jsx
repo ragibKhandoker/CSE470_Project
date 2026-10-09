@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import authService from '../../services/authService';
 
+const normalizeBangladeshPhone = (value) => {
+  const compact = value.trim().replace(/[\s()-]/g, '');
+  if (!/^(?:01[3-9]\d{8}|(?:\+880|00880|880)1[3-9]\d{8})$/.test(compact)) return '';
+  if (compact.startsWith('+880')) return `0${compact.slice(4)}`;
+  if (compact.startsWith('00880')) return `0${compact.slice(5)}`;
+  if (compact.startsWith('880')) return `0${compact.slice(3)}`;
+  return compact;
+};
+const isBangladeshPhone = (value) => /^01[3-9]\d{8}$/.test(normalizeBangladeshPhone(value));
+
 export const SignupForm = ({ role, onSubmit, loading, error }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -15,6 +25,7 @@ export const SignupForm = ({ role, onSubmit, loading, error }) => {
 
   // Duplicate user detection states
   const [phoneExistsMsg, setPhoneExistsMsg] = useState('');
+  const [phoneFormatMsg, setPhoneFormatMsg] = useState('');
   const [emailExistsMsg, setEmailExistsMsg] = useState('');
   const [checkingPhone, setCheckingPhone] = useState(false);
   const [checkingEmail, setCheckingEmail] = useState(false);
@@ -26,8 +37,8 @@ export const SignupForm = ({ role, onSubmit, loading, error }) => {
   };
 
   const handlePhoneBlur = async () => {
-    const trimmed = phone.trim();
-    if (!trimmed || trimmed.length < 8) return;
+    const trimmed = normalizeBangladeshPhone(phone);
+    if (!trimmed || !isBangladeshPhone(trimmed)) return;
     setCheckingPhone(true);
     try {
       const res = await authService.checkExists({ phone: trimmed });
@@ -63,9 +74,14 @@ export const SignupForm = ({ role, onSubmit, loading, error }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isBangladeshPhone(phone)) {
+      setPhoneFormatMsg('Enter a valid Bangladesh mobile number, such as 01712345678.');
+      return;
+    }
+    setPhoneFormatMsg('');
     onSubmit({
       name,
-      phone,
+      phone: normalizeBangladeshPhone(phone),
       email,
       address,
       nid,
@@ -160,11 +176,13 @@ export const SignupForm = ({ role, onSubmit, loading, error }) => {
           <div className="auth-input-wrapper" style={{ borderColor: hasPhoneDuplicate ? '#ef4444' : undefined, background: hasPhoneDuplicate ? '#fffbfb' : undefined }}>
             <span className="auth-input-icon">📞</span>
             <input
-              type="text"
-              placeholder="01712345678"
+              type="tel"
+              inputMode="tel"
+              placeholder="01712345678 or +8801712345678"
               value={phone}
               onChange={(e) => {
                 setPhone(e.target.value);
+                setPhoneFormatMsg('');
                 if (phoneExistsMsg) setPhoneExistsMsg('');
               }}
               onBlur={handlePhoneBlur}
@@ -172,6 +190,8 @@ export const SignupForm = ({ role, onSubmit, loading, error }) => {
             />
             {checkingPhone && <span style={{ fontSize: '11px', color: '#9c8e85', marginRight: '8px' }}>Checking...</span>}
           </div>
+          {phoneFormatMsg && <div role="alert" style={{ marginTop: 6, fontSize: 12, color: '#dc2626', fontWeight: 600 }}>{phoneFormatMsg}</div>}
+          <div style={{ marginTop: 5, fontSize: 11, color: '#786d66' }}>Bangladesh mobile number required (01XXXXXXXXX).</div>
           {hasPhoneDuplicate && (
             <div style={{ marginTop: '6px', fontSize: '12px', color: '#dc2626', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span>⚠️ User already exists with this phone number.</span>

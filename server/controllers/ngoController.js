@@ -31,6 +31,42 @@ const updateNgoProfile = async (req, res, next) => {
   }
 };
 
+const getPaymentWallets = async (req, res, next) => {
+  try {
+    if (req.user.parent_ngo_id || req.user.ngo_staff_role) {
+      return res.status(403).json({ message: 'Only the NGO account owner can manage payment wallets.' });
+    }
+    const wallets = await ngoModel.getPaymentWallets(req.user.id);
+    if (!wallets) return res.status(404).json({ message: 'NGO account was not found.' });
+    return res.status(200).json({ data: wallets });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updatePaymentWallets = async (req, res, next) => {
+  try {
+    if (req.user.parent_ngo_id || req.user.ngo_staff_role) {
+      return res.status(403).json({ message: 'Only the NGO account owner can manage payment wallets.' });
+    }
+    const normalize = (value) => typeof value === 'string' ? value.replace(/[\s-]/g, '') : '';
+    const wallets = {
+      bkash_number: normalize(req.body.bkash_number),
+      rocket_number: normalize(req.body.rocket_number),
+      nagad_number: normalize(req.body.nagad_number)
+    };
+    const isValidWallet = (number) => /^(?:\+?88)?01[3-9]\d{8}$/.test(number);
+    if (Object.values(wallets).some((number) => number && !isValidWallet(number))) {
+      return res.status(400).json({ message: 'Enter a valid Bangladesh mobile wallet number for each provider.' });
+    }
+    const updated = await ngoModel.updatePaymentWallets(req.user.id, wallets);
+    if (!updated) return res.status(404).json({ message: 'NGO account was not found.' });
+    return res.status(200).json({ message: 'NGO payment wallet numbers saved.', data: updated });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getAllNgos = async (req, res, next) => {
   try {
     const ngos = await ngoModel.getAllNgos();
@@ -44,5 +80,7 @@ module.exports = {
   registerNgoProfile,
   getNgoProfile,
   updateNgoProfile,
+  getPaymentWallets,
+  updatePaymentWallets,
   getAllNgos
 };

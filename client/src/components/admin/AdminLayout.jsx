@@ -255,6 +255,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
   const navItems = [
     { label: 'Home', path: '/admin/dashboard', IconComponent: Icons.Home },
     { label: 'Users', path: '/admin/users', IconComponent: Icons.Users },
+    { label: 'Receiver Points', path: '/admin/points', IconComponent: Icons.Users },
     { label: 'Food Post Threads', path: '/admin/food-threads', IconComponent: Icons.FoodThread },
     { label: 'NGO Panel', path: '/admin/ngo-queue', IconComponent: Icons.Ngo },
     { label: 'Food Reports', path: '/admin/reports', IconComponent: Icons.Reports },
@@ -497,6 +498,7 @@ export const AdminLayout = ({ children, title = 'Users & Staff' }) => {
       <div className="admin-main-viewport" style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh', marginLeft: '256px' }}>
         {/* Figma Top Header Bar */}
         <header
+          className="dashboard-sticky-header"
           style={{
             width: '100%',
             height: '64px',

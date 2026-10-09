@@ -137,7 +137,7 @@ export const Home = () => {
       {/* ========================================================
           1. NAVIGATION BAR (From Figma Node 8:22362)
       ======================================================== */}
-      <nav style={{ width: '100%', background: 'rgba(255, 249, 245, 0.95)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 1000, borderBottom: '1px solid rgba(44, 35, 32, 0.06)' }}>
+      <nav className="home-navbar" style={{ width: 'calc(100% - 12px)', margin: '12px 6px 0', background: '#ffffff', position: 'sticky', top: 0, zIndex: 1000, border: '1px solid #e8e1db', borderRadius: '22px', boxShadow: '0 4px 14px rgba(75, 46, 36, 0.09)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           
           {/* Brand Logo */}
@@ -145,7 +145,7 @@ export const Home = () => {
             <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, var(--brand-primary-light) 0%, var(--brand-primary-dark) 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(var(--brand-primary-dark-rgb), 0.35)' }}>
               🍲
             </div>
-            <span style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 800, color: '#2c2320', letterSpacing: '-0.5px' }}>
+            <span className="home-navbar-brand" style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.5px' }}>
               ShareMeal
             </span>
           </Link>
@@ -200,6 +200,7 @@ export const Home = () => {
                 </Link>
                 <button
                   onClick={logout}
+                  className="home-navbar-logout"
                   style={{ background: 'transparent', border: 0, color: '#6b5d56', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}
                 >
                   Log out
@@ -267,6 +268,7 @@ export const Home = () => {
           >
             <a
               href="#how-it-works"
+              className="home-navbar-mobile-link"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: '#6b5d56', fontSize: '15px', fontWeight: 600, padding: '4px 0' }}
             >
@@ -274,6 +276,7 @@ export const Home = () => {
             </a>
             <Link
               to="/find-food"
+              className="home-navbar-mobile-link"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: '#6b5d56', fontSize: '15px', fontWeight: 600, padding: '4px 0' }}
             >
@@ -281,6 +284,7 @@ export const Home = () => {
             </Link>
             <Link
               to={user ? (user.role === 'donor' ? '/donor/profile' : `/${user.role}/dashboard`) : '/donate'}
+              className="home-navbar-mobile-link"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: '#6b5d56', fontSize: '15px', fontWeight: 600, padding: '4px 0' }}
             >
@@ -288,6 +292,7 @@ export const Home = () => {
             </Link>
             <Link
               to="/stories"
+              className="home-navbar-mobile-link"
               onClick={() => setMobileMenuOpen(false)}
               style={{ textDecoration: 'none', color: 'var(--brand-primary-dark)', fontSize: '15px', fontWeight: 700, padding: '4px 0' }}
             >
@@ -322,6 +327,7 @@ export const Home = () => {
                 </Link>
                 <button
                   onClick={() => { logout(); setMobileMenuOpen(false); }}
+                className="home-navbar-logout"
                   style={{ background: 'transparent', border: 0, color: '#6b5d56', fontSize: '14px', fontWeight: 600, cursor: 'pointer', textAlign: 'center', padding: '8px 0' }}
                 >
                   Log out

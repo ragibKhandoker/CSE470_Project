@@ -24,10 +24,6 @@ export const CollectionRequests = () => {
   const [selectedPickupPointId, setSelectedPickupPointId] = useState('');
   const [totalPackets, setTotalPackets] = useState('');
   const [distributionTotalAmount, setDistributionTotalAmount] = useState('0');
-  const [distributionBkashNumber, setDistributionBkashNumber] = useState('');
-  const [distributionRocketNumber, setDistributionRocketNumber] = useState('');
-  const [distributionNagadNumber, setDistributionNagadNumber] = useState('');
-  const [walletSettingsModalItem, setWalletSettingsModalItem] = useState(null);
   const [selectedNeeds, setSelectedNeeds] = useState(['Cooked Meal', 'Halal']);
 
   const [handoverModalItem, setHandoverModalItem] = useState(null);
@@ -223,9 +219,6 @@ export const CollectionRequests = () => {
           total_packets: parseInt(totalPackets, 10),
           needs_options: selectedNeeds,
           total_amount: Number(distributionTotalAmount || 0),
-          bkash_number: distributionBkashNumber,
-          rocket_number: distributionRocketNumber,
-          nagad_number: distributionNagadNumber
         })
       });
       if (res.ok) {
@@ -240,28 +233,6 @@ export const CollectionRequests = () => {
     } catch (err) {
       console.error(err);
       showToast('Failed to connect to server.', 'error');
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
-  const handleSaveWalletSettings = async (e) => {
-    e.preventDefault();
-    if (!walletSettingsModalItem) return;
-    setActionLoading(true);
-    try {
-      const res = await fetch(`${API_BASE_URL}/food-requests/${walletSettingsModalItem.id}/wallets`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ bkash_number: distributionBkashNumber, rocket_number: distributionRocketNumber, nagad_number: distributionNagadNumber })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Could not save wallet numbers.');
-      showToast('Payment wallet numbers updated.');
-      setWalletSettingsModalItem(null);
-      fetchCollectionItems();
-    } catch (err) {
-      showToast(err.message || 'Failed to connect to server.', 'error');
     } finally {
       setActionLoading(false);
     }
@@ -783,9 +754,6 @@ export const CollectionRequests = () => {
                           setDistributeModalItem(item);
                           setTotalPackets(item.post_quantity || 50);
                           setDistributionTotalAmount('0');
-                          setDistributionBkashNumber('');
-                          setDistributionRocketNumber('');
-                          setDistributionNagadNumber('');
                           if (pickupPoints.length > 0) {
                             setSelectedPickupPointId(pickupPoints[0].id);
                           }
@@ -802,17 +770,6 @@ export const CollectionRequests = () => {
                         }}
                       >
                         🍲 Post for Distribution
-                      </button>
-                    )}
-
-                    {status === 'distributing' && isDistributorStaff && (
-                      <button type="button" onClick={() => {
-                        setWalletSettingsModalItem(item);
-                        setDistributionBkashNumber(item.distribution_bkash_number || '');
-                        setDistributionRocketNumber(item.distribution_rocket_number || '');
-                        setDistributionNagadNumber(item.distribution_nagad_number || '');
-                      }} style={{ background: '#fff', color: '#9d174d', border: '1px solid #f9a8d4', padding: '9px 18px', borderRadius: '12px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>
-                        Configure Payment Wallets
                       </button>
                     )}
 
@@ -1209,7 +1166,7 @@ export const CollectionRequests = () => {
                 Post Food for Distribution
               </h3>
               <p style={{ margin: '0 0 18px', fontSize: '13px', color: '#786d66' }}>
-                Select a pickup point and packet quantity. For paid food, add at least one wallet number; receivers can pay through bKash, Rocket, or Nagad. Enter 0 to keep the food free.
+                Select a pickup point and packet quantity. Set the points cost for all packets; 1 point is shown as ৳1.00 equivalent. Enter 0 to keep the food free.
               </p>
 
               <form onSubmit={handlePostDistribution}>
@@ -1275,22 +1232,6 @@ export const CollectionRequests = () => {
                     required
                     style={{ width: '100%', padding: '11px 14px', borderRadius: '12px', border: '1.5px solid #e5e7eb', fontSize: '14px', boxSizing: 'border-box' }}
                   />
-                </div>
-
-                <div className="distribution-wallet-fields">
-                    <label className="distribution-wallet-field">
-                      <span>bKash wallet number <b>(optional)</b></span>
-                      <input type="tel" value={distributionBkashNumber} onChange={(e) => setDistributionBkashNumber(e.target.value)} placeholder="01XXXXXXXXX" />
-                    </label>
-                    <label className="distribution-wallet-field">
-                      <span>Rocket wallet number <b>(optional)</b></span>
-                      <input type="tel" value={distributionRocketNumber} onChange={(e) => setDistributionRocketNumber(e.target.value)} placeholder="01XXXXXXXXX" />
-                    </label>
-                    <label className="distribution-wallet-field">
-                      <span>Nagad wallet number <b>(optional)</b></span>
-                      <input type="tel" value={distributionNagadNumber} onChange={(e) => setDistributionNagadNumber(e.target.value)} placeholder="01XXXXXXXXX" />
-                    </label>
-                    <p className="distribution-wallet-help">Receivers can choose a wallet you configure. Leave fields empty to keep those payment options unavailable.</p>
                 </div>
 
                 <div style={{ marginBottom: 20 }}>
@@ -1655,23 +1596,6 @@ export const CollectionRequests = () => {
           </div>
         )}
 
-        {walletSettingsModalItem && (
-          <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(15,23,42,.6)', display: 'grid', placeItems: 'center', padding: 16 }}>
-            <form onSubmit={handleSaveWalletSettings} style={{ width: 'min(560px, 100%)', maxHeight: '90vh', overflowY: 'auto', background: '#fff', borderRadius: 20, padding: 24, boxShadow: '0 24px 70px rgba(0,0,0,.28)' }}>
-              <h2 style={{ margin: '0 0 8px', color: '#172033' }}>Configure Payment Wallets</h2>
-              <p style={{ color: '#596579', margin: '0 0 18px' }}>Add the NGO’s real wallet numbers. Only configured payment options will be enabled for receivers.</p>
-              <div className="distribution-wallet-fields">
-                <label className="distribution-wallet-field"><span>bKash wallet number <b>(optional)</b></span><input type="tel" value={distributionBkashNumber} onChange={(e) => setDistributionBkashNumber(e.target.value)} placeholder="01XXXXXXXXX" /></label>
-                <label className="distribution-wallet-field"><span>Rocket wallet number <b>(optional)</b></span><input type="tel" value={distributionRocketNumber} onChange={(e) => setDistributionRocketNumber(e.target.value)} placeholder="01XXXXXXXXX" /></label>
-                <label className="distribution-wallet-field"><span>Nagad wallet number <b>(optional)</b></span><input type="tel" value={distributionNagadNumber} onChange={(e) => setDistributionNagadNumber(e.target.value)} placeholder="01XXXXXXXXX" /></label>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 20 }}>
-                <button type="button" disabled={actionLoading} onClick={() => setWalletSettingsModalItem(null)}>Cancel</button>
-                <button type="submit" disabled={actionLoading}>{actionLoading ? 'Saving…' : 'Save Wallets'}</button>
-              </div>
-            </form>
-          </div>
-        )}
 
       </div>
     </NgoLayout>

@@ -48,7 +48,6 @@ export const MyRequests = () => {
               paymentAmount: Number(r.payment_amount) || 0,
               paymentMethod: r.payment_method,
               paymentStatus: r.payment_status,
-              bkashTransactionId: r.bkash_transaction_id,
               location: `${r.thana || 'Dhaka'}, ${r.district || 'Bangladesh'}`,
               address: [r.house_no, r.road_no, r.area_ward, r.thana, r.district].filter(Boolean).join(', ') || 'Dhaka, Bangladesh',
               requestedAt: r.created_at ? new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent',
@@ -109,33 +108,6 @@ export const MyRequests = () => {
       }
     } catch (err) {
       console.error(err);
-    }
-  };
-
-  const handleResubmitBikashTransaction = async (id) => {
-    const transactionId = window.prompt('Enter the corrected mobile wallet Transaction ID:');
-    if (!transactionId) return;
-    try {
-      const res = await fetch(`${API_BASE_URL}/food-requests/${id}/payment`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          action: 'resubmit_wallet_payment',
-          bkash_transaction_id: transactionId
-        })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        await fetchMyRequests();
-      } else {
-        alert(data.message || 'Could not resubmit the bKash Transaction ID.');
-      }
-    } catch (err) {
-      console.error('bKash Transaction ID resubmission error:', err);
-      alert('Failed to connect to server while resubmitting the transaction.');
     }
   };
 
@@ -302,12 +274,7 @@ export const MyRequests = () => {
                           </span>
                           {req.paymentAmount > 0 && (
                             <div style={{ fontSize: 12, color: '#9a3412', marginTop: 5 }}>
-                              Payment: ৳{req.paymentAmount.toFixed(2)} · {['bkash', 'rocket', 'nagad'].includes(req.paymentMethod) ? `${req.paymentMethod.toUpperCase()} Txn ${req.bkashTransactionId || '—'}` : 'Cash on Delivery'} · {req.paymentStatus}
-                              {req.paymentStatus === 'rejected' && (
-                                <button type="button" onClick={() => handleResubmitBikashTransaction(req.id)} style={{ marginLeft: 8, padding: '4px 8px', border: '1px solid #fed7aa', borderRadius: 6, background: '#fff7ed', color: '#9a3412', fontWeight: 700, cursor: 'pointer' }}>
-                                  Replace Transaction ID
-                                </button>
-                              )}
+                              Points: {req.paymentAmount.toFixed(2)} (৳{req.paymentAmount.toFixed(2)} equivalent) · {req.paymentStatus}
                             </div>
                           )}
                         </div>
@@ -488,7 +455,7 @@ export const MyRequests = () => {
                           </span>
                           {req.paymentAmount > 0 && (
                             <div style={{ fontSize: 12, color: '#9a3412', marginTop: 5 }}>
-                              Payment: ৳{req.paymentAmount.toFixed(2)} · {['bkash', 'rocket', 'nagad'].includes(req.paymentMethod) ? `${req.paymentMethod.toUpperCase()} Txn ${req.bkashTransactionId || '—'}` : 'Cash on Delivery'} · {req.paymentStatus}
+                              Points: {req.paymentAmount.toFixed(2)} (৳{req.paymentAmount.toFixed(2)} equivalent) · {req.paymentStatus}
                             </div>
                           )}
                         </div>

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NgoLayout from '../../components/ngo/NgoLayout';
 import PasswordResetRequestModal from '../../components/common/PasswordResetRequestModal';
 import { useAuth } from '../../context/AuthContext';
+import ngoService from '../../services/ngoService';
 
 export const NgoProfile = () => {
   const { user, token, updateUser } = useAuth();
@@ -43,6 +44,7 @@ export const NgoProfile = () => {
     }
     setTimeout(() => setSavedSuccess(false), 3000);
   };
+
 
   const staffInitials = (user?.name || 'Staff Member')
     .split(' ')
@@ -494,6 +496,7 @@ export const NgoProfile = () => {
             </form>
           )}
         </div>
+
 
         {/* =========================================================================
             SECURITY & PASSWORD CARD

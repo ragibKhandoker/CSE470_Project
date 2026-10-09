@@ -8,6 +8,16 @@ const validate = (req, res, next) => {
   next();
 };
 
+const normalizeBangladeshPhone = (value) => {
+  if (typeof value !== 'string') return value;
+  const compact = value.trim().replace(/[\s()-]/g, '');
+  if (!/^(?:01[3-9]\d{8}|(?:\+880|00880|880)1[3-9]\d{8})$/.test(compact)) return '';
+  if (compact.startsWith('+880')) return `0${compact.slice(4)}`;
+  if (compact.startsWith('00880')) return `0${compact.slice(5)}`;
+  if (compact.startsWith('880')) return `0${compact.slice(3)}`;
+  return compact;
+};
+
 const signupValidation = [
   body('name')
     .customSanitizer((v) => (typeof v === 'string' ? v.trim() : v))
@@ -18,9 +28,12 @@ const signupValidation = [
     .notEmpty()
     .withMessage('NID is required'),
   body('phone')
-    .customSanitizer((v) => (typeof v === 'string' ? v.trim() : v))
+    .customSanitizer(normalizeBangladeshPhone)
     .notEmpty()
-    .withMessage('Phone number is required'),
+    .withMessage('Phone number is required')
+    .bail()
+    .matches(/^01[3-9]\d{8}$/)
+    .withMessage('Enter a valid Bangladesh mobile number, such as 01712345678.'),
   body('password')
     .customSanitizer((v) => (typeof v === 'string' ? v.trim() : v))
     .isLength({ min: 6 })

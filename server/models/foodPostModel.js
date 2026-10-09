@@ -82,6 +82,9 @@ const getAllFoodPosts = async (donorId = null) => {
   let query = `
     SELECT 
       f.*,
+      COALESCE(f.distribution_bkash_number, distribution_ngo.ngo_bkash_wallet_number) AS distribution_bkash_number,
+      COALESCE(f.distribution_rocket_number, distribution_ngo.ngo_rocket_wallet_number) AS distribution_rocket_number,
+      COALESCE(f.distribution_nagad_number, distribution_ngo.ngo_nagad_wallet_number) AS distribution_nagad_number,
       u.name AS donor_name,
       u.phone AS donor_phone,
       u.role AS donor_role,
@@ -105,6 +108,12 @@ const getAllFoodPosts = async (donorId = null) => {
         AND fr_sub.status IN ('pickup_requested', 'approved', 'assigned', 'picked_up', 'at_hub', 'distributing', 'distributed')
       ORDER BY fr_sub.id DESC LIMIT 1
     ) fr ON true
+    LEFT JOIN users distribution_ngo
+      ON distribution_ngo.id = COALESCE(
+        f.distribution_ngo_user_id,
+        fr.receiver_id,
+        CASE WHEN u.role = 'ngo' THEN u.id END
+      )
     LEFT JOIN users staff ON fr.assigned_staff_id = staff.id
     LEFT JOIN users picked_staff ON fr.picked_up_by_staff_id = picked_staff.id
     LEFT JOIN users hub_staff ON fr.received_at_hub_by_staff_id = hub_staff.id
@@ -129,6 +138,9 @@ const getAllNgoPosts = async () => {
   const query = `
     SELECT 
       f.*,
+      COALESCE(f.distribution_bkash_number, distribution_ngo.ngo_bkash_wallet_number) AS distribution_bkash_number,
+      COALESCE(f.distribution_rocket_number, distribution_ngo.ngo_rocket_wallet_number) AS distribution_rocket_number,
+      COALESCE(f.distribution_nagad_number, distribution_ngo.ngo_nagad_wallet_number) AS distribution_nagad_number,
       u.name AS donor_name,
       u.phone AS donor_phone,
       u.role AS donor_role,
@@ -142,12 +154,18 @@ const getAllNgoPosts = async () => {
     LEFT JOIN ngos ngo ON ngo.user_id = u.id
     LEFT JOIN pickup_points pp ON f.pickup_point_id = pp.id
     LEFT JOIN LATERAL (
-      SELECT fr_ngo.remaining_packets, fr_ngo.total_packets 
+      SELECT fr_ngo.remaining_packets, fr_ngo.total_packets, fr_ngo.receiver_id
       FROM food_requests fr_ngo
       JOIN users u_ngo ON fr_ngo.receiver_id = u_ngo.id
       WHERE fr_ngo.food_post_id = f.id AND u_ngo.role = 'ngo'
       ORDER BY fr_ngo.id DESC LIMIT 1
     ) fr ON true
+    LEFT JOIN users distribution_ngo
+      ON distribution_ngo.id = COALESCE(
+        f.distribution_ngo_user_id,
+        fr.receiver_id,
+        CASE WHEN u.role = 'ngo' THEN u.id END
+      )
     WHERE (u.role = 'ngo' OR f.status::text IN ('at_ngo_point'))
       AND f.status != 'completed'
       AND (fr.remaining_packets IS NULL OR fr.remaining_packets > 0)
@@ -196,6 +214,10 @@ const getFoodPostById = async (id) => {
   const query = `
     SELECT 
       f.*,
+      COALESCE(f.distribution_bkash_number, payment_ngo.ngo_bkash_wallet_number) AS distribution_bkash_number,
+      COALESCE(f.distribution_rocket_number, payment_ngo.ngo_rocket_wallet_number) AS distribution_rocket_number,
+      COALESCE(f.distribution_nagad_number, payment_ngo.ngo_nagad_wallet_number) AS distribution_nagad_number,
+      COALESCE(f.distribution_ngo_user_id, responsible_ngo.receiver_id, CASE WHEN u.role = 'ngo' THEN u.id END) AS distribution_ngo_user_id,
       u.name AS donor_name,
       u.phone AS donor_phone,
       u.role AS donor_role,
@@ -203,6 +225,21 @@ const getFoodPostById = async (id) => {
     FROM food_posts f
     LEFT JOIN users u ON f.donor_id = u.id
     LEFT JOIN ngos ngo ON ngo.user_id = u.id
+    LEFT JOIN LATERAL (
+      SELECT fr.receiver_id
+      FROM food_requests fr
+      JOIN users request_ngo ON request_ngo.id = fr.receiver_id AND request_ngo.role = 'ngo'
+      WHERE fr.food_post_id = f.id
+        AND fr.status IN ('pickup_requested', 'approved', 'assigned', 'picked_up', 'at_hub', 'distributing', 'distributed')
+      ORDER BY fr.id DESC
+      LIMIT 1
+    ) responsible_ngo ON true
+    LEFT JOIN users payment_ngo
+      ON payment_ngo.id = COALESCE(
+        f.distribution_ngo_user_id,
+        responsible_ngo.receiver_id,
+        CASE WHEN u.role = 'ngo' THEN u.id END
+      )
     WHERE f.id = $1;
   `;
   const result = await db.query(query, [id]);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../utils/constants';
+import Navbar from '../../components/common/Navbar';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
@@ -100,6 +101,8 @@ export const FindFood = () => {
   // If NOT registered / logged in: Ask for signup as a receiver (like Donate Food)
   return (
     <div style={{ minHeight: '100%', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", display: 'flex', flexDirection: 'column' }}>
+
+      <Navbar />
 
       <main style={{ flex: 1, padding: '40px 24px 80px', position: 'relative', overflow: 'hidden' }}>
         {/* Ambient Glows */}

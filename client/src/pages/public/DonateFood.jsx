@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import Navbar from '../../components/common/Navbar';
 
 export const DonateFood = () => {
   const { user, loading } = useAuth();
@@ -31,6 +32,8 @@ export const DonateFood = () => {
   // If NOT registered / logged in: Ask for signup as a donor
   return (
     <div style={{ minHeight: '100%', background: '#f8fafc', color: '#2c2320', fontFamily: "'Plus Jakarta Sans', sans-serif", display: 'flex', flexDirection: 'column' }}>
+
+      <Navbar />
 
       <main style={{ flex: 1, padding: '40px 24px 80px', position: 'relative', overflow: 'hidden' }}>
         {/* Ambient Glows */}

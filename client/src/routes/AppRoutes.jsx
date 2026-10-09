@@ -59,6 +59,7 @@ import ReceiverNotifications from '../pages/receiver/Notifications';
 // Admin Pages
 import AdminDashboard from '../pages/admin/Dashboard';
 import AdminUsers from '../pages/admin/Users';
+import AdminPoints from '../pages/admin/Points';
 import FoodPostThreads from '../pages/admin/FoodPostThreads';
 import NGOVerificationQueue from '../pages/admin/NGOVerificationQueue';
 import AdminReports from '../pages/admin/Reports';
@@ -157,6 +158,7 @@ export const AppRoutes = () => {
       {/* Admin Protected Routes */}
       <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminDashboard /></ProtectedRoute>} />
       <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminUsers /></ProtectedRoute>} />
+      <Route path="/admin/points" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><AdminPoints /></ProtectedRoute>} />
       <Route path="/admin/food-threads" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><FoodPostThreads /></ProtectedRoute>} />
       <Route path="/admin/threads" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><FoodPostThreads /></ProtectedRoute>} />
       <Route path="/admin/ngo-queue" element={<ProtectedRoute allowedRoles={['admin', 'super_admin']}><NGOVerificationQueue /></ProtectedRoute>} />

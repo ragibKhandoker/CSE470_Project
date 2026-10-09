@@ -18,6 +18,8 @@ export const ReceiverDashboard = () => {
   const [isAnonymous, setIsAnonymous] = useState(getAnonymousMode());
   const [activeRequest, setActiveRequest] = useState(null);
   const [myRequests, setMyRequests] = useState([]);
+  const [paymentHistory, setPaymentHistory] = useState([]);
+  const [pointsBalance, setPointsBalance] = useState(0);
   const [nearbyFoods, setNearbyFoods] = useState([]);
   const [loadingRequests, setLoadingRequests] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
@@ -28,12 +30,10 @@ export const ReceiverDashboard = () => {
   // Request Food Modal State
   const [requestModalItem, setRequestModalItem] = useState(null);
   const [requestedPortions, setRequestedPortions] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState('bkash');
+  const [paymentMethod, setPaymentMethod] = useState('points');
   const [paymentPanelOpen, setPaymentPanelOpen] = useState(false);
   const [customAmount, setCustomAmount] = useState('20');
   const [selectedPreset, setSelectedPreset] = useState(20);
-  const [copiedBkash, setCopiedBkash] = useState(false);
-  const [bkashTransactionId, setBkashTransactionId] = useState('');
   const [requestNote, setRequestNote] = useState('');
   const [requestSuccessMessage, setRequestSuccessMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -42,6 +42,12 @@ export const ReceiverDashboard = () => {
   useEffect(() => {
     fetchActiveRequest();
     fetchNearbyFoodPosts();
+    if (token) fetch(`${API_BASE_URL}/points/mine`, { headers: { Authorization: `Bearer ${token}` } })
+      .then((response) => response.ok ? response.json() : { data: { balance: 0, transactions: [] } })
+      .then((data) => {
+        setPointsBalance(Number(data.data?.balance || 0));
+        setPaymentHistory(data.data?.transactions || []);
+      }).catch(() => { setPointsBalance(0); setPaymentHistory([]); });
     if (token && updateUser) {
       authService.getMe().then((data) => {
         if (data?.user) updateUser(data.user);
@@ -151,23 +157,10 @@ export const ReceiverDashboard = () => {
     const packetCount = Number(requestModalItem?.distribution_total_packets) || Number(requestModalItem?.quantity) || 1;
     const calculatedMandatory = (Number(requestModalItem?.distribution_total_amount || 0) * requestedPortions / packetCount).toFixed(2);
     const finalAmount = isMandatory ? Number(calculatedMandatory) : Number(customAmount || 20);
-    const targetWalletNumber = requestModalItem?.[`distribution_${paymentMethod}_number`] || '';
-
-    if (['bkash', 'rocket', 'nagad'].includes(paymentMethod)) {
-      if (!bkashTransactionId || bkashTransactionId.trim().length < 6) {
-        alert(`Please enter your valid ${paymentMethod} Transaction ID (minimum 6 letters/numbers).`);
-        return;
-      }
-      if (!targetWalletNumber) {
-        alert(`This NGO has not configured its ${paymentMethod} wallet for this distribution.`);
-        return;
-      }
-      if (finalAmount <= 0) {
-        alert('Please enter a valid bKash payment amount (e.g. ৳20).');
-        return;
-      }
+    if (paymentMethod !== 'free' && (!Number.isFinite(finalAmount) || finalAmount <= 0 || finalAmount > pointsBalance)) {
+      alert(`Not enough points. Required: ${Number(finalAmount).toFixed(2)} points (BDT ${Number(finalAmount).toFixed(2)}); available: ${pointsBalance.toFixed(2)}.`);
+      return;
     }
-
     setSubmitting(true);
     try {
       const res = await fetch(`${API_BASE_URL}/food-requests`, {
@@ -180,10 +173,8 @@ export const ReceiverDashboard = () => {
           food_post_id: requestModalItem.id,
           is_anonymous: isAnonymous,
           requested_quantity: requestedPortions,
-          payment_method: ['bkash', 'rocket', 'nagad'].includes(paymentMethod) ? paymentMethod : (paymentMethod === 'cash_on_delivery' ? 'cash_on_delivery' : 'none'),
+          payment_method: paymentMethod === 'free' ? 'none' : 'points',
           payment_amount: paymentMethod === 'free' ? 0 : finalAmount,
-          bkash_transaction_id: ['bkash', 'rocket', 'nagad'].includes(paymentMethod) ? bkashTransactionId.trim().toUpperCase() : null,
-          payment_bkash_number: targetWalletNumber,
           notes: requestNote,
           captchaId: requestCaptcha.captchaId,
           captchaAnswer: requestCaptcha.captchaAnswer
@@ -191,6 +182,7 @@ export const ReceiverDashboard = () => {
       });
       const data = await res.json();
       if (res.ok) {
+        if (data.data?.points_balance != null) setPointsBalance(Number(data.data.points_balance));
         setRequestSuccessMessage('Request submitted successfully! Refreshing status...');
         setTimeout(() => {
           setRequestSuccessMessage('');
@@ -464,6 +456,10 @@ export const ReceiverDashboard = () => {
         )}
 
         {/* Active Request Section */}
+        <section style={{ background: '#fff', borderRadius: 18, padding: 20, marginBottom: 20 }}>
+          <h3 style={{ marginTop: 0 }}>Points History</h3>
+          {paymentHistory.length === 0 ? <p>No points transactions yet.</p> : <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}><thead><tr>{['Points', 'Type', 'Reason', 'Date'].map((heading) => <th key={heading} style={{ padding: 8 }}>{heading}</th>)}</tr></thead><tbody>{paymentHistory.map((entry) => <tr key={entry.id}><td style={{ padding: 8 }}>{entry.kind === 'debit' ? '−' : '+'}{Number(entry.points).toFixed(2)} (৳{Number(entry.taka_value).toFixed(2)} equivalent)</td><td style={{ padding: 8 }}>{entry.kind}</td><td style={{ padding: 8 }}>{entry.note}</td><td style={{ padding: 8 }}>{new Date(entry.created_at).toLocaleString()}</td></tr>)}</tbody></table></div>}
+        </section>
         <div className="receiver-dashboard-active-section">
           <h3 style={{ margin: '0 0 16px', fontSize: '18px', fontWeight: 700, color: '#2c2320', fontFamily: "'Fraunces', serif" }}>
             Active Request
@@ -802,7 +798,7 @@ export const ReceiverDashboard = () => {
                         </div>
                         {Number(food.distribution_total_amount) > 0 && (
                           <div style={{ marginTop: 7, fontSize: 12, color: '#9a3412', fontWeight: 700 }}>
-                            ৳{(Number(food.distribution_total_amount) / (Number(food.distribution_total_packets) || Number(food.quantity) || 1)).toFixed(2)} per portion · bKash, Rocket, or Nagad
+                            ৳{(Number(food.distribution_total_amount) / (Number(food.distribution_total_packets) || Number(food.quantity) || 1)).toFixed(2)} equivalent per portion · Points
                           </div>
                         )}
                       </div>
@@ -817,16 +813,10 @@ export const ReceiverDashboard = () => {
                           if (!hasClaimed) {
                             setRequestModalItem(food);
                             setRequestedPortions(1);
-                            setPaymentMethod(
-                              food.distribution_bkash_number ? 'bkash'
-                                : food.distribution_rocket_number ? 'rocket'
-                                : food.distribution_nagad_number ? 'nagad'
-                                : 'free'
-                            );
+                            setPaymentMethod('points');
                             setPaymentPanelOpen(false);
                             setCustomAmount('20');
                             setSelectedPreset(20);
-                            setBkashTransactionId('');
                             setRequestNote('');
                           }
                         }}
@@ -1072,247 +1062,31 @@ export const ReceiverDashboard = () => {
                   </div>
                 </div>
 
-                {/* NGO bKash Payment & Support Section */}
                 {(() => {
                   const isMandatory = Number(requestModalItem.distribution_total_amount) > 0;
                   const packetCount = Number(requestModalItem.distribution_total_packets) || Number(requestModalItem.quantity) || 1;
-                  const calculatedMandatory = (Number(requestModalItem.distribution_total_amount || 0) * requestedPortions / packetCount).toFixed(2);
-                  const walletConfig = {
-                    bkash: { label: 'bKash', number: requestModalItem.distribution_bkash_number || '', color: '#d91567', icon: '💖' },
-                    rocket: { label: 'Rocket', number: requestModalItem.distribution_rocket_number || '', color: '#7b2c8e', icon: '🚀' },
-                    nagad: { label: 'Nagad', number: requestModalItem.distribution_nagad_number || '', color: '#ed1c24', icon: '📱' }
-                  };
-                  const selectedWallet = walletConfig[paymentMethod] || walletConfig.bkash;
-                  const targetBkashNumber = selectedWallet.number;
-                  const displayAmount = isMandatory ? calculatedMandatory : (customAmount || '20');
-
-                  const handleCopyBkashNumber = () => {
-                    navigator.clipboard.writeText(targetBkashNumber);
-                    setCopiedBkash(true);
-                    setTimeout(() => setCopiedBkash(false), 2000);
-                  };
-
+                  const amount = isMandatory
+                    ? Number((Number(requestModalItem.distribution_total_amount) * requestedPortions / packetCount).toFixed(2))
+                    : Number(customAmount || 0);
                   return (
-                    <div className={`receiver-payment-panel${paymentPanelOpen ? ' is-open' : ''}`} style={{ marginBottom: '18px', padding: '16px', borderRadius: '16px', background: '#fff5f7', border: '1.5px solid #fbcfe8' }}>
-                      <div className="receiver-payment-heading" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <span style={{ fontSize: '18px' }}>📱</span>
-                          <span style={{ fontWeight: 800, fontSize: '14px', color: '#9d174d' }}>NGO Payment &amp; Support</span>
-                        </div>
-                        <span style={{ fontSize: '11px', fontWeight: 700, padding: '2px 8px', borderRadius: '12px', background: '#fce7f3', color: '#be185d' }}>
-                          Secure mobile wallet
-                        </span>
-                        {!paymentPanelOpen && (
-                          <button type="button" className="receiver-pay-here-button" onClick={() => setPaymentPanelOpen(true)}>
-                            {paymentMethod === 'free' ? 'Continue free claim' : `Pay here · BDT ${displayAmount}`} <span aria-hidden="true">→</span>
-                          </button>
-                        )}
-                      </div>
-
-                      {/* Payment Method Selector */}
-                      <div className="receiver-payment-methods" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
-                        <button
-                          type="button"
-                          disabled={!walletConfig.bkash.number}
-                          aria-pressed={paymentMethod === 'bkash'}
-                          onClick={() => { setPaymentMethod('bkash'); setBkashTransactionId(''); }}
-                          title={walletConfig.bkash.number ? 'Pay with bKash' : 'bKash is not configured by this NGO'}
-                          style={{
-                            flex: 1,
-                            padding: '10px 12px',
-                            borderRadius: '12px',
-                            border: paymentMethod === 'bkash' ? '2px solid #e11d48' : '1px solid #fbcfe8',
-                            background: paymentMethod === 'bkash' ? '#ffffff' : '#fff5f7',
-                            color: paymentMethod === 'bkash' ? '#e11d48' : '#6b7280',
-                            fontWeight: 700,
-                            fontSize: '13px',
-                            cursor: walletConfig.bkash.number ? 'pointer' : 'not-allowed',
-                            opacity: walletConfig.bkash.number ? 1 : 0.52,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '6px',
-                            boxShadow: paymentMethod === 'bkash' ? '0 4px 10px rgba(225,29,72,0.15)' : 'none',
-                            transition: 'all 0.15s ease'
-                          }}
-                        >
-                          <span>💖 Pay NGO via bKash</span>
-                        </button>
-
-                        {[
-                          { method: 'rocket', label: 'Rocket', color: '#7b2c8e', number: requestModalItem.distribution_rocket_number },
-                          { method: 'nagad', label: 'Nagad', color: '#ed1c24', number: requestModalItem.distribution_nagad_number }
-                        ].map((wallet) => (
-                          <button
-                            key={wallet.method}
-                            type="button"
-                            disabled={!wallet.number}
-                            aria-pressed={paymentMethod === wallet.method}
-                            onClick={() => { setPaymentMethod(wallet.method); setBkashTransactionId(''); }}
-                            style={{
-                              flex: 1,
-                              minWidth: '105px',
-                              padding: '10px 12px',
-                              borderRadius: '12px',
-                              border: paymentMethod === wallet.method ? `2px solid ${wallet.color}` : '1px solid #e5e7eb',
-                              background: paymentMethod === wallet.method ? '#ffffff' : '#f9fafb',
-                              color: paymentMethod === wallet.method ? wallet.color : '#526074',
-                              fontWeight: 700,
-                              fontSize: '13px',
-                              cursor: wallet.number ? 'pointer' : 'not-allowed',
-                              opacity: wallet.number ? 1 : 0.52,
-                              transition: 'all 0.15s ease'
-                            }}
-                            title={wallet.number ? `Pay with ${wallet.label}` : `${wallet.label} wallet number is not configured by the NGO`}
-                          >
-                            {wallet.label}{wallet.number ? '' : ' · unavailable'}
-                          </button>
-                        ))}
-
-                        {!isMandatory && (
-                          <button
-                            type="button"
-                            onClick={() => setPaymentMethod('free')}
-                            style={{
-                              flex: 1,
-                              padding: '10px 12px',
-                              borderRadius: '12px',
-                              border: paymentMethod === 'free' ? '2px solid #059669' : '1px solid #e5e7eb',
-                              background: paymentMethod === 'free' ? '#ffffff' : '#f9fafb',
-                              color: paymentMethod === 'free' ? '#059669' : '#6b7280',
-                              fontWeight: 700,
-                              fontSize: '13px',
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '6px',
-                              boxShadow: paymentMethod === 'free' ? '0 4px 10px rgba(5,150,105,0.12)' : 'none',
-                              transition: 'all 0.15s ease'
-                            }}
-                          >
-                            <span>🎁 Free Claim (৳0)</span>
-                          </button>
-                        )}
-                      </div>
-
-                      {['bkash', 'rocket', 'nagad'].includes(paymentMethod) ? (
-                        <div>
-                          {/* Payment Amount Display & Custom Selection */}
-                          <div style={{ marginBottom: '12px' }}>
-                            <div style={{ fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '6px' }}>
-                              Payment Amount (NGO ফান্ডে সংরক্ষিত হবে):
-                            </div>
-                            {isMandatory ? (
-                              <div style={{ fontSize: '18px', fontWeight: 900, color: '#be185d' }}>
-                                ৳{calculatedMandatory} <span style={{ fontSize: '12px', fontWeight: 500, color: '#6b7280' }}>({requestedPortions} portion{requestedPortions > 1 ? 's' : ''})</span>
-                              </div>
-                            ) : (
-                              <div>
-                                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                                  {[20, 50, 100].map((amt) => (
-                                    <button
-                                      type="button"
-                                      key={amt}
-                                      onClick={() => { setCustomAmount(String(amt)); setSelectedPreset(amt); }}
-                                      style={{
-                                        flex: 1,
-                                        padding: '7px 8px',
-                                        borderRadius: '8px',
-                                        border: selectedPreset === amt ? `2px solid ${selectedWallet.color}` : '1px solid #e5e7eb',
-                                        background: selectedPreset === amt ? '#eaf0fa' : '#ffffff',
-                                        color: selectedPreset === amt ? selectedWallet.color : '#374151',
-                                        fontWeight: 700,
-                                        fontSize: '13px',
-                                        cursor: 'pointer'
-                                      }}
-                                    >
-                                      ৳{amt}
-                                    </button>
-                                  ))}
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#374151' }}>Custom (৳):</span>
-                                  <input
-                                    type="number"
-                                    min="5"
-                                    max="5000"
-                                    value={customAmount}
-                                    onChange={(e) => { setCustomAmount(e.target.value); setSelectedPreset('custom'); }}
-                                    placeholder="Enter amount"
-                                    style={{ flex: 1, padding: '7px 10px', borderRadius: '8px', border: '1px solid #fbcfe8', fontSize: '13px', fontWeight: 700, outline: 'none' }}
-                                  />
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* NGO bKash Number Box */}
-                          <div style={{ background: '#ffffff', border: '1px dashed #f43f5e', borderRadius: '12px', padding: '12px', marginBottom: '12px' }}>
-                            <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '4px' }}>
-                              NGO Official {selectedWallet.label} Number (Send Money):
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <span style={{ fontSize: '16px', fontWeight: 900, color: selectedWallet.color, letterSpacing: '1px', fontFamily: 'monospace' }}>
-                                {targetBkashNumber}
-                              </span>
-                              <button
-                                type="button"
-                                onClick={handleCopyBkashNumber}
-                                style={{
-                                  padding: '4px 10px',
-                                  borderRadius: '6px',
-                                  border: 'none',
-                                  background: copiedBkash ? '#ecfdf5' : '#eaf0fa',
-                                  color: copiedBkash ? '#059669' : selectedWallet.color,
-                                  fontSize: '11px',
-                                  fontWeight: 700,
-                                  cursor: 'pointer'
-                                }}
-                              >
-                                {copiedBkash ? '✓ Copied' : '📋 Copy'}
-                              </button>
-                            </div>
-                            <div className="receiver-wallet-help">Open your {selectedWallet.label} app and send BDT {displayAmount} to the NGO wallet number above. Then enter the transaction ID from your receipt. The NGO will verify the payment.</div>
-                          </div>
-
-                          {/* Transaction ID Input */}
-                          <div>
-                            <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#374151', marginBottom: '4px' }}>
-                              {selectedWallet.label} Transaction ID (TrxID) *
-                            </label>
-                            <input
-                              type="text"
-                              value={bkashTransactionId}
-                              onChange={(e) => setBkashTransactionId(e.target.value.toUpperCase())}
-                              placeholder="e.g. BL83JX99A"
-                              minLength={6}
-                              maxLength={20}
-                              required={['bkash', 'rocket', 'nagad'].includes(paymentMethod)}
-                              style={{
-                                width: '100%',
-                                padding: '10px 12px',
-                                borderRadius: '10px',
-                                border: '1.5px solid #f43f5e',
-                                fontSize: '14px',
-                                fontWeight: 700,
-                                letterSpacing: '1px',
-                                boxSizing: 'border-box',
-                                outline: 'none',
-                                background: '#ffffff'
-                              }}
-                            />
-                          </div>
-                        </div>
+                    <div style={{ marginBottom: '18px', padding: '16px', borderRadius: '14px', background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+                      <div style={{ fontWeight: 800, marginBottom: 8 }}>Points payment</div>
+                      <div style={{ marginBottom: 10 }}>Available: <strong>{pointsBalance.toFixed(2)} points</strong> · 1 point = ৳1.00</div>
+                      {isMandatory ? (
+                        <div>Request cost: <strong>{amount.toFixed(2)} points (৳{amount.toFixed(2)} equivalent)</strong></div>
                       ) : (
-                        <div style={{ fontSize: '12px', color: '#059669', background: '#ecfdf5', padding: '10px 12px', borderRadius: '10px' }}>
-                          ✓ সম্পূর্ণ বিনামূল্যে খাদ্য সহায়তার জন্য রিকোয়েস্ট তৈরি হবে।
-                        </div>
+                        <>
+                          <label style={{ display: 'block', fontWeight: 700, marginBottom: 6 }}>Points to use (optional)</label>
+                          <input type="number" min="0" max="500000" step="0.01" value={customAmount} onChange={(e) => setCustomAmount(e.target.value)} style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 8, boxSizing: 'border-box' }} />
+                          <div style={{ marginTop: 6 }}>Equivalent value: ৳{amount.toFixed(2)}</div>
+                          <button type="button" onClick={() => setPaymentMethod(paymentMethod === 'free' ? 'points' : 'free')} style={{ marginTop: 10, padding: '8px 12px', borderRadius: 8, border: '1px solid #86efac', background: '#fff', cursor: 'pointer' }}>{paymentMethod === 'free' ? 'Use points' : 'Submit as free claim'}</button>
+                        </>
                       )}
+                      {paymentMethod !== 'free' && amount > pointsBalance && <div style={{ marginTop: 8, color: '#b91c1c' }}>Not enough points to submit this request.</div>}
+                      <div style={{ marginTop: 8, color: '#64748b', fontSize: 12 }}>Points are deducted when the request is submitted. This is an internal points value, not a real money transfer.</div>
                     </div>
                   );
                 })()}
-
                 <div style={{ marginBottom: '18px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#2c2320', marginBottom: '6px' }}>
                     Pickup Note (Optional)

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useDisplayMode } from '../../context/DisplayModeContext';
 import { allStories } from '../../data/storiesData';
 import { API_BASE_URL } from '../../utils/constants';
 import './Home.css';
 
 export const Stories = () => {
   const { user, logout } = useAuth();
+  const { colorScheme, toggleColorScheme } = useDisplayMode();
+  const colorSchemeLabel = { navy: 'Navy & white', orange: 'Orange & white', 'navy-green': 'Navy green & white' }[colorScheme] || 'Orange & white';
   const navigate = useNavigate();
 
   // Active Filter Tab state: 'All' | 'Volunteer' | 'Impact' | 'Donor'
@@ -66,7 +69,7 @@ export const Stories = () => {
       {/* ========================================================
           1. NAVIGATION BAR (Matching Home Pixel-Perfect Navbar)
       ======================================================== */}
-      <nav style={{ width: '100%', background: 'rgba(255, 249, 245, 0.95)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 1000, borderBottom: '1px solid rgba(44, 35, 32, 0.06)' }}>
+      <nav className="home-navbar" style={{ width: 'calc(100% - 12px)', margin: '12px 6px 0', background: '#ffffff', position: 'sticky', top: 0, zIndex: 1000, border: '1px solid #e8e1db', borderRadius: '22px', boxShadow: '0 4px 14px rgba(75, 46, 36, 0.09)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           
           {/* Brand Logo */}
@@ -74,7 +77,7 @@ export const Stories = () => {
             <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: 'linear-gradient(135deg, var(--brand-primary-light) 0%, var(--brand-primary-dark) 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '18px', boxShadow: '0 4px 12px rgba(var(--brand-primary-dark-rgb), 0.35)' }}>
               🍲
             </div>
-            <span style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 800, color: '#2c2320', letterSpacing: '-0.5px' }}>
+            <span className="home-navbar-brand" style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 800, color: '#2c2320', letterSpacing: '-0.5px' }}>
               ShareMeal
             </span>
           </Link>
@@ -101,6 +104,9 @@ export const Stories = () => {
 
           {/* Right Action Buttons (Desktop / Tablet) */}
           <div className="nav-desktop-actions">
+            <button type="button" onClick={toggleColorScheme} aria-label={`Switch color scheme. Current scheme: ${colorSchemeLabel}`} style={{ background: '#ffffff', border: '1px solid var(--brand-primary)', borderRadius: '100px', padding: '9px 14px', color: 'var(--brand-primary)', fontSize: '12px', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+              ◐ {colorSchemeLabel} · change
+            </button>
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <Link
@@ -111,6 +117,7 @@ export const Stories = () => {
                 </Link>
                 <button
                   onClick={logout}
+                  className="home-navbar-logout"
                   style={{ background: 'transparent', border: 0, color: '#6b5d56', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}
                 >
                   Log out
@@ -205,6 +212,9 @@ export const Stories = () => {
               Stories
             </Link>
             <div style={{ height: '1px', background: 'rgba(44, 35, 32, 0.08)', margin: '6px 0' }} />
+            <button type="button" onClick={toggleColorScheme} aria-label={`Switch color scheme. Current scheme: ${colorSchemeLabel}`} style={{ background: '#ffffff', border: '1px solid var(--brand-primary)', borderRadius: '100px', padding: '10px 14px', color: 'var(--brand-primary)', fontSize: '14px', fontWeight: 700, cursor: 'pointer' }}>
+              ◐ {colorSchemeLabel} · change
+            </button>
             {user ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <Link
@@ -216,6 +226,7 @@ export const Stories = () => {
                 </Link>
                 <button
                   onClick={() => { logout(); setMobileMenuOpen(false); }}
+                className="home-navbar-logout"
                   style={{ background: 'transparent', border: 0, color: '#6b5d56', fontSize: '14px', fontWeight: 600, cursor: 'pointer', textAlign: 'center', padding: '8px 0' }}
                 >
                   Log out

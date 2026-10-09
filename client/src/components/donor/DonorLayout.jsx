@@ -411,6 +411,7 @@ export const DonorLayout = ({ children, title = 'Dashboard' }) => {
       <div className="donor-main-viewport" style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh', marginLeft: '256px' }}>
         {/* Top Header Bar */}
         <header
+          className="dashboard-sticky-header"
           style={{
             width: '100%',
             height: '64px',

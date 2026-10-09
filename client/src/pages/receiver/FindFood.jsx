@@ -46,8 +46,8 @@ export const ReceiverFindFood = () => {
   // Request Food State
   const [requestModalItem, setRequestModalItem] = useState(null);
   const [requestedPortions, setRequestedPortions] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState('cash_on_delivery');
-  const [bkashTransactionId, setBkashTransactionId] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('points');
+  const [pointsBalance, setPointsBalance] = useState(0);
   const [requestNote, setRequestNote] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(getAnonymousMode());
   const [requestSuccessMessage, setRequestSuccessMessage] = useState('');
@@ -58,6 +58,7 @@ export const ReceiverFindFood = () => {
     fetchFoodPosts();
     if (token) {
       fetchMyRequests();
+      fetch(`${API_BASE_URL}/points/mine`, { headers: { Authorization: `Bearer ${token}` } }).then((r) => r.ok ? r.json() : null).then((d) => setPointsBalance(Number(d?.data?.balance || 0))).catch(() => setPointsBalance(0));
     }
   }, [token]);
 
@@ -158,8 +159,7 @@ export const ReceiverFindFood = () => {
     }
     setRequestModalItem(item);
     setRequestedPortions(1);
-    setPaymentMethod('cash_on_delivery');
-    setBkashTransactionId('');
+    setPaymentMethod('points');
     setRequestNote('');
     setIsAnonymous(getAnonymousMode());
     setRequestSuccessMessage('');
@@ -175,6 +175,9 @@ export const ReceiverFindFood = () => {
       alert('Please enter the security verification code (CAPTCHA) to verify you are not a bot.');
       return;
     }
+    const packetCount = Number(requestModalItem.distribution_total_packets) || Number(requestModalItem.quantity) || 1;
+    const amount = Number(requestModalItem.distribution_total_amount) > 0 ? Number((Number(requestModalItem.distribution_total_amount) * requestedPortions / packetCount).toFixed(2)) : 0;
+    if (amount > pointsBalance) { alert(`Not enough points. Required: ${amount.toFixed(2)}; available: ${pointsBalance.toFixed(2)}.`); return; }
     setSubmitting(true);
 
     try {
@@ -188,8 +191,8 @@ export const ReceiverFindFood = () => {
           food_post_id: requestModalItem.id,
           is_anonymous: isAnonymous,
           requested_quantity: requestedPortions,
-          payment_method: Number(requestModalItem.distribution_total_amount) > 0 ? paymentMethod : 'none',
-          bkash_transaction_id: bkashTransactionId,
+          payment_method: amount > 0 ? 'points' : 'none',
+          payment_amount: amount,
           notes: requestNote,
           captchaId: requestCaptcha.captchaId,
           captchaAnswer: requestCaptcha.captchaAnswer
@@ -197,6 +200,7 @@ export const ReceiverFindFood = () => {
       });
       const data = await res.json();
       if (res.ok) {
+        if (data.data?.points_balance != null) setPointsBalance(Number(data.data.points_balance));
         setRequestSuccessMessage('Request submitted! Pickup code generated.');
         setTimeout(() => {
           setRequestModalItem(null);
@@ -513,7 +517,7 @@ export const ReceiverFindFood = () => {
                         <span>👤 {food.donor_name || 'Donor'}</span>
                         {distributionTotal > 0 && (
                           <span style={{ color: '#9a3412', fontWeight: 700 }}>
-                            ৳{pricePerPortion} per portion · COD or bKash
+                            ৳{pricePerPortion} per portion equivalent · Points
                           </span>
                         )}
                       </div>
@@ -713,44 +717,16 @@ export const ReceiverFindFood = () => {
                   </div>
                 </div>
 
-                {Number(requestModalItem.distribution_total_amount) > 0 && (
-                  <div style={{ marginBottom: '16px', padding: '14px', borderRadius: '14px', background: '#fff7ed', border: '1px solid #fed7aa' }}>
-                    {(() => {
-                      const packetCount = Number(requestModalItem.distribution_total_packets) || Number(requestModalItem.quantity) || 1;
-                      const total = Number(requestModalItem.distribution_total_amount);
-                      const amount = (total * requestedPortions / packetCount).toFixed(2);
-                      return (
-                        <>
-                          <div style={{ fontWeight: 800, color: '#9a3412', marginBottom: 8 }}>
-                            Total to pay: ৳{amount}
-                          </div>
-                          <label style={{ display: 'block', marginBottom: 8, fontSize: 13 }}>
-                            <input type="radio" name="payment-method" value="cash_on_delivery" checked={paymentMethod === 'cash_on_delivery'} onChange={() => setPaymentMethod('cash_on_delivery')} /> Cash on Delivery
-                          </label>
-                          <label style={{ display: 'block', fontSize: 13 }}>
-                            <input type="radio" name="payment-method" value="bkash" checked={paymentMethod === 'bkash'} onChange={() => setPaymentMethod('bkash')} /> Prepaid bKash Send Money
-                          </label>
-                          {paymentMethod === 'bkash' && (
-                            <div style={{ marginTop: 10 }}>
-                              <div style={{ fontSize: 13, marginBottom: 8 }}>Send ৳{amount} to <strong>{requestModalItem.distribution_bkash_number}</strong>, then enter your Transaction ID. The NGO will verify it.</div>
-                              <input
-                                type="text"
-                                value={bkashTransactionId}
-                                onChange={(e) => setBkashTransactionId(e.target.value.toUpperCase())}
-                                placeholder="bKash Transaction ID"
-                                minLength={6}
-                                maxLength={20}
-                                required
-                                style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid #e5e7eb', boxSizing: 'border-box' }}
-                              />
-                            </div>
-                          )}
-                        </>
-                      );
-                    })()}
-                  </div>
-                )}
-
+                {Number(requestModalItem.distribution_total_amount) > 0 && (() => {
+                  const packetCount = Number(requestModalItem.distribution_total_packets) || Number(requestModalItem.quantity) || 1;
+                  const amount = Number((Number(requestModalItem.distribution_total_amount) * requestedPortions / packetCount).toFixed(2));
+                  return <div style={{ marginBottom: 16, padding: 14, borderRadius: 14, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+                    <div style={{ fontWeight: 800 }}>Points payment</div>
+                    <div>Required: <strong>{amount.toFixed(2)} points</strong> (৳{amount.toFixed(2)} equivalent)</div>
+                    <div>Available: <strong>{pointsBalance.toFixed(2)} points</strong> · 1 point = ৳1.00</div>
+                    <div style={{ marginTop: 6, fontSize: 12, color: '#64748b' }}>Points are deducted on submission. This is an internal value, not a real money transfer.</div>
+                  </div>;
+                })()}
                 <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#2c2320', marginBottom: '6px' }}>
                     Portions Needed

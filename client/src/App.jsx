@@ -13,9 +13,10 @@ const AppLayout = () => {
   const isDashboardPage = location.pathname.startsWith('/donor') || location.pathname.startsWith('/ngo') || location.pathname.startsWith('/receiver');
   const isHomePage = location.pathname === '/';
   const isStoriesPage = location.pathname === '/stories' || location.pathname.startsWith('/stories/') || location.pathname.startsWith('/story');
+  const isPublicPageWithOwnNavbar = ['/find-food', '/donate'].includes(location.pathname);
   const isStaticSupportPage = ['/help', '/help-centre', '/safety', '/safety-protocols', '/privacy', '/privacy-policy', '/terms', '/terms-of-service'].includes(location.pathname);
 
-  if (isAuthPage || isAdminPage || isDashboardPage || isHomePage || isStoriesPage || isStaticSupportPage) {
+  if (isAuthPage || isAdminPage || isDashboardPage || isHomePage || isStoriesPage || isPublicPageWithOwnNavbar || isStaticSupportPage) {
     return <AppRoutes />;
   }
 

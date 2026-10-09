@@ -14,8 +14,6 @@ const createFoodRequest = async ({
   payment_method = 'none',
   payment_amount = 0,
   payment_status = 'not_required',
-  bkash_transaction_id = null,
-  payment_bkash_number = null,
   ngo_user_id = null
 }) => {
   const query = `
@@ -29,12 +27,10 @@ const createFoodRequest = async ({
       payment_method,
       payment_amount,
       payment_status,
-      bkash_transaction_id,
-      payment_bkash_number,
       ngo_user_id,
       status
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'requested')
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'requested')
     RETURNING *;
   `;
   const values = [
@@ -47,12 +43,57 @@ const createFoodRequest = async ({
     payment_method,
     payment_amount,
     payment_status,
-    bkash_transaction_id,
-    payment_bkash_number,
     ngo_user_id
   ];
   const result = await db.query(query, values);
   return result.rows[0];
+};
+
+const createFoodRequestWithPoints = async ({
+  food_post_id, receiver_id, is_anonymous = false, pickup_code,
+  requested_quantity = 1, notes = '', amount, ngo_user_id = null
+}) => {
+  const client = await db.pool.connect();
+  try {
+    await client.query('BEGIN');
+    const receiver = await client.query('SELECT points_balance FROM users WHERE id = $1 FOR UPDATE', [receiver_id]);
+    const balance = Number(receiver.rows[0]?.points_balance || 0);
+    if (!receiver.rows[0] || balance < amount) {
+      const error = new Error('Insufficient points balance.');
+      error.code = 'INSUFFICIENT_POINTS';
+      error.balance = balance;
+      error.amount = amount;
+      throw error;
+    }
+    const existing = await client.query(`SELECT id FROM food_requests
+      WHERE food_post_id = $1 AND receiver_id = $2
+        AND status IN ('requested', 'approved', 'fulfilled', 'accepted') LIMIT 1`, [food_post_id, receiver_id]);
+    if (existing.rows[0]) {
+      const error = new Error('You already have a request for this food post.');
+      error.code = 'REQUEST_EXISTS';
+      throw error;
+    }
+    const request = await client.query(`INSERT INTO food_requests (
+        food_post_id, receiver_id, is_anonymous, pickup_code, requested_quantity, notes,
+        payment_method, payment_amount, payment_status, ngo_user_id, status
+      ) VALUES ($1, $2, $3, $4, $5, $6, 'points', $7, 'paid', $8, 'requested') RETURNING *`,
+    [food_post_id, receiver_id, is_anonymous, pickup_code, requested_quantity, notes, amount, ngo_user_id]);
+    const updated = await client.query(`UPDATE users SET points_balance = points_balance - $1
+      WHERE id = $2 AND points_balance >= $1 RETURNING points_balance`, [amount, receiver_id]);
+    if (!updated.rows[0]) {
+      const error = new Error('Insufficient points balance.');
+      error.code = 'INSUFFICIENT_POINTS';
+      error.balance = balance;
+      throw error;
+    }
+    await client.query(`INSERT INTO points_transactions (user_id, request_id, kind, points, taka_value, note)
+      VALUES ($1, $2, 'debit', $3, $3, $4)`, [receiver_id, request.rows[0].id, amount, `Food request #${request.rows[0].id}`]);
+    await client.query('COMMIT');
+    return { ...request.rows[0], points_balance: updated.rows[0].points_balance };
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally { client.release(); }
 };
 
 const findById = async (id) => {
@@ -67,6 +108,7 @@ const findById = async (id) => {
       fp.thana,
       fp.area_ward,
       fp.donor_id,
+      fp.distribution_ngo_user_id,
       u.name AS receiver_name,
       u.phone AS receiver_phone,
       u.email AS receiver_email,
@@ -196,51 +238,6 @@ const findIncomingForNgo = async (ngoUserId) => {
   `;
   const result = await db.query(query, [ngoUserId]);
   return result.rows;
-};
-
-const updatePaymentStatus = async (requestId, ngoUserId, paymentStatus) => {
-  const query = `
-    UPDATE food_requests fr
-    SET payment_status = $1,
-        payment_verified_at = CASE WHEN $1 = 'paid' THEN CURRENT_TIMESTAMP ELSE NULL END,
-        ngo_user_id = COALESCE(fr.ngo_user_id, $3),
-        updated_at = CURRENT_TIMESTAMP
-    FROM food_posts fp
-    WHERE fr.id = $2
-      AND fp.id = fr.food_post_id
-      AND (fp.distribution_ngo_user_id = $3 OR fp.distribution_ngo_user_id IS NULL OR fr.ngo_user_id = $3 OR fr.ngo_user_id IS NULL)
-      AND (
-        ($1 = 'rejected' AND fr.payment_method IN ('bkash', 'rocket', 'nagad') AND fr.payment_status = 'verification_pending')
-        OR ($1 = 'paid' AND fr.payment_method IN ('bkash', 'rocket', 'nagad') AND fr.payment_status = 'verification_pending')
-        OR ($1 = 'paid' AND fr.payment_method = 'cash_on_delivery' AND fr.payment_status = 'cod_due')
-      )
-    RETURNING fr.*;
-  `;
-  const result = await db.query(query, [paymentStatus, requestId, ngoUserId]);
-  if (result.rows[0] && paymentStatus === 'paid') {
-    await db.query(
-      `UPDATE food_posts SET distribution_ngo_user_id = COALESCE(distribution_ngo_user_id, $1) WHERE id = $2`,
-      [ngoUserId, result.rows[0].food_post_id]
-    );
-  }
-  return result.rows[0];
-};
-
-const resubmitBikashTransaction = async (requestId, receiverId, transactionId) => {
-  const query = `
-    UPDATE food_requests
-    SET bkash_transaction_id = $1,
-        payment_status = 'verification_pending',
-        payment_verified_at = NULL,
-        updated_at = CURRENT_TIMESTAMP
-    WHERE id = $2
-      AND receiver_id = $3
-      AND payment_method IN ('bkash', 'rocket', 'nagad')
-      AND payment_status = 'rejected'
-    RETURNING *;
-  `;
-  const result = await db.query(query, [transactionId, requestId, receiverId]);
-  return result.rows[0];
 };
 
 /**
@@ -521,7 +518,7 @@ const findByPickupCode = async (pickupCode) => {
   return result.rows[0];
 };
 
-const updateStatus = async (id, status) => {
+const updateStatus = async (id, status, ngoUserId = null) => {
   const isFulfilled = status === 'fulfilled';
   const query = `
     UPDATE food_requests
@@ -530,9 +527,10 @@ const updateStatus = async (id, status) => {
       fulfilled_at = ${isFulfilled ? 'CURRENT_TIMESTAMP' : 'fulfilled_at'},
       updated_at = CURRENT_TIMESTAMP
     WHERE id = $2
+      AND ($1 <> 'approved' OR ngo_user_id IS NULL OR ngo_user_id = $3)
     RETURNING *;
   `;
-  const result = await db.query(query, [status, id]);
+  const result = await db.query(query, [status, id, ngoUserId]);
   return result.rows[0];
 };
 
@@ -563,13 +561,12 @@ const deleteFoodRequest = async (id) => {
 
 module.exports = {
   createFoodRequest,
+  createFoodRequestWithPoints,
   findById,
   findExistingRequest,
   findByReceiverId,
   findIncomingForDonor,
   findIncomingForNgo,
-  updatePaymentStatus,
-  resubmitBikashTransaction,
   findPickupRequestsForDonor,
   findPickupRequestsByNgo,
   assignReceivingStaff,
